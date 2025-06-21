@@ -1,0 +1,3 @@
+pandas>=2.3
+usaddress-scourgify>=0.6.0   # ← replaces “scourgify”
+usaddress>=0.5.14            # explicit pin never hurts

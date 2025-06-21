@@ -1,0 +1,179 @@
+#!/usr/bin/env python3
+"""
+ETL Library — National Math Stars CRM Migration
+=================================================================
+This library provides a centralized set of reusable functions for the
+ETL (Extract, Transform, Load) scripts used in the CRM migration.
+
+The library includes helpers for:
+* Reading and validating mapping and catalog files.
+* Transforming data from legacy to UI-ready formats.
+* Cleaning and standardizing various data types (text, numbers).
+* Normalizing and formatting address blocks using scourgify.
+"""
+
+from __future__ import annotations
+import logging
+import re
+from pathlib import Path
+from typing import Dict, List
+
+import pandas as pd
+from scourgify import normalize_address_record   # from PyPI package *usaddress-scourgify*
+
+log = logging.getLogger(__name__)
+
+# ───────────────────────────────
+# REPOSITORY-RELATIVE CSV PATHS
+# ───────────────────────────────
+BASE_DIR      = Path(__file__).resolve().parent
+MAP_FILE      = BASE_DIR.parent / "mapping" / "Target-Legacy Mapping.csv"
+TARGET_FIELDS = BASE_DIR.parent / "mapping" / "Target modules_fields.csv"
+
+# ════════════════════════════════════════════════════════════════════════════
+#                               MAPPING HELPERS
+# ════════════════════════════════════════════════════════════════════════════
+
+# Read the main mapping file that defines legacy-to-target field relationships.
+def read_mapping() -> pd.DataFrame:
+    return pd.read_csv(MAP_FILE)
+
+# Read the target system's data catalog, which contains all possible fields.
+def read_target_catalog() -> pd.DataFrame:
+    return pd.read_csv(TARGET_FIELDS)
+
+# Assert that all fields specified in the mapping file exist in the target data catalog.
+def assert_target_pairs_exist(module_ui: str,
+                              module_mapping: pd.DataFrame,
+                              target_cat: pd.DataFrame) -> None:
+    valid_pairs = set(
+        target_cat[["User-Facing Module Name", "User-Facing Field Name"]]
+        .itertuples(index=False, name=None)
+    )
+    mapping_pairs = set(
+        module_mapping[["Target Module", "Target Field"]]
+        .itertuples(index=False, name=None)
+    )
+    missing = {
+        p for p in (mapping_pairs - valid_pairs)
+        if p[0].lower() not in ("remove", "remove/hide")
+    }
+    if missing:
+        raise ValueError(f"{module_ui}: target-catalog mismatch → {missing}")
+
+# ════════════════════════════════════════════════════════════════════════════
+#                         DATA TRANSFORMATION HELPERS
+# ════════════════════════════════════════════════════════════════════════════
+
+# Rename legacy DataFrame columns to the target UI-facing names based on the mapping.
+def transform_legacy_df(df_legacy: pd.DataFrame,
+                        module_mapping: pd.DataFrame) -> pd.DataFrame:
+    keep = module_mapping[
+        ~module_mapping["Target Module"].str.lower().isin(["remove", "remove/hide"])
+    ]
+    rename_map = dict(zip(keep["Legacy Field"], keep["Target Field"]))
+    # Select and rename only the columns present in the rename_map
+    cols_to_rename = [col for col in rename_map.keys() if col in df_legacy.columns]
+    return df_legacy[cols_to_rename].rename(columns=rename_map)
+
+# Convert a UI-ready DataFrame's headers to the technical API names for import.
+def ui_to_api_headers(df_ui: pd.DataFrame,
+                      module_ui: str,
+                      target_cat: pd.DataFrame) -> pd.DataFrame:
+    lookup = (
+        target_cat
+        .query("`User-Facing Module Name` == @module_ui")
+        .set_index("User-Facing Field Name")["Technical Field Name"]
+        .dropna()
+    )
+    rename_api = {ui: api for ui, api in lookup.items() if ui in df_ui.columns}
+    return df_ui.rename(columns=rename_api)
+
+# ════════════════════════════════════════════════════════════════════════════
+#                               GENERAL CLEANERS
+# ════════════════════════════════════════════════════════════════════════════
+
+# Strip extensions from zip codes (e.g., "78757-1234" -> "78757").
+_ZIP_RE = re.compile(r"[\s-].*$")
+def root_zip(val: str) -> str:
+    return _ZIP_RE.sub("", str(val).strip())
+
+# Remove bilingual text separated by a forward slash (e.g., "Yes/Si" -> "Yes").
+def strip_translation(val: str) -> str:
+    if pd.isna(val):
+        return val
+    parts = str(val).split(';')
+    cleaned = [p.split('/', 1)[0].strip() for p in parts if p.strip()]
+    return '; '.join(cleaned)
+
+# Convert float values to integers if they have no decimal part (e.g., 3.0 -> 3).
+def to_int_if_whole(series: pd.Series) -> pd.Series:
+    return series.apply(
+        lambda x: int(x) if pd.notna(x) and float(x).is_integer() else x
+    )
+
+# ════════════════════════════════════════════════════════════════════════════
+#                ADDRESS NORMALISER (scourgify)
+# ════════════════════════════════════════════════════════════════════════════
+
+# Normalise and format a block of address columns (Street, City, State, Zip).
+def standardize_address_block(df: pd.DataFrame,
+                              col_map: Dict[str, str]) -> pd.DataFrame:
+    """
+    Normalises and formats Street/City/State/Zip columns in-place.
+    Includes a fallback to prevent data loss if scourgify fails to parse.
+    """
+    if not col_map:
+        return df
+
+    # --- Phase 1: Parsing with Scourgify ---
+    records = df.to_dict('records')
+
+    def _parse_row(row_dict: dict) -> dict:
+        scourgify_input = {
+            key: row_dict.get(val)
+            for key, val in col_map.items()
+            if pd.notna(row_dict.get(val))
+        }
+        if not scourgify_input: return {}
+        try:
+            parsed = normalize_address_record(scourgify_input, long_hand=True)
+            # If parsing fails, scourgify returns None. Fall back to the original input.
+            return parsed if parsed else scourgify_input
+        except Exception as exc:
+            log.debug("scourgify failed on %s – %s", scourgify_input, exc)
+            return scourgify_input
+
+    parsed_records = [_parse_row(r) for r in records]
+    parsed_df = pd.json_normalize(parsed_records)
+
+    # --- Phase 2: Applying Custom Formatting ---
+    def _clean(series: pd.Series) -> pd.Series:
+        return series.fillna("").astype(str).replace(r"^(none|null|nan)$", "", regex=True).str.strip()
+
+    if 'city' in parsed_df.columns:
+        parsed_df['city'] = _clean(parsed_df['city']).str.title()
+    
+    if "address_line_1" in parsed_df.columns:
+        addr1 = _clean(parsed_df["address_line_1"])
+        addr2 = _clean(parsed_df.get("address_line_2", pd.Series(index=parsed_df.index)))
+        full_street = (addr1 + " " + addr2).str.strip()
+        parsed_df["address_line_1"] = full_street.str.title()
+        if "address_line_2" in parsed_df.columns:
+            parsed_df.drop(columns=["address_line_2"], inplace=True)
+
+    if 'postal_code' in parsed_df.columns:
+        parsed_df['postal_code'] = _clean(parsed_df['postal_code']).apply(root_zip)
+
+    # --- Phase 3: Update Original DataFrame ---
+    rename_map = {
+        scourgify_key: df_col 
+        for scourgify_key, df_col in col_map.items() 
+        if scourgify_key in parsed_df.columns and scourgify_key != 'state'
+    }
+    if rename_map:
+        parsed_df.rename(columns=rename_map, inplace=True)
+        parsed_df.index = df.index
+        df.update(parsed_df)
+
+    return df

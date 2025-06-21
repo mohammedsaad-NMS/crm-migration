@@ -1,0 +1,391 @@
+User-Facing Module Name,Technical Module Name,User-Facing Field Name,Technical Field Name,Data Source / Type,Primary Linkage (if applicable),Change Type,Notes / UI Consideration,helper
+Households,households,Household Record ID (Zoho ID),household_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this Household record.,HouseholdsHousehold Record ID (Zoho ID)
+Households,households,Household Name,name,Stored (Text),,New addition,Primary display name for the household.,HouseholdsHousehold Name
+Households,households,Income,income,Stored (Picklist),,Data exists,Same values from Applicants module (Income Band).,HouseholdsIncome
+Households,households,Family Size,family_size,Stored (Number),,Data exists,,HouseholdsFamily Size
+Households,households,Metro Area,metro_area,Stored (Picklist),,Data exists,Use standard US Metropolitan Statistical Area (MSA) list.,HouseholdsMetro Area
+Households,households,Family Benefits,family_benefits,Stored (Multi-Select Picklist),,Data exists,SNAP; WIC; TANF; Free or Reduced-Price School Lunch; Medicaid; CHIP; Housing Assistance,HouseholdsFamily Benefits
+Households,households,Highest Level of Education,education_level,Stored (Picklist),,Data exists,Same values from Applicants module (Parent Education Level).,HouseholdsHighest Level of Education
+Households,households,Media Release,media_release,Stored (Boolean),,Data exists,,HouseholdsMedia Release
+Households,households,Special Circumstances,special_circumstances,Stored (Multi-Select Picklist),,New addition,Same values from Applicant module (Family Circumstances). ,HouseholdsSpecial Circumstances
+Households,households,Last Advisor Meeting,last_advisor_meeting,Formula (Pull from Advisor Meetings Module),,Non-stored data,,HouseholdsLast Advisor Meeting
+Households,households,Related Stars,(N/A),Related List (Visual),Shows Stars records linked via stars.household_id (Zoho ID),Non-stored data,Section on layout.,HouseholdsRelated Stars
+Households,households,Related Guardians (All),(N/A),Related List (Visual) / Custom View,Shows Contact (Guardians) linked via Stars in this Household,Non-stored data,Section on layout; may need custom functions to show unique guardians across all Stars.,HouseholdsRelated Guardians (All)
+Households,households,Country,country,Stored (Picklist),,New addition,Standard countries list.,HouseholdsCountry
+Households,households,State,state,Stored (Picklist),,Data exists,Standard US States and Territories list.,HouseholdsState
+Households,households,City,city,Stored (Text),,Data exists,,HouseholdsCity
+Households,households,Street,street,Stored (Text),,Data exists,,HouseholdsStreet
+Households,households,Zip Code,zip,Stored (Text),,Data exists,,HouseholdsZip Code
+Households,households,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,HouseholdsCreated By
+Households,households,Created Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,HouseholdsCreated Time
+Households,households,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,HouseholdsModified By
+Households,households,Modified Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,HouseholdsModified Time
+Stars,stars,Star Record ID (Zoho ID),star_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this Star record.,StarsStar Record ID (Zoho ID)
+Stars,stars,Star Photo,star_photo,Stored (Image),,Data exists,,StarsStar Photo
+Stars,stars,NMS Star ID,nms_star_id,Stored (Text/Number),,Data exists,Business-defined unique ID for Stars. Should be searchable. Ensure uniqueness via validation.,StarsNMS Star ID
+Stars,stars,First Name,first_name,Stored (Text),,Data exists,Mandatory.,StarsFirst Name
+Stars,stars,Last Name,last_name,Stored (Text),,Data exists,Mandatory.,StarsLast Name
+Stars,stars,Middle Name,middle_name,Stored (Text),,Data exists,,StarsMiddle Name
+Stars,stars,Full Name,(N/A - Formula),Formula (Concatenation),,Non-stored data,Formula: ${Stars.First Name} ${Stars.Last Name}. For display.,StarsFull Name
+Stars,stars,Date of Birth (DOB),dob,Stored (Date),,Data exists,,StarsDate of Birth (DOB)
+Stars,stars,Age,(N/A - Formula),Formula (Calculate from DOB),,Non-stored data,For display and reporting.,StarsAge
+Stars,stars,Cohort Year,cohort_year,Stored (Text/Number),,Data exists,,StarsCohort Year
+Stars,stars,Cohort Region,cohort_region,Stored (Picklist),,Data exists,Same values from Applicants module (Region).,StarsCohort Region
+Stars,stars,Email,email,Stored (Email),,Data exists,,StarsEmail
+Stars,stars,Phone,phone,Stored (Phone),,Data exists,,StarsPhone
+Stars,stars,Status,status,Stored (Picklist),,Data exists,Active; Withdrawn,StarsStatus
+Stars,stars,Program End Date,program_end_date,Stored (Date),,Data exists,"Use with Status=""Withdrawn""",StarsProgram End Date
+Stars,stars,Household,household_id,Stored (Lookup to Households),To Households via household_id (Zoho ID),New addition,"Mandatory. Displays Household Name, searchable by Name. Stores Zoho Record ID of the Household.",StarsHousehold
+Stars,stars,Household Region,(N/A - Formula),Formula (from Household),,Non-stored data,Formula: ${Stars.Household.Region}. Display Star's effective region.,StarsHousehold Region
+Stars,stars,Current District,(N/A - Formula),Formula (from Schools),,Non-stored data,,StarsCurrent District
+Stars,stars,Current School,school_id,Stored (Lookup to Schools) / Formula (from Star-School),To Schools via school_id (Zoho ID),Data exists,Populated by workflow from active Star-School record. Displays School Name. Stores Zoho Record ID.,StarsCurrent School
+Stars,stars,Current Grade,grade,Stored (Number),,Data exists,Updated via annual deluge script with manual override capabilities.,StarsCurrent Grade
+Stars,stars,Program Affiliations,program_affiliations,Stored (Multi-Select Picklist),,New addition,Align on list with Programs Team,StarsProgram Affiliations
+Stars,stars,Dietary Restrictions,dietary_restrictions,Stored (Text),,Data exists,,StarsDietary Restrictions
+Stars,stars,Gender Identity,gender_identity,Stored (Picklist),,Data exists,Samve values from Applicants module (Gender).,StarsGender Identity
+Stars,stars,Interests,interests,Stored (Multi-Select Picklist),,New addition,Align on list with Programs Team,StarsInterests
+Stars,stars,Race or Ethnicity,race_ethnicity,Stored (Picklist),,Data exists,Same values from Applicants module (Child's Race/Ethnicity).,StarsRace or Ethnicity
+Stars,stars,Availability,availability,Stored (Text),,New addition,,StarsAvailability
+Stars,stars,Guardians,(N/A),Related List (Visual),Shows guardian_star junction records,Non-stored data,Displays linked guardians and their relationship type.,StarsGuardians
+Stars,stars,Mentors (History),(N/A),Related List (Visual),Shows mentor_star junction records,Non-stored data,Displays current and past mentors with status/dates.,StarsMentors (History)
+Stars,stars,Current Mentor Name,(N/A - Formula),Formula (from active mentor_star),,Non-stored data,Logic to find active mentor from mentor_star and display name.,StarsCurrent Mentor Name
+Stars,stars,Advisors (History),(N/A),Related List (Visual),Shows advisor_star junction records,Non-stored data,Displays current and past advisors with status/dates.,StarsAdvisors (History)
+Stars,stars,Current Advisor Name,(N/A - Formula),Formula (from active advisor_star),,Non-stored data,Logic to find active advisor from advisor_star and display name.,StarsCurrent Advisor Name
+Stars,stars,Educator Associations,(N/A),Related List (Visual),Shows educator_star junction records,Non-stored data,Displays linked educators and their roles.,StarsEducator Associations
+Stars,stars,School History,(N/A),Related List (Visual),Shows star_school junction records,Non-stored data,"Displays all school enrollments, past and present.",StarsSchool History
+Stars,stars,Course Enrollments,(N/A),Related List (Visual),Shows course_enrollments records,Non-stored data,Show in reverse chronological order,StarsCourse Enrollments
+Stars,stars,Enrichment Enrollments,(N/A),Related List (Visual),Shows enrichment_enrollments records,Non-stored data,,StarsEnrichment Enrollments
+Stars,stars,Individual Program Plans (IPPs),(N/A),Related List (Visual),Shows ipps records,Non-stored data,,StarsIndividual Program Plans (IPPs)
+Stars,stars,Outcomes,(N/A),Related List (Visual),Shows outcomes records,Non-stored data,,StarsOutcomes
+Stars,stars,Media,(N/A),Related List (Visual),Shows media records linked directly to Star,Non-stored data,,StarsMedia
+Stars,stars,Mentor Session Notes,(N/A),Related List (Visual),Shows mentor_session_notes records for this Star,Non-stored data,Star's participation and specific notes from mentor session events.,StarsMentor Session Notes
+Stars,stars,Advisor Meetings,(N/A),Related List (Visual),Shows advisor_meetings records,Non-stored data,,StarsAdvisor Meetings
+Stars,stars,Owner,(Zoho System Field),System (Zoho User Lookup),Links to Zoho User (Advisor),Non-stored data,Important for record visibility and assignment.,StarsOwner
+Stars,stars,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,StarsCreated By
+Stars,stars,Created Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,StarsCreated Time
+Stars,stars,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,StarsModified By
+Stars,stars,Modified Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,StarsModified Time
+Contacts,contacts,Contact Record ID (Zoho ID),contact_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this Contact record.,ContactsContact Record ID (Zoho ID)
+Contacts,contacts,First Name,first_name,Stored (Text),,Data exists,,ContactsFirst Name
+Contacts,contacts,Middle Name,middle_name,Stored (Text),,Data exists,,ContactsMiddle Name
+Contacts,contacts,Last Name,last_name,Stored (Text),,Data exists,,ContactsLast Name
+Contacts,contacts,Full Name,(N/A - Formula),Formula (Concatenation),,Non-stored data,Formula: ${Contacts.First Name} ${Contacts.Last Name}. For display.,ContactsFull Name
+Contacts,contacts,Title,title,Stored (Text),,Data exists,,ContactsTitle
+Contacts,contacts,Email,email,Stored (Email),,Data exists,,ContactsEmail
+Contacts,contacts,Phone,phone,Stored (Phone),,Data exists,,ContactsPhone
+Contacts,contacts,Role (General),role,Stored (Picklist),,Data exists,Guardian; Mentor; Family Advisor; Teacher; School Administrator; Partner Contact,ContactsRole (General)
+Contacts,contacts,Partner,partner_org_id,Stored (Lookup to Partners),To Partners via partner_id (Zoho ID),New addition,,ContactsPartner
+Contacts,contacts,District,district_id,Stored (Lookup to Districts),To Districts via district_id (Zoho ID),New addition,,ContactsDistrict
+Contacts,contacts,Organization,(N/A - Formula),Formula (Show Partner or District based on contact type),,Non-stored data,,ContactsOrganization
+Contacts,contacts,Emergency Contact,emergency_contact,Stored (Boolean),,New addition,,ContactsEmergency Contact
+Contacts,contacts,Preferred Language,language,Stored (Picklist),,Data exists,Standard list of languages.,ContactsPreferred Language
+Contacts,contacts,Other Language,other_language,Stored (Text),,Data exists,,ContactsOther Language
+Contacts,contacts,Date of Birth (DOB),dob,Stored (Date),,Data exists,,ContactsDate of Birth (DOB)
+Contacts,contacts,Occupation,occupation,Stored (Text),,Data exists,,ContactsOccupation
+Contacts,contacts,Time Zone,time_zone,Stored (Picklist),,Data exists,Pacific Time (PT); Mountain Time (MT); Central Time (CT); Eastern Time (ET),ContactsTime Zone
+Contacts,contacts,Preferred Comm Channel,pref_channel,Stored (Picklist),,New addition,Email; Text; Phone Call,ContactsPreferred Comm Channel
+Contacts,contacts,Opt-out Email,opt_out_email,Stored (Boolean),,Data exists,Checkbox. Not an option for primary guardian,ContactsOpt-out Email
+Contacts,contacts,Opt-out Call,opt_out_call,Stored (Boolean),,New addition,Checkbox.,ContactsOpt-out Call
+Contacts,contacts,Opt-out Text (SMS),opt_out_text,Stored (Boolean),,Data exists,Checkbox.,ContactsOpt-out Text (SMS)
+Contacts,contacts,Opt-out Directory,opt_out_directory,Stored (Boolean),,Data exists,,ContactsOpt-out Directory
+Contacts,contacts,Mailing Street,mailing_street,Stored (Text),,Data exists,,ContactsMailing Street
+Contacts,contacts,Mailing City,mailing_city,Stored (Text),,Data exists,,ContactsMailing City
+Contacts,contacts,Mailing State,mailing_state,Stored (Picklist),,Data exists,Standard US States and Territories list.,ContactsMailing State
+Contacts,contacts,Mailing Zip Code,mailing_zip,Stored (Text),,Data exists,,ContactsMailing Zip Code
+Contacts,contacts,Mailing Country,mailing_country,Stored (Picklist),,Data exists,Standard countries list.,ContactsMailing Country
+Contacts,contacts,Notes,notes,Stored (Text),,Data exists,,ContactsNotes
+Contacts,contacts,Status,status,Stored (Picklist),,Data exists,Active; Inactive,ContactsStatus
+Contacts,contacts,Star Associations (Guardian),(N/A),Related List (Visual),Shows guardian_star records,Non-stored data,Stars for whom this Contact is a Guardian.,ContactsStar Associations (Guardian)
+Contacts,contacts,Star Associations (Mentor),(N/A),Related List (Visual),Shows mentor_star records,Non-stored data,Stars for whom this Contact is/was a Mentor.,ContactsStar Associations (Mentor)
+Contacts,contacts,Star Associations (Advisor),(N/A),Related List (Visual),Shows advisor_star records,Non-stored data,Stars for whom this Contact is/was an Advisor.,ContactsStar Associations (Advisor)
+Contacts,contacts,Star Associations (Educator),(N/A),Related List (Visual),Shows educator_star records,Non-stored data,Stars with whom this Contact is associated as an Educator.,ContactsStar Associations (Educator)
+Contacts,contacts,Mentor Session Events (as Mentor),(N/A),Related List (Visual),Shows mentor_sessions records where contact is mentor,Non-stored data,Unique session events conducted by this mentor.,ContactsMentor Session Events (as Mentor)
+Contacts,contacts,Advisor Meetings (as Advisor),(N/A),Related List (Visual),Shows advisor_meetings records where contact is advisor,Non-stored data,,ContactsAdvisor Meetings (as Advisor)
+Contacts,contacts,Owner,(Zoho System Field),System (Zoho User Lookup),Links to Zoho User,Non-stored data,,ContactsOwner
+Contacts,contacts,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,ContactsCreated By
+Contacts,contacts,Created Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,ContactsCreated Time
+Contacts,contacts,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,ContactsModified By
+Contacts,contacts,Modified Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,ContactsModified Time
+Guardian-Star Associations,guardian_star,Guardian-Star Record ID (Zoho ID),guardian_star_id (represents Zoho PK for the junction record),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this association record.,Guardian-Star AssociationsGuardian-Star Record ID (Zoho ID)
+Guardian-Star Associations,guardian_star,Star,star_id,Stored (Lookup to Stars),To Stars via star_id (Zoho ID),Data exists,"Mandatory. Displays Star Name, searchable by Name and NMS Star ID. Stores Zoho Record ID of the Star.",Guardian-Star AssociationsStar
+Guardian-Star Associations,guardian_star,Guardian,guardian_id,Stored (Lookup to Contacts),To Contacts via guardian_id (Zoho ID),Data exists,"Mandatory. Displays Contact Name, searchable by Name. Stores Zoho Record ID of the Contact.",Guardian-Star AssociationsGuardian
+Guardian-Star Associations,guardian_star,Relationship Type,relationship_type,Stored (Picklist),,Data exists,Primary; Secondary; Tertiary,Guardian-Star AssociationsRelationship Type
+Guardian-Star Associations,guardian_star,Is Only Legal Guardian,only_legal_guardian,Stored (Boolean),,Data exists,,Guardian-Star AssociationsIs Only Legal Guardian
+Guardian-Star Associations,guardian_star,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Guardian-Star AssociationsCreated By
+Guardian-Star Associations,guardian_star,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Guardian-Star AssociationsModified By
+Guardian-Star Associations,guardian_star,Created Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Guardian-Star AssociationsCreated Time
+Guardian-Star Associations,guardian_star,Last Activity Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Guardian-Star AssociationsLast Activity Time
+Guardian-Star Associations,guardian_star,Modified Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Guardian-Star AssociationsModified Time
+Mentor-Star Associations,mentor_star,Mentor-Star Record ID (Zoho ID),mentor_star_id (represents Zoho PK for the junction record),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this association record.,Mentor-Star AssociationsMentor-Star Record ID (Zoho ID)
+Mentor-Star Associations,mentor_star,Star,star_id,Stored (Lookup to Stars),To Stars via star_id (Zoho ID),Data exists,"Mandatory. Displays Star Name, searchable by Name and NMS Star ID. Stores Zoho Record ID of the Star.",Mentor-Star AssociationsStar
+Mentor-Star Associations,mentor_star,Mentor,mentor_id,Stored (Lookup to Contacts),To Contacts via mentor_id (Zoho ID),Data exists,"Mandatory. Displays Contact Name, searchable by Name. Stores Zoho Record ID of the Contact.",Mentor-Star AssociationsMentor
+Mentor-Star Associations,mentor_star,Status,status,Stored (Picklist),,Data exists,Current; Past,Mentor-Star AssociationsStatus
+Mentor-Star Associations,mentor_star,Default Session Time,session_time,Stored (DateTime),,New addition,The regularly scheduled/default session time.,Mentor-Star AssociationsDefault Session Time
+Mentor-Star Associations,mentor_star,Start Date,start_date,Stored (Date),,New addition,Date this mentorship assignment started. Mandatory.,Mentor-Star AssociationsStart Date
+Mentor-Star Associations,mentor_star,End Date,end_date,Stored (Date),,New addition,Date this mentorship assignment ended (if applicable).,Mentor-Star AssociationsEnd Date
+Mentor-Star Associations,mentor_star,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Mentor-Star AssociationsCreated By
+Mentor-Star Associations,mentor_star,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Mentor-Star AssociationsModified By
+Advisor-Star Associations,advisor_star,Advisor-Star Record ID (Zoho ID),advisor_star_id (represents Zoho PK for the junction record),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this association record.,Advisor-Star AssociationsAdvisor-Star Record ID (Zoho ID)
+Advisor-Star Associations,advisor_star,Star,star_id,Stored (Lookup to Stars),To Stars via star_id (Zoho ID),Data exists,"Mandatory. Displays Star Name, searchable by Name and NMS Star ID. Stores Zoho Record ID of the Star.",Advisor-Star AssociationsStar
+Advisor-Star Associations,advisor_star,Advisor,advisor_id,Stored (Lookup to Contacts),To Contacts via advisor_id (Zoho ID),Data exists,"Mandatory. Displays Contact Name, searchable by Name. Stores Zoho Record ID of the Contact.",Advisor-Star AssociationsAdvisor
+Advisor-Star Associations,advisor_star,Status,status,Stored (Picklist),,Data exists,Current; Past,Advisor-Star AssociationsStatus
+Advisor-Star Associations,advisor_star,Start Date,start_date,Stored (Date),,New addition,Date this advisory assignment started. Mandatory.,Advisor-Star AssociationsStart Date
+Advisor-Star Associations,advisor_star,End Date,end_date,Stored (Date),,New addition,Date this advisory assignment ended (if applicable).,Advisor-Star AssociationsEnd Date
+Advisor-Star Associations,advisor_star,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Advisor-Star AssociationsCreated By
+Advisor-Star Associations,advisor_star,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Advisor-Star AssociationsModified By
+Educator-Star Associations,educator_star,Educator-Star Record ID (Zoho ID),educator_star_id (represents Zoho PK for the junction record),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this association record.,Educator-Star AssociationsEducator-Star Record ID (Zoho ID)
+Educator-Star Associations,educator_star,Star,star_id,Stored (Lookup to Stars),To Stars via star_id (Zoho ID),Data exists,"Mandatory. Displays Star Name, searchable by Name and NMS Star ID. Stores Zoho Record ID of the Star.",Educator-Star AssociationsStar
+Educator-Star Associations,educator_star,Educator,educator_id,Stored (Lookup to Contacts),To Contacts via educator_id (Zoho ID),Data exists,"Mandatory. Displays Contact Name, searchable by Name. Stores Zoho Record ID of the Contact.",Educator-Star AssociationsEducator
+Educator-Star Associations,educator_star,School,school_id,Stored (Lookup to Schools),To Schools via school_id (Zoho ID),Data exists,,Educator-Star AssociationsSchool
+Educator-Star Associations,educator_star,Role (at School/Context),role,Stored (Picklist),,Data exists,Teacher (Math); Teacher (General); Principal; Counselor; Gifted & Talented Coordinator,Educator-Star AssociationsRole (at School/Context)
+Educator-Star Associations,educator_star,Start Date,start_date,Stored (Date),,New addition,,Educator-Star AssociationsStart Date
+Educator-Star Associations,educator_star,End Date,end_date,Stored (Date),,New addition,,Educator-Star AssociationsEnd Date
+Educator-Star Associations,educator_star,Status,status,Stored (Picklist),,Data exists,Current; Past,Educator-Star AssociationsStatus
+Educator-Star Associations,educator_star,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Educator-Star AssociationsCreated By
+Educator-Star Associations,educator_star,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Educator-Star AssociationsModified By
+Districts,districts,District Record ID (Zoho ID),district_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this District record.,DistrictsDistrict Record ID (Zoho ID)
+Districts,districts,Name,name,Stored (Text),,Data exists,Mandatory.,DistrictsName
+Districts,districts,NCES ID,nces_id,Stored (Text),,Data exists,National Center for Education Statistics ID.,DistrictsNCES ID
+Districts,districts,City,city,Stored (Text),,Data exists,,DistrictsCity
+Districts,districts,State,state,Stored (Picklist),,Data exists,Standard US States and Territories list.,DistrictsState
+Districts,districts,Street,street,Stored (Text),,Data exists,,DistrictsStreet
+Districts,districts,Zip Code,zip_code,Stored (Text),,Data exists,,DistrictsZip Code
+Districts,districts,Phone,phone,Stored (Phone),,New addition,,DistrictsPhone
+Districts,districts,Email,email,Stored (Email),,Data exists,,DistrictsEmail
+Districts,districts,NCES District Link,nces_link,Stored (URL),,Data exists,,DistrictsNCES District Link
+Districts,districts,Size,district_size,Stored (Text/Number),,Data exists,,DistrictsSize
+Districts,districts,Type,district_type,Stored (Picklist),,Data exists,"Charter, Regular Local, Regional (RESA), State (From NCES)",DistrictsType
+Districts,districts,Website,website,Stored (URL),,Data exists,,DistrictsWebsite
+Districts,districts,Schools in District,(N/A),Related List (Visual),Shows schools records linked via schools.district_id (Zoho ID),Non-stored data,Section on layout.,DistrictsSchools in District
+Districts,districts,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,DistrictsCreated By
+Districts,districts,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,DistrictsModified By
+Schools,schools,School Record ID (Zoho ID),school_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this School record.,SchoolsSchool Record ID (Zoho ID)
+Schools,schools,Name,name,Stored (Text),,Data exists,Mandatory.,SchoolsName
+Schools,schools,NCES ID,nces_id,Stored (Text),,Data exists,,SchoolsNCES ID
+Schools,schools,NCES School Link,nces_link,Stored (URL),,Data exists,,SchoolsNCES School Link
+Schools,schools,Phone,phone,Stored (Phone),,New addition,,SchoolsPhone
+Schools,schools,District,district_id,Stored (Lookup to Districts),To Districts via district_id (Zoho ID),Data exists,"Displays District Name, searchable by Name. Stores Zoho Record ID of the District.",SchoolsDistrict
+Schools,schools,Setting,setting,Stored (Picklist),,Data exists,City; Suburban Town; Rural (From NCES),SchoolsSetting
+Schools,schools,Type,school_type,Stored (Picklist),,Data exists,"Regular; Special Education; Other/Alternative (From NCES, include charter distinction)",SchoolsType
+Schools,schools,Size,school_size,Stored (Text/Number),,Data exists,,SchoolsSize
+Schools,schools,Grades Served,school_grades,Stored (Text),,Data exists,"e.g., K-5, 6-8, 9-12.",SchoolsGrades Served
+Schools,schools,City,city,Stored (Text),,Data exists,,SchoolsCity
+Schools,schools,State,state,Stored (Picklist),,Data exists,Standard US States and Territories list.,SchoolsState
+Schools,schools,Street,street,Stored (Text),,Data exists,,SchoolsStreet
+Schools,schools,Zip Code,zip_code,Stored (Text),,Data exists,,SchoolsZip Code
+Schools,schools,Website,website,Stored (URL),,Data exists,,SchoolsWebsite
+Schools,schools,Stars Currently Attending,(N/A),Related List (Visual) / Custom View,Shows stars records where stars.school_id (Zoho ID) matches,Non-stored data,,SchoolsStars Currently Attending
+Schools,schools,Star School History,(N/A),Related List (Visual),Shows star_school records linked to this school,Non-stored data,All Stars ever associated with this school.,SchoolsStar School History
+Schools,schools,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,SchoolsCreated By
+Schools,schools,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,SchoolsModified By
+Star-School Associations,star_school,Star-School Record ID (Zoho ID),star_school_id (represents Zoho PK for the junction record),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this association record.,Star-School AssociationsStar-School Record ID (Zoho ID)
+Star-School Associations,star_school,Star,star_id,Stored (Lookup to Stars),To Stars via star_id (Zoho ID),Data exists,"Mandatory. Displays Star Name, searchable by Name and NMS Star ID. Stores Zoho Record ID of the Star.",Star-School AssociationsStar
+Star-School Associations,star_school,School,school_id,Stored (Lookup to Schools),To Schools via school_id (Zoho ID),Data exists,"Mandatory. Displays School Name, searchable by Name. Stores Zoho Record ID of the School.",Star-School AssociationsSchool
+Star-School Associations,star_school,Start Date,start_date,Stored (Date),,Data exists,Date Star started at this school. Mandatory.,Star-School AssociationsStart Date
+Star-School Associations,star_school,End Date,end_date,Stored (Date),,Data exists,Date Star left this school (if applicable).,Star-School AssociationsEnd Date
+Star-School Associations,star_school,Status,status,Stored (Picklist),,Data exists,Current; Past,Star-School AssociationsStatus
+Star-School Associations,star_school,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Star-School AssociationsCreated By
+Star-School Associations,star_school,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Star-School AssociationsModified By
+Star-School Associations,star_school,Created Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Star-School AssociationsCreated Time
+Star-School Associations,star_school,Last Activity Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Star-School AssociationsLast Activity Time
+Star-School Associations,star_school,Modified Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Star-School AssociationsModified Time
+Products,products,Product Record ID (Zoho ID),product_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this Product record.,ProductsProduct Record ID (Zoho ID)
+Products,products,Product Name,name,Stored (Text),,Data exists,"Mandatory. e.g., ""Algebra 1 Course,"" ""Robotics Club Kit.""",ProductsProduct Name
+Products,products,Description,description,Stored (Text),,Data exists,,ProductsDescription
+Products,products,Link,link,Stored (URL),,Data exists,,ProductsLink
+Products,products,Product Type,product_type,Stored (Picklist),,Data exists,Course; Camp; Club; Kits; Books,ProductsProduct Type
+Products,products,Topic,topic,Stored (Picklist),,Data exists,"Science, Technology, Engineering, Mathematics",ProductsTopic
+Products,products,Selectiveness,selectiveness,Stored (Picklist),,Data exists,Open Enrollment; Selective,ProductsSelectiveness
+Products,products,Vendor,partner_id,Stored (Lookup to Partners),To Partners via partner_id (Zoho ID),Data exists,,ProductsVendor
+Products,products,Hours per Week,hours_per_week,Stored (Number),,Data exists,,ProductsHours per Week
+Products,products,Course Enrollments,(N/A),Related List (Visual),Shows course_enrollments records linked,Non-stored data,Stars enrolled in this product (if type=Course).,ProductsCourse Enrollments
+Products,products,Enrichment Enrollments,(N/A),Related List (Visual),Shows enrichment_enrollments records linked,Non-stored data,Stars enrolled in this product (if type=Enrichment).,ProductsEnrichment Enrollments
+Products,products,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,ProductsCreated By
+Products,products,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,ProductsModified By
+Course Enrollments,course_enrollments,Course Enrollment Record ID (Zoho ID),course_enroll_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this record.,Course EnrollmentsCourse Enrollment Record ID (Zoho ID)
+Course Enrollments,course_enrollments,Star,star_id,Stored (Lookup to Stars),To Stars via star_id (Zoho ID),Data exists,"Mandatory. Displays Star Name, searchable by Name and NMS Star ID. Stores Zoho Record ID of the Star.",Course EnrollmentsStar
+Course Enrollments,course_enrollments,Product (Course),product_id,Stored (Lookup to Products),To Products via product_id (Zoho ID),Data exists,Mandatory. Filter lookup for product_type='Course'. Displays Product Name. Stores Zoho Record ID.,Course EnrollmentsProduct (Course)
+Course Enrollments,course_enrollments,Start Date,start_date,Stored (Date),,Data exists,,Course EnrollmentsStart Date
+Course Enrollments,course_enrollments,End Date,end_date,Stored (Date),,Data exists,,Course EnrollmentsEnd Date
+Course Enrollments,course_enrollments,Status,status,Stored (Picklist),,New addition,Enrolled; In Progress; Completed; Dropped,Course EnrollmentsStatus
+Course Enrollments,course_enrollments,Grade Format,grade_format,Stored (Picklist),,Data exists,Letter Grade; Pass/Fail; Percentage; Completion Certificate,Course EnrollmentsGrade Format
+Course Enrollments,course_enrollments,Grade Value,grade_value,Stored (Text),,Data exists,,Course EnrollmentsGrade Value
+Course Enrollments,course_enrollments,Result,result,Stored (Picklist),,Data exists,A;B;C;D;F; Pass; Fail; Completed,Course EnrollmentsResult
+Course Enrollments,course_enrollments,Notes,notes,Stored (Text),,Data exists,,Course EnrollmentsNotes
+Course Enrollments,course_enrollments,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Course EnrollmentsCreated By
+Course Enrollments,course_enrollments,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Course EnrollmentsModified By
+Enrichment Enrollments,enrichment_enrollments,Enrichment Enrollment Record ID (Zoho ID),enrich_enroll_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this record.,Enrichment EnrollmentsEnrichment Enrollment Record ID (Zoho ID)
+Enrichment Enrollments,enrichment_enrollments,Star,star_id,Stored (Lookup to Stars),To Stars via star_id (Zoho ID),Data exists,"Mandatory. Displays Star Name, searchable by Name and NMS Star ID. Stores Zoho Record ID of the Star.",Enrichment EnrollmentsStar
+Enrichment Enrollments,enrichment_enrollments,Product (Enrichment),product_id,Stored (Lookup to Products),To Products via product_id (Zoho ID),Data exists,Mandatory. Filter lookup for product_type='Enrichment'. Displays Product Name. Stores Zoho Record ID.,Enrichment EnrollmentsProduct (Enrichment)
+Enrichment Enrollments,enrichment_enrollments,Start Date,start_date,Stored (Date),,Data exists,,Enrichment EnrollmentsStart Date
+Enrichment Enrollments,enrichment_enrollments,End Date,end_date,Stored (Date),,Data exists,,Enrichment EnrollmentsEnd Date
+Enrichment Enrollments,enrichment_enrollments,Notes,notes,Stored (Text),,Data exists,,Enrichment EnrollmentsNotes
+Enrichment Enrollments,enrichment_enrollments,Status,status,Stored (Picklist),,Data exists,Enrolled; In Progress; Completed; Dropped,Enrichment EnrollmentsStatus
+Enrichment Enrollments,enrichment_enrollments,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Enrichment EnrollmentsCreated By
+Enrichment Enrollments,enrichment_enrollments,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Enrichment EnrollmentsModified By
+Course Progress,course_progress,Course Progress Record ID (Zoho ID),progress_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this record.,Course ProgressCourse Progress Record ID (Zoho ID)
+Course Progress,course_progress,Course Enrollment,course_enroll_id,Stored (Lookup to Course Enrollments),To Course Enrollments via course_enroll_id (Zoho ID),New addition,Mandatory. Displays key info from enrollment. Stores Zoho Record ID.,Course ProgressCourse Enrollment
+Course Progress,course_progress,Star Name,(N/A - Formula),Formula (from Course Enrollment -> Star),,Non-stored data,Display only: ${Course Enrollments.Star.Star Name}.,Course ProgressStar Name
+Course Progress,course_progress,NMS Star ID,(N/A - Formula),Formula (from Course Enrollment -> Star -> NMS Star ID),,Non-stored data,Display only: ${Course Enrollments.Star.NMS Star ID}.,Course ProgressNMS Star ID
+Course Progress,course_progress,Product Name (Course),(N/A - Formula),Formula (from Course Enrollment -> Products),,Non-stored data,Display only: ${Course Enrollments.Product.Product Name}.,Course ProgressProduct Name (Course)
+Course Progress,course_progress,Week,week,Stored (Number),,New addition,For weekly progress like AoPS.,Course ProgressWeek
+Course Progress,course_progress,Score,score,Stored (Number),,New addition,,Course ProgressScore
+Course Progress,course_progress,Progress Date,progress_date,Stored (Date),,New addition,When this progress item was recorded/occurred.,Course ProgressProgress Date
+Course Progress,course_progress,Item Description,item_description,Stored (Text),,New addition,"e.g., ""Chapter 5 Quiz,"" ""Project Submission.""",Course ProgressItem Description
+Course Progress,course_progress,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Course ProgressCreated By
+Course Progress,course_progress,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Course ProgressModified By
+Mentor Session Events,mentor_sessions,Mentor Session Event ID (Zoho ID),mentor_session_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this session event.,Mentor Session EventsMentor Session Event ID (Zoho ID)
+Mentor Session Events,mentor_sessions,Mentor,mentor_id,Stored (Lookup to Mentors),To Mentors via mentor_id (Zoho ID),Data exists,Mandatory. Displays Mentor Name. Stores Zoho Record ID.,Mentor Session EventsMentor
+Mentor Session Events,mentor_sessions,Status,status,Stored (Picklist),,Data exists,Scheduled; Completed; Canceled (Mentor); Canceled (Star),Mentor Session EventsStatus
+Mentor Session Events,mentor_sessions,Session Date & Time,session_event_datetime,Stored (DateTime),,Data exists,Mandatory. When the overall session event occurred.,Mentor Session EventsSession Date & Time
+Mentor Session Events,mentor_sessions,Session Duration (Minutes),session_event_duration_minutes,Stored (Number),,New addition,,Mentor Session EventsSession Duration (Minutes)
+Mentor Session Events,mentor_sessions,Overall Session Topic,overall_session_topic,Stored (Text),,Data exists,,Mentor Session EventsOverall Session Topic
+Mentor Session Events,mentor_sessions,Session Recording URL,session_recording_url,Stored (URL),,Data exists,,Mentor Session EventsSession Recording URL
+Mentor Session Events,mentor_sessions,General Session Notes,general_session_notes,Stored (Text Area),,New addition,Notes applicable to the entire session event.,Mentor Session EventsGeneral Session Notes
+Mentor Session Events,mentor_sessions,session_type,session_type,Stored (Picklist),,New addition,"Mentoring, Tutoring",Mentor Session Eventssession_type
+Mentor Session Events,mentor_sessions,Session Format,session_format,Stored (Picklist),,New addition,Online; In-Person,Mentor Session EventsSession Format
+Mentor Session Events,mentor_sessions,Star Participants & Notes,(N/A),Related List (Visual),Shows mentor_session_notes records linked,Non-stored data,Lists all Stars in this session event and their specific notes/attendance.,Mentor Session EventsStar Participants & Notes
+Mentor Session Events,mentor_sessions,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,Mentor Session EventsCreated By
+Mentor Session Events,mentor_sessions,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,Mentor Session EventsModified By
+Mentor Session Notes,mentor_session_notes,Mentor Session Note ID (Zoho ID),mentor_session_note_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this specific Star's note within a session.,Mentor Session NotesMentor Session Note ID (Zoho ID)
+Mentor Session Notes,mentor_session_notes,Mentor Session Event,mentor_session_id,Stored (Lookup to Mentor Session Events),To Mentor Session Events via mentor_session_id (Zoho ID),Data exists,Mandatory. Links to the overall session event. Displays key event info.,Mentor Session NotesMentor Session Event
+Mentor Session Notes,mentor_session_notes,Star,star_id,Stored (Lookup to Stars),To Stars via star_id (Zoho ID),Data exists,"Mandatory. Displays Star Name, searchable by Name and NMS Star ID. Stores Zoho Record ID.",Mentor Session NotesStar
+Mentor Session Notes,mentor_session_notes,Mentor Name,(N/A - Formula),Formula (from Mentor Session Event -> Mentor),,Non-stored data,Display only: ${Mentor Session Events.Mentor.Contact Name},Mentor Session NotesMentor Name
+Mentor Session Notes,mentor_session_notes,Session Date & Time,(N/A - Formula),Formula (from Mentor Session Event),,Non-stored data,Display only: ${Mentor Session Events.Session Date & Time},Mentor Session NotesSession Date & Time
+Mentor Session Notes,mentor_session_notes,Attendance Status,attendance_status,Stored (Picklist),,New addition,Attended; Missed,Mentor Session NotesAttendance Status
+Mentor Session Notes,mentor_session_notes,Star-Specific Session Notes,star_specific_session_notes,Stored (Text Area),,Data exists,Mentor's notes specific to this Star for this session event.,Mentor Session NotesStar-Specific Session Notes
+Mentor Session Notes,mentor_session_notes,Student Shared STEM Interest?,student_shared_stem,Stored (Boolean),,Data exists,"Checkbox, specific to this Star in this session.",Mentor Session NotesStudent Shared STEM Interest?
+Mentor Session Notes,mentor_session_notes,Shared Interest Details,shared_details,Stored (Text Area),,Data exists,Details of what this Star shared.,Mentor Session NotesShared Interest Details
+Mentor Session Notes,mentor_session_notes,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,Mentor Session NotesCreated By
+Mentor Session Notes,mentor_session_notes,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,Mentor Session NotesModified By
+Advisor Meetings,advisor_meetings,Advisor Meeting Record ID (Zoho ID),meeting_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this record.,Advisor MeetingsAdvisor Meeting Record ID (Zoho ID)
+Advisor Meetings,advisor_meetings,Household,household_id,Stored (Lookup to Households),To Households via household_id (Zoho ID),Data exists,"Primary association. Mandatory. Displays Star Name, searchable by Name and NMS Star ID. Stores Zoho Record ID.",Advisor MeetingsHousehold
+Advisor Meetings,advisor_meetings,Advisor,advisor_id,Stored (Lookup to Contacts),To Contacts via advisor_id (Zoho ID),Data exists,Mandatory. Filter to show active advisor for the Star. Displays Contact Name. Stores Zoho Record ID.,Advisor MeetingsAdvisor
+Advisor Meetings,advisor_meetings,Meeting Date & Time,meeting_datetime,Stored (DateTime),,New addition,Mandatory.,Advisor MeetingsMeeting Date & Time
+Advisor Meetings,advisor_meetings,Meeting Format,meeting_format,Stored (Picklist),,Data exists,Phone Call; Video Call; In-Person,Advisor MeetingsMeeting Format
+Advisor Meetings,advisor_meetings,Attendance Status,attendance_status,Stored (Picklist),,New addition,Attended; Canceled; Rescheduled; No-Show,Advisor MeetingsAttendance Status
+Advisor Meetings,advisor_meetings,Attendees,attendees,Stored (Multi-Select Lookup to Contacts),,Data exists,,Advisor MeetingsAttendees
+Advisor Meetings,advisor_meetings,Start Time,start_time,Stored (Datetime),,Data exists,,Advisor MeetingsStart Time
+Advisor Meetings,advisor_meetings,End Time,end_time,Stored (Datetime),,Data exists,,Advisor MeetingsEnd Time
+Advisor Meetings,advisor_meetings,Purpose,purpose,Stored (Text),,Data exists,,Advisor MeetingsPurpose
+Advisor Meetings,advisor_meetings,Agenda URL,agenda_url,Stored (URL),,Data exists,,Advisor MeetingsAgenda URL
+Advisor Meetings,advisor_meetings,Fireflies URL,fireflies_url,Stored (URL),,New addition,Link to Fireflies recording/transcript.,Advisor MeetingsFireflies URL
+Advisor Meetings,advisor_meetings,Notes,notes,Stored (Text Area),,New addition,,Advisor MeetingsNotes
+Advisor Meetings,advisor_meetings,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Advisor MeetingsCreated By
+Advisor Meetings,advisor_meetings,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Advisor MeetingsModified By
+IPPs (Individual Program Plans),ipps,IPP Record ID (Zoho ID),ipp_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this record.,IPPs (Individual Program Plans)IPP Record ID (Zoho ID)
+IPPs (Individual Program Plans),ipps,Star,star_id,Stored (Lookup to Stars),To Stars via star_id (Zoho ID),New addition,"Mandatory. Displays Star Name, searchable by Name and NMS Star ID. Stores Zoho Record ID of the Star.",IPPs (Individual Program Plans)Star
+IPPs (Individual Program Plans),ipps,Academic Year,academic_year,Stored (Picklist),,New addition,,IPPs (Individual Program Plans)Academic Year
+IPPs (Individual Program Plans),ipps,Total Budget,total_budget,Stored (Currency),,New addition,Typically $10k.,IPPs (Individual Program Plans)Total Budget
+IPPs (Individual Program Plans),ipps,Status,status,Stored (Picklist),,New addition,,IPPs (Individual Program Plans)Status
+IPPs (Individual Program Plans),ipps,Document URL,doc_url,Stored (URL),,New addition,"Link to the IPP document (e.g., Google Doc).",IPPs (Individual Program Plans)Document URL
+IPPs (Individual Program Plans),ipps,Budget Disbursements,(N/A),Related List (Visual),Shows budget_disbursements records linked,Non-stored data,All spending items against this IPP.,IPPs (Individual Program Plans)Budget Disbursements
+IPPs (Individual Program Plans),ipps,Spent Amount,(N/A - Roll-up),Roll-up Summary (from Budget Disbursements),,Non-stored data,Sum of amount from related budget_disbursement records.,IPPs (Individual Program Plans)Spent Amount
+IPPs (Individual Program Plans),ipps,Remaining Budget,(N/A - Formula),Formula (Total Budget - Spent Amount),,Non-stored data,For display and reporting.,IPPs (Individual Program Plans)Remaining Budget
+IPPs (Individual Program Plans),ipps,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,IPPs (Individual Program Plans)Created By
+IPPs (Individual Program Plans),ipps,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,IPPs (Individual Program Plans)Modified By
+Budget Disbursements,budget_disbursements,Disbursement Record ID (Zoho ID),disb_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this record.,Budget DisbursementsDisbursement Record ID (Zoho ID)
+Budget Disbursements,budget_disbursements,IPP,ipp_id,Stored (Lookup to IPPs),To IPPs via ipp_id (Zoho ID),New addition,Mandatory. Links to the specific IPP. Displays key IPP info. Stores Zoho Record ID.,Budget DisbursementsIPP
+Budget Disbursements,budget_disbursements,Star Name,(N/A - Formula),Formula (from IPP -> Star),,Non-stored data,Display only: ${IPPs.Star.Star Name}.,Budget DisbursementsStar Name
+Budget Disbursements,budget_disbursements,NMS Star ID,(N/A - Formula),Formula (from IPP -> Star -> NMS Star ID),,Non-stored data,Display only: ${IPPs.Star.NMS Star ID}.,Budget DisbursementsNMS Star ID
+Budget Disbursements,budget_disbursements,Product (if applicable),product_id,Stored (Lookup to Products),To Products via product_id (Zoho ID),New addition,Optional. Displays Product Name. Stores Zoho Record ID.,Budget DisbursementsProduct (if applicable)
+Budget Disbursements,budget_disbursements,Disbursement Date,disb_date,Stored (Date),,New addition,Mandatory.,Budget DisbursementsDisbursement Date
+Budget Disbursements,budget_disbursements,Receipt Image,receipt_image,Stored (File URL/Upload),,New addition,,Budget DisbursementsReceipt Image
+Budget Disbursements,budget_disbursements,Amount,amount,Stored (Currency),,New addition,Mandatory.,Budget DisbursementsAmount
+Budget Disbursements,budget_disbursements,Financial Aid Amount,financial_aid_amount,Stored (Currency),,New addition,,Budget DisbursementsFinancial Aid Amount
+Budget Disbursements,budget_disbursements,Financial Aid Provider,financial_aid_provider,Stored (Picklist),,New addition,,Budget DisbursementsFinancial Aid Provider
+Budget Disbursements,budget_disbursements,Category,category,Stored (Picklist),,New addition,,Budget DisbursementsCategory
+Budget Disbursements,budget_disbursements,Description,description,Stored (Text Area),,New addition,Details of the disbursement.,Budget DisbursementsDescription
+Budget Disbursements,budget_disbursements,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Budget DisbursementsCreated By
+Budget Disbursements,budget_disbursements,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Budget DisbursementsModified By
+Outcomes,outcomes,Outcome Record ID (Zoho ID),outcome_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this record.,OutcomesOutcome Record ID (Zoho ID)
+Outcomes,outcomes,Outcome Name,outcome_name,Stored (Text),,Data exists,,OutcomesOutcome Name
+Outcomes,outcomes,Star,star_id,Stored (Lookup to Stars),To Stars via star_id (Zoho ID),Data exists,"Mandatory. Displays Star Name, searchable by Name and NMS Star ID. Stores Zoho Record ID of the Star.",OutcomesStar
+Outcomes,outcomes,Outcome Type,outcome_type,Stored (Picklist),,Data exists,Award; Scholarship; Competition,OutcomesOutcome Type
+Outcomes,outcomes,Extroardinary,extroardinary,Stored (Boolean),,Data exists,,OutcomesExtroardinary
+Outcomes,outcomes,Partner (if applicable),partner_id,Stored (Lookup to Partners),To Partners via partner_id (Zoho ID),Data exists,Optional. Displays Partner Name. Stores Zoho Record ID.,OutcomesPartner (if applicable)
+Outcomes,outcomes,Achieved Date,achieved_date,Stored (Date),,Data exists,Mandatory.,OutcomesAchieved Date
+Outcomes,outcomes,Description,description,Stored (Text Area),,Data exists,,OutcomesDescription
+Outcomes,outcomes,Evidence URL,evidence_url,Stored (URL),,New addition,,OutcomesEvidence URL
+Outcomes,outcomes,Associated Media,(N/A),Related List (Visual),Shows media records linked via media.outcome_id (Zoho ID),Non-stored data,,OutcomesAssociated Media
+Outcomes,outcomes,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,OutcomesCreated By
+Outcomes,outcomes,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,OutcomesModified By
+Media,media,Media Record ID (Zoho ID),media_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this record.,MediaMedia Record ID (Zoho ID)
+Media,media,Description,description,Stored (Text),,Data exists,,MediaDescription
+Media,media,Outcome (if applicable),outcome_id,Stored (Lookup to Outcomes),To Outcomes via outcome_id (Zoho ID),Data exists,Optional. Link if media is for an Outcome. Displays key Outcome info. Stores Zoho Record ID.,MediaOutcome (if applicable)
+Media,media,Enrichment (if applicable),enrich_enroll_id,Stored (Lookup to Enrichment Enrollment),To Enrichment Enrollments via enrich_enroll_id (Zoho ID),Data exists,,MediaEnrichment (if applicable)
+Media,media,Star (if not via Outcome),star_id,Stored (Lookup to Stars),To Stars via star_id (Zoho ID),Data exists,"Optional. Displays Star Name, searchable by Name and NMS Star ID. Stores Zoho Record ID.",MediaStar (if not via Outcome)
+Media,media,Associated Star Name,(N/A - Formula),Formula (Conditional),,Non-stored data,"Formula: IF(ISBLANK(${Media.outcome_id}), ${Media.star_id.Star Name}, ${Media.outcome_id.Star.Star Name})",MediaAssociated Star Name
+Media,media,Associated NMS Star ID,(N/A - Formula),Formula (Conditional),,Non-stored data,"Formula: IF(ISBLANK(${Media.outcome_id}), ${Media.star_id.NMS Star ID}, ${Media.outcome_id.Star.NMS Star ID})",MediaAssociated NMS Star ID
+Media,media,Media Date,media_date,Stored (Date),,Data exists,,MediaMedia Date
+Media,media,Media Type,media_type,Stored (Picklist),,New addition,Image; Video; Document; Audio Recording,MediaMedia Type
+Media,media,File URL / Attachment,file_url,Stored (File URL/Upload),,Data exists,,MediaFile URL / Attachment
+Media,media,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,MediaCreated By
+Media,media,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,MediaModified By
+Partners,partners,Partner Record ID (Zoho ID),partner_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this record.,PartnersPartner Record ID (Zoho ID)
+Partners,partners,Partner Name,partner_name,Stored (Text),,Data exists,Mandatory.,PartnersPartner Name
+Partners,partners,Partner Type,partner_type,Stored (Picklist),,Data exists,Course Provider; Enrichment Provider; University; Corporate Sponsor; Foundation,PartnersPartner Type
+Partners,partners,Email,email,Stored (Email),,Data exists,,PartnersEmail
+Partners,partners,Opt-out Email,opt_out_email,Stored (Boolean),,Data exists,,PartnersOpt-out Email
+Partners,partners,Phone,phone,Stored (Phone),,Data exists,,PartnersPhone
+Partners,partners,City,city,Stored (Text),,Data exists,,PartnersCity
+Partners,partners,State,state,Stored (Picklist),,Data exists,Standard US States and Territories list.,PartnersState
+Partners,partners,Country,country,Stored (Picklist),,Data exists,Standard countries list.,PartnersCountry
+Partners,partners,Street,street,Stored (Text),,Data exists,,PartnersStreet
+Partners,partners,Zip Code,zip_code,Stored (Text),,Data exists,,PartnersZip Code
+Partners,partners,Website,website,Stored (URL),,Data exists,,PartnersWebsite
+Partners,partners,Description,description,Stored (Text Area),,Data exists,,PartnersDescription
+Partners,partners,Associated Outcomes,(N/A),Related List (Visual),Shows outcomes records linked via outcomes.partner_id (Zoho ID),Non-stored data,,PartnersAssociated Outcomes
+Partners,partners,Associated Contacts,(N/A),Related List (Visual),Shows contact records linked via contacts.partner_id (Zoho ID),Non-stored data,,PartnersAssociated Contacts
+Partners,partners,Owner,owner,System (Zoho User Lookup),Links to Zoho User,Non-stored data,,PartnersOwner
+Partners,partners,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,PartnersCreated By
+Partners,partners,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,PartnersModified By
+Test Scores,test_scores,Test Score ID,test_score_id,System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this Test Score record.,Test ScoresTest Score ID
+Test Scores,test_scores,Star,star_id,Stored (Lookup to Stars),To Stars via star_id,New addition,"Mandatory. Links to the Star who took the test. Displays Star Name, searchable by Name and NMS Star ID.",Test ScoresStar
+Test Scores,test_scores,Test Name,test_name,Stored (Picklist),,New addition,CogAT; ACT; Fluid Reasoining; Full Scale IQ; Math Achievement; Math Growth; Math RIT; Processing Speed; PSAT,Test ScoresTest Name
+Test Scores,test_scores,Sub-Test Name,sub_test_name,Stored (Picklist),,New addition,Depending on test,Test ScoresSub-Test Name
+Test Scores,test_scores,Score Value,score_value,Stored (Text/Number),,Data exists,"Mandatory. The actual score achieved. Use Text type if scores can include non-numeric characters (e.g., ""A+"", ""Pass""), otherwise Number/Decimal.",Test ScoresScore Value
+Test Scores,test_scores,Score Unit/Type,score_unit_type,Stored (Picklist),,New addition,Percentile; Scaled Score,Test ScoresScore Unit/Type
+Test Scored,test_scores,Score Out Of,(N/A - Formula),Formula (Based on selection of test and score type),,Non-stored data,,Test ScoredScore Out Of
+Test Scores,test_scores,Date Taken,date_taken,Stored (Date),,New addition,Mandatory. The date the test was administered/taken.,Test ScoresDate Taken
+Test Scores,test_scores,Grade Level at Test,(N/A - Formula),Formula (Based on date),From Stars,Non-stored data,,Test ScoresGrade Level at Test
+Test Scores,test_scores,Notes/Context,notes_context,Stored (Text Area),,New addition,"Optional. Any additional notes or context about this specific test score (e.g., test conditions, specific form used if not part of Test Name).",Test ScoresNotes/Context
+Test Scores,test_scores,Created By,Created_By,System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,Test ScoresCreated By
+Test Scores,test_scores,Created Time,Created_Time,System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,Test ScoresCreated Time
+Test Scores,test_scores,Modified By,Modified_By,System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,Test ScoresModified By
+Test Scores,test_scores,Modified Time,Modified_Time,System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,Test ScoresModified Time
+Test Scores,test_scores,Owner,Owner,System (Zoho User Lookup),Links to Zoho User,Non-stored data,Record owner.,Test ScoresOwner
+Mentors,mentors,Mentor Record ID,mentor_id,System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID.,MentorsMentor Record ID
+Mentors,mentors,Contact Information,contact_id,Stored (Lookup to Contacts),To Contacts via contact_id,New addition,"Mandatory. Links to the central Contact record for this individual (name, email, phone).",MentorsContact Information
+Mentors,mentors,Mentor Status,mentor_status,Stored (Picklist),,New addition,Active; Inactive,MentorsMentor Status
+Mentors,mentors,Date Joined NMS,date_joined_nms,Stored (Date),,New addition,Date they officially started as a mentor.,MentorsDate Joined NMS
+Mentors,mentors,Skills/Expertise,skills_expertise,Stored (Multi-Select Picklist),,New addition,Align on list with Programs Team.,MentorsSkills/Expertise
+Mentors,mentors,Grade Levels Comfortable Mentoring,comfortable_grade_levels,Stored (Multi-Select Picklist),,New addition,Align on list with Programs Team.,MentorsGrade Levels Comfortable Mentoring
+Mentors,mentors,Time Zone for Availability,avail_timezone,Stored (Picklist),,New addition,Pacific Time (PT); Mountain Time (MT); Central Time (CT); Eastern Time (ET),MentorsTime Zone for Availability
+Mentors,mentors,Availability,availability,Stored (Text),,New addition,,MentorsAvailability
+Mentors,mentors,Availability Notes,avail_notes,Stored (Text),,New addition,"Additional details regarding preferences, blackout dates, and other requests",MentorsAvailability Notes
+Mentors,mentors,Availability Last Updated,avail_last_updated,Stored (Date),,New addition,Date when their availability was last confirmed/updated.,MentorsAvailability Last Updated
+Mentors,mentors,Max Weekly Sessions,max_weekly_sessions,Stored (Number),,New addition,Maximum number of sessions mentor is willing/able to take per week.,MentorsMax Weekly Sessions
+Mentors,mentors,Internal Pairing Notes,internal_pairing_notes,Stored (Text Area),,New addition,"For Math Mentor Coach to note specific strengths, personality traits relevant for pairing with Stars.",MentorsInternal Pairing Notes
+Mentors,mentors,Total Sessions Mentored,total_sessions_mentored,Roll-up Summary,From Mentor Session Events,Non-stored data,Count of all linked Mentor Session Event records.,MentorsTotal Sessions Mentored
+Mentors,mentors,Notes Submission Rate (%),(N/A - Formula),Formula (Calculation),From Mentor Session Events,Non-stored data,"(Count of sessions with notes / Count of total sessions expected) * 100. Requires logic to determine ""expected"" sessions. This supports flagging missed notes.",MentorsNotes Submission Rate (%)
+Mentors,mentors,Average Star Attendance in Sessions (%),(N/A - Formula),Roll-up Summary / Formula,From Mentor Session Notes,Non-stored data,"Average of ""Attended"" status from linked Mentor Session Notes.",MentorsAverage Star Attendance in Sessions (%)
+Mentors,mentors,Last Video Review Date,last_video_review_date,Stored (Date),,New addition,Manually updated by Math Mentor Coach after reviewing a full session video.,MentorsLast Video Review Date
+Mentors,mentors,Last Formal Check-in Date,last_formal_check_in_date,Stored (Date),,New addition,Manually updated by Math Mentor Coach after a 1:1 meeting with the mentor.,MentorsLast Formal Check-in Date
+Mentors,mentors,Flag for Review,flag_for_review,Stored (Checkbox),,New addition,If Math Mentor Coach has ongoing concerns or mentor needs closer monitoring.,MentorsFlag for Review
+Mentors,mentors,Created By,Created_By,System (Zoho Managed),,Non-stored data,,MentorsCreated By
+Mentors,mentors,Created Time,Created_Time,System (Zoho Managed),,Non-stored data,,MentorsCreated Time
+Mentors,mentors,Modified By,Modified_By,System (Zoho Managed),,Non-stored data,,MentorsModified By
+Mentors,mentors,Modified Time,Modified_Time,System (Zoho Managed),,Non-stored data,,MentorsModified Time
+Mentors,mentors,Owner,Owner,System (Zoho User Lookup),Links to Zoho User,Non-stored data,,MentorsOwner
+Event Attendance,event_attendance,Event Attendance Record ID (Zoho ID),event_attendance_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this Event Attendance record.,Event AttendanceEvent Attendance Record ID (Zoho ID)
+Event Attendance,event_attendance,Star,star_id,Stored (Lookup to Stars),To Stars via star_id (Zoho ID),New addition,"Mandatory. Displays Star Name, searchable by Name and NMS Star ID. Stores Zoho Record ID of the Star.",Event AttendanceStar
+Event Attendance,event_attendance,Event Name,event_name,Stored (Text),,New addition,Mandatory. Links to the specific Program Event. Displays Event Name. Stores Zoho Record ID.,Event AttendanceEvent Name
+Event Attendance,event_attendance,Event Type,event_type,Stored (Picklist),,New addition,Webinar; Workshop; Conference; Social Gathering,Event AttendanceEvent Type
+Event Attendance,event_attendance,Event Time,event_time,Stored (DateTime),,New addition,"Optional. Actual check-in time, useful if integrating with an attendance tool.",Event AttendanceEvent Time
+Event Attendance,event_attendance,Notes,notes,Stored (Text Area),,New addition,Optional. Any notes specific to this Star's attendance for this event.,Event AttendanceNotes
+Event Attendance,event_attendance,Created By,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,Event AttendanceCreated By
+Event Attendance,event_attendance,Created Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,Event AttendanceCreated Time
+Event Attendance,event_attendance,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,Event AttendanceModified By
+Event Attendance,event_attendance,Modified Time,(Zoho System Field),System (Zoho Managed),,Non-stored data,Auto-populated by Zoho.,Event AttendanceModified Time
+Event Attendance,event_attendance,Owner,(Zoho System Field),System (Zoho User Lookup),Links to Zoho User,Non-stored data,Record owner.,Event AttendanceOwner

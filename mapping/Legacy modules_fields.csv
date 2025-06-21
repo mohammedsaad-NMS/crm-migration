@@ -1,0 +1,581 @@
+Legacy Module,Legacy Field
+Accounts,Account Image
+Accounts,Account Name
+Accounts,Account Owner
+Accounts,Account Type
+Accounts,Add Third Guardian
+Accounts,AoPS Username
+Accounts,Applicant Status
+Accounts,Applicant_Id
+Accounts,Billing City
+Accounts,Billing Code
+Accounts,Billing State
+Accounts,Billing Street
+Accounts,Child In Programs
+Accounts,CogAT Standard Nonverbal
+Accounts,CoGAT Standard Quant
+Accounts,Cohort Entry Year
+Accounts,Cohort Region
+Accounts,Cohort Status
+Accounts,Created By
+Accounts,Created From Form
+Accounts,Current Child Grade
+Accounts,Date of Withdrawal
+Accounts,Description
+Accounts,Designated Metro Area
+Accounts,Emergency Email
+Accounts,Emergency First Name
+Accounts,Emergency Last Name
+Accounts,Emergency Phone
+Accounts,Emergency Relationship to Star
+Accounts,Family Benefits
+Accounts,Family Income
+Accounts,Guardians
+Accounts,Highest Level of Education
+Accounts,Media Release
+Accounts,Mentor Name
+Accounts,Modified By
+Accounts,Most Recent Advisor Meeting
+Accounts,Name of Current School
+Accounts,Number of People in Household
+Accounts,Occupations
+Accounts,Other  Family Information
+Accounts,Ownership
+Accounts,Parent Account
+Accounts,Primary Guardian City
+Accounts,Primary Guardian Country
+Accounts,Primary Guardian Email
+Accounts,Primary Guardian First Name
+Accounts,Primary Guardian is Only Legal Guardian
+Accounts,Primary Guardian Last Name
+Accounts,Primary Guardian Listed in Directory
+Accounts,Primary Guardian Other Language
+Accounts,Primary Guardian Phone
+Accounts,Primary Guardian Preferred Language
+Accounts,Primary Guardian Relationship to Star
+Accounts,Primary Guardian Send Emails
+Accounts,Primary Guardian Send Texts
+Accounts,Primary Guardian State
+Accounts,Primary Guardian Street
+Accounts,Primary Guardian Zip
+Accounts,School NCES ID
+Accounts,Schools
+Accounts,Second Guardian Other Language
+Accounts,Secondary Guardian City
+Accounts,Secondary Guardian Country
+Accounts,Secondary Guardian First Name
+Accounts,Secondary Guardian Last Name
+Accounts,Secondary Guardian Listed in Directory
+Accounts,Secondary Guardian Phone
+Accounts,Secondary Guardian Preferred Language
+Accounts,Secondary Guardian Relationship to Star
+Accounts,Secondary Guardian Send Emails
+Accounts,Secondary Guardian Send Texts
+Accounts,Secondary Guardian State
+Accounts,Secondary Guardian Street
+Accounts,Secondary Guardian Zip
+Accounts,Show Admin
+Accounts,Star Date of Birth
+Accounts,Star Dietary Restrictions
+Accounts,Star Email
+Accounts,Star First Name
+Accounts,Star Identity
+Accounts,Star Last Name
+Accounts,Star Middle Name
+Accounts,Star Phone
+Accounts,Star Race or Ethnicity
+Accounts,Star T-Shirt Size
+Accounts,Student ID
+Accounts,Third Guardian City
+Accounts,Third Guardian Country
+Accounts,Third Guardian Email
+Accounts,Third Guardian First Name
+Accounts,Third Guardian Last Name
+Accounts,Third Guardian Listed in Directory
+Accounts,Third Guardian Other Language
+Accounts,Third Guardian Phone
+Accounts,Third Guardian Preferred Language
+Accounts,Third Guardian Relationship to Star
+Accounts,Third Guardian Send Emails
+Accounts,Third Guardian Send Texts
+Accounts,Third Guardian State
+Accounts,Third Guardian Street
+Accounts,Third Guardian Zip
+Accounts,Website
+Contacts,Account Name
+Contacts,Advisor Meetings
+Contacts,Applicant Source
+Contacts,Applicant_Id
+Contacts,Assigned Profile
+Contacts,Assistant
+Contacts,Asst Phone
+Contacts,Auto Approve
+Contacts,Average Time Spent (Minutes)
+Contacts,Child(ren) / Stars
+Contacts,Cohort Region
+Contacts,Cohort Status
+Contacts,Cohort Year
+Contacts,Contact Image
+Contacts,Contact Owner
+Contacts,Contact Type
+Contacts,Created By
+Contacts,Days Visited
+Contacts,Deactivate User
+Contacts,Description
+Contacts,District
+Contacts,Email
+Contacts,Email Opt Out
+Contacts,First Name
+Contacts,First Page Visited
+Contacts,First Visit
+Contacts,Foundation Name
+Contacts,Guardian Date of Birth
+Contacts,Guardian is Only Legal Guardian
+Contacts,Guardian Listed in Directory
+Contacts,Guardian Other Language
+Contacts,Guardian Preferred Language
+Contacts,Guardian Relationship to Star
+Contacts,Guardian Send Emails
+Contacts,Guardian Send Texts
+Contacts,Last Login Date
+Contacts,Last Name
+Contacts,Mailing City
+Contacts,Mailing Country
+Contacts,Mailing State
+Contacts,Mailing Street
+Contacts,Mailing Zip
+Contacts,Middle Name
+Contacts,Modified By
+Contacts,Most Recent Visit
+Contacts,NMS Point of Contact
+Contacts,NMS Points of Contact
+Contacts,Number Of Chats
+Contacts,Other City
+Contacts,Other Country
+Contacts,Other State
+Contacts,Other Street
+Contacts,Other Zip
+Contacts,Partner Name
+Contacts,Phone
+Contacts,Portal Assigned Profile
+Contacts,Portal Invitation Sent
+Contacts,Primary Guardian is Only Legal Guardian
+Contacts,Referrer
+Contacts,Reporting To
+Contacts,Role and/or Title
+Contacts,Role or Title
+Contacts,Role/Title
+Contacts,School
+Contacts,Secondary Email
+Contacts,Show Admin
+Contacts,Skype ID
+Contacts,Star Date of Birth
+Contacts,Star Dietary Restrictions
+Contacts,Star Identity
+Contacts,Star Interests
+Contacts,Star Race or Ethnicity
+Contacts,Star T-Shirt Size
+Contacts,Student ID
+Contacts,Time Zone
+Contacts,Title
+Contacts,Twitter
+Contacts,User Permissions
+Contacts,Username
+Contacts,Visitor Score
+Contacts,Weekday Availability
+Contacts,Weekday Availability Times
+Contacts,Weekend Availability
+Contacts,Weekend Availability Time
+Stem Course Progress,Accounts
+Stem Course Progress,Course Cost
+Stem Course Progress,Course End Date
+Stem Course Progress,Course Format
+Stem Course Progress,Course Grade 0-100
+Stem Course Progress,Course Grade A-F
+Stem Course Progress,Course Grade Format
+Stem Course Progress,Course Grade Other
+Stem Course Progress,Course Outcome
+Stem Course Progress,Course Start Date
+Stem Course Progress,Course Topic(s)
+Stem Course Progress,Course Vendor
+Stem Course Progress,Created By
+Stem Course Progress,Email
+Stem Course Progress,Email Opt Out
+Stem Course Progress,Instructional Hours Per Week
+Stem Course Progress,Math Course Level
+Stem Course Progress,Modified By
+Stem Course Progress,Other Course Notes
+Stem Course Progress,Provided By
+Stem Course Progress,Secondary Email
+Stem Course Progress,Show Admin Section
+Stem Course Progress,STEM Course
+Stem Course Progress,STEM Course Progress Image
+Stem Course Progress,STEM Course Progress Name
+Stem Course Progress,STEM Course Progress Owner
+Stem Enrichments Progress,Account
+Stem Enrichments Progress,Amount of Financial Aid Provided
+Stem Enrichments Progress,Budget Used
+Stem Enrichments Progress,Cost
+Stem Enrichments Progress,Created By
+Stem Enrichments Progress,Email
+Stem Enrichments Progress,Email Opt Out
+Stem Enrichments Progress,End Date
+Stem Enrichments Progress,Enrichment
+Stem Enrichments Progress,Financial Aid Provided
+Stem Enrichments Progress,Format
+Stem Enrichments Progress,Instructional Hours Per Week
+Stem Enrichments Progress,Modified By
+Stem Enrichments Progress,Other Notes
+Stem Enrichments Progress,Outcome
+Stem Enrichments Progress,Secondary Email
+Stem Enrichments Progress,Selectiveness
+Stem Enrichments Progress,Show Admin Section
+Stem Enrichments Progress,Start Date
+Stem Enrichments Progress,STEM Enrichments Progress Image
+Stem Enrichments Progress,STEM Enrichments Progress Name
+Stem Enrichments Progress,STEM Enrichments Progress Owner
+Stem Enrichments Progress,Topics
+Stem Enrichments Progress,Vendor
+Outcomes,ACT Math Score
+Outcomes,ACT Overall Score
+Outcomes,ACT Percentile
+Outcomes,ACT Science Score
+Outcomes,AMC10 Percentile
+Outcomes,AMC10 Score
+Outcomes,AMC12 Percentile
+Outcomes,AMC12 Score
+Outcomes,AMC8 Percentile
+Outcomes,AMC8 Score
+Outcomes,Created By
+Outcomes,Date Achieved
+Outcomes,Email
+Outcomes,Email Opt Out
+Outcomes,Extraordinary Outcome
+Outcomes,Fluid Reasoning Percentile
+Outcomes,Fluid Reasoning Scaled Score
+Outcomes,Full Scale IQ Percentile
+Outcomes,Full Scale IQ Scaled Score
+Outcomes,Math Achievement Percentile
+Outcomes,Math Growth Percentile
+Outcomes,Math RIT Score
+Outcomes,Modified By
+Outcomes,Outcome Description
+Outcomes,Outcome Image
+Outcomes,Outcome Name
+Outcomes,Outcome Owner
+Outcomes,Outcome Type
+Outcomes,Partner
+Outcomes,Processing Speed Percentile
+Outcomes,Processing Speed Scaled Score
+Outcomes,PSAT Math Score
+Outcomes,PSAT Overall Score
+Outcomes,PSAT Percentile
+Outcomes,Reading Achievement Percentile
+Outcomes,Reading Growth Percentile
+Outcomes,Reading RIT Score
+Outcomes,SAT Math Score
+Outcomes,SAT Overall Score
+Outcomes,SAT Percentile
+Outcomes,Secondary Email
+Outcomes,Show Admin Section
+Outcomes,Star
+Outcomes,Verbal Comprehension Percentile
+Outcomes,Verbal Comprehension Scaled Score
+Outcomes,Visual Spatial Percentile
+Outcomes,Visual Spatial Scaled Score
+Outcomes,Working Memory Percentile
+Outcomes,Working Memory Scaled Score
+Products,Commission Rate
+Products,Created By
+Products,Description
+Products,Handler
+Products,Link
+Products,Manufacturer
+Products,Modified By
+Products,Product Active
+Products,Product Category
+Products,Product Code
+Products,Product Image
+Products,Product Name
+Products,Product Owner
+Products,Product Vendor
+Products,Qty Ordered
+Products,Quantity in Demand
+Products,Quantity in Stock
+Products,Reorder Level
+Products,Sales End Date
+Products,Sales Start Date
+Products,Show Admin
+Products,Support End Date
+Products,Support Start Date
+Products,Tax
+Products,Taxable
+Products,Topic
+Products,Unit Price
+Products,Usage Unit
+Partners,City
+Partners,Country
+Partners,Created By
+Partners,Description
+Partners,Email
+Partners,Email Opt Out
+Partners,GL Account
+Partners,Modified By
+Partners,NMS Points of Contact
+Partners,Partner Image
+Partners,Partner Name
+Partners,Partner Owner
+Partners,Partner Type
+Partners,Phone
+Partners,Show Admin
+Partners,State_
+Partners,Street
+Partners,Website
+Partners,Zip Code
+Calls,Call Agenda
+Calls,Call Duration
+Calls,Call Owner
+Calls,Call Purpose
+Calls,Call Result
+Calls,Call Start Time
+Calls,Call Type
+Calls,Caller ID
+Calls,Contact Name
+Calls,Created By
+Calls,Description
+Calls,Dialled Number
+Calls,From Number
+Calls,Modified By
+Calls,Outgoing Call Status
+Calls,Related To
+Calls,Scheduled in CRM
+Calls,Telephony External ID
+Calls,To Number
+Calls,Voice Recording
+Tasks,Closed Time
+Tasks,Contact Name
+Tasks,Created By
+Tasks,Description
+Tasks,Due Date
+Tasks,Modified By
+Tasks,Priority
+Tasks,Related To
+Tasks,Repeat
+Tasks,Status
+Tasks,Subject
+Tasks,Task Owner
+Campaigns,Actual Cost
+Campaigns,Backstage Portal
+Campaigns,Brand
+Campaigns,Budgeted Cost
+Campaigns,Campaign Name
+Campaigns,Campaign Owner
+Campaigns,Campaign Subject
+Campaigns,Created By
+Campaigns,Department ID
+Campaigns,Description
+Campaigns,End Date
+Campaigns,Event Category
+Campaigns,Event End Date
+Campaigns,Event Language
+Campaigns,Event Location
+Campaigns,Event Name
+Campaigns,Event Start Date
+Campaigns,Event Type
+Campaigns,Expected Response
+Campaigns,Expected Revenue
+Campaigns,Layout
+Campaigns,Modified By
+Campaigns,Numbers sent
+Campaigns,Parent Campaign
+Campaigns,Reply-to Address
+Campaigns,Sender Address
+Campaigns,Sender Name
+Campaigns,Start Date
+Campaigns,Status
+Campaigns,Survey
+Campaigns,Survey Department
+Campaigns,Survey Type
+Campaigns,Survey URL
+Campaigns,Type
+Districts / Schools,City
+Districts / Schools,Created By
+Districts / Schools,District
+Districts / Schools,District / School Image
+Districts / Schools,District / School Name
+Districts / Schools,District / School Owner
+Districts / Schools,District Size
+Districts / Schools,District Type
+Districts / Schools,District Website
+Districts / Schools,Email
+Districts / Schools,Email Opt Out
+Districts / Schools,Modified By
+Districts / Schools,NCES District ID
+Districts / Schools,NCES District Link
+Districts / Schools,NCES School ID
+Districts / Schools,NCES School Link
+Districts / Schools,Regional Service Center
+Districts / Schools,School Grades
+Districts / Schools,School Size
+Districts / Schools,School Type
+Districts / Schools,School Website
+Districts / Schools,Secondary Email
+Districts / Schools,Setting
+Districts / Schools,Show Admin Section
+Districts / Schools,State
+Districts / Schools,Street
+Districts / Schools,Students
+Districts / Schools,Type
+Districts / Schools,Zip Code
+Mentor Session Notes,Accounts
+Mentor Session Notes,Attended Session
+Mentor Session Notes,Created By
+Mentor Session Notes,Email
+Mentor Session Notes,Email Opt Out
+Mentor Session Notes,"""If Yes, Student Shared Details"""
+Mentor Session Notes,Mentor Session Note Image
+Mentor Session Notes,Mentor Session Note Name
+Mentor Session Notes,Mentor Session Note Owner
+Mentor Session Notes,Modified By
+Mentor Session Notes,Recording
+Mentor Session Notes,Secondary Email
+Mentor Session Notes,Session
+Mentor Session Notes,Session Feedback
+Mentor Session Notes,Show Admin Section
+Mentor Session Notes,Start Date
+Mentor Session Notes,Student Shared Anything STEM Related?
+Mentor Sessions,Created By
+Mentor Sessions,Email
+Mentor Sessions,Email Opt Out
+Mentor Sessions,Mentor Account
+Mentor Sessions,Mentor Session Image
+Mentor Sessions,Mentor Session Name
+Mentor Sessions,Mentor Session Owner
+Mentor Sessions,Modified By
+Mentor Sessions,Note Sync Flag
+Mentor Sessions,Recording
+Mentor Sessions,Secondary Email
+Mentor Sessions,Session Notes Subform Attempt
+Mentor Sessions,Session Notes Subform Status
+Mentor Sessions,Show Admin Section
+Mentor Sessions,Start Date
+Mentor Sessions,Status
+Mentor Sessions,Topic
+Budget Disbursements,Accounts
+Budget Disbursements,Amount of Financial Aid Provided
+Budget Disbursements,Budget Category
+Budget Disbursements,Budget Disbursement Image
+Budget Disbursements,Budget Disbursement Name
+Budget Disbursements,Budget Disbursement Owner
+Budget Disbursements,Created By
+Budget Disbursements,Date of Disbursement
+Budget Disbursements,Disbursement Amount
+Budget Disbursements,Email
+Budget Disbursements,Email Opt Out
+Budget Disbursements,Modified By
+Budget Disbursements,Other Notes
+Budget Disbursements,Provider Financial Aid Provided
+Budget Disbursements,Request Vendor
+Budget Disbursements,Secondary Email
+Budget Disbursements,Show Admin Section
+Budget Disbursements,STEM Enrichments and Camps
+Advisor Meetings,Account
+Advisor Meetings,Advisor Meeting Image
+Advisor Meetings,Advisor Meeting Name
+Advisor Meetings,Advisor Meeting Owner
+Advisor Meetings,Created By
+Advisor Meetings,Email
+Advisor Meetings,Email Opt Out
+Advisor Meetings,End Time
+Advisor Meetings,Meeting Agenda
+Advisor Meetings,Meeting Attendees
+Advisor Meetings,Meeting Format
+Advisor Meetings,Meeting Purpose
+Advisor Meetings,Modified By
+Advisor Meetings,Secondary Email
+Advisor Meetings,Show Admin Section
+Advisor Meetings,Start Time
+Guardian / Stars,Cohort Entry Year
+Guardian / Stars,Created By
+Guardian / Stars,Created Time
+Guardian / Stars,Email Opt Out
+Guardian / Stars,G/Star Linking ID
+Guardian / Stars,Guardian / Stars Owner
+Guardian / Stars,Guardian Email
+Guardian / Stars,Guardians
+Guardian / Stars,Last Activity Time
+Guardian / Stars,Modified By
+Guardian / Stars,Modified Time
+Guardian / Stars,Relationship
+Guardian / Stars,Show Admin Section
+Guardian / Stars,Star
+Guardian / Stars,Star ID
+Guardian / Stars,Star's Cohort Region
+Educator Star Association,Created By
+Educator Star Association,Educator
+Educator Star Association,Educator Star Association Image
+Educator Star Association,Educator Star Association Owner
+Educator Star Association,Email
+Educator Star Association,Email Opt Out
+Educator Star Association,Modified By
+Educator Star Association,National Math Star
+Educator Star Association,School Year
+Educator Star Association,Secondary Email
+Educator Star Association,Show Admin Section
+Educator Star Association,Status
+Educator Star Association,T/Star Linking ID
+Educator Star Association,Type
+School Star Associations,Created By
+School Star Associations,Created Time
+School Star Associations,Email
+School Star Associations,Email Opt Out
+School Star Associations,End
+School Star Associations,Last Activity Time
+School Star Associations,Modified By
+School Star Associations,Modified Time
+School Star Associations,S/Star Linking ID
+School Star Associations,School Star Associations Owner
+School Star Associations,Schools
+School Star Associations,Secondary Email
+School Star Associations,Show Admin Section
+School Star Associations,Star
+School Star Associations,Start
+School Star Associations,Status
+Mentor Star Associations,Created By
+Mentor Star Associations,Email
+Mentor Star Associations,Email Opt Out
+Mentor Star Associations,Math Mentor
+Mentor Star Associations,Mentor Star Association Image
+Mentor Star Associations,Mentor Star Association Owner
+Mentor Star Associations,MM/Star Linking ID
+Mentor Star Associations,Modified By
+Mentor Star Associations,National Math Star
+Mentor Star Associations,School Year
+Mentor Star Associations,Secondary Email
+Mentor Star Associations,Show Admin Section
+Mentor Star Associations,Status
+Mentor Star Associations,Type
+Advisor Star Association,Advisor Email
+Advisor Star Association,Advisor Name Alias
+Advisor Star Association,Advisor Star Association Image
+Advisor Star Association,Advisor Star Association Owner
+Advisor Star Association,Created By
+Advisor Star Association,Email
+Advisor Star Association,Email Opt Out
+Advisor Star Association,FA/Star Linking ID
+Advisor Star Association,Family Advisor
+Advisor Star Association,Modified By
+Advisor Star Association,School Year
+Advisor Star Association,Secondary Email
+Advisor Star Association,Show Admin Section
+Advisor Star Association,Star
+Advisor Star Association,Status
+Media,Date of Media Creation
+Media,Image Uploads (Max 10)
+Media,Media Link
+Media,Media Name
+Media,Media Owner
+Media,Outcome (if applicable)
+Media,Star
+Media,STEM Enrichment (if applicable)
+Media,Video Upload

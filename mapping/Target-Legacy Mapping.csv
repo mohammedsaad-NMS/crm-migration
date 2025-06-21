@@ -1,0 +1,519 @@
+Legacy Module,Legacy Field,Target Module,Target Field,Notes,helper legacy,helper target,in legacy,in target
+Accounts,Account Image,Stars,Star Photo,,AccountsAccount Image,StarsStar Photo,TRUE,TRUE
+Accounts,Account Name,Stars,Full Name,,AccountsAccount Name,StarsFull Name,TRUE,TRUE
+Accounts,Account Owner,Stars,Owner,,AccountsAccount Owner,StarsOwner,TRUE,TRUE
+Accounts,Account Type,Remove,Remove,Role defined by new modules like Stars and Mentors,AccountsAccount Type,RemoveRemove,TRUE,FALSE
+Accounts,Add Third Guardian,Remove,Remove,Outdated process artifact,AccountsAdd Third Guardian,RemoveRemove,TRUE,FALSE
+Accounts,AoPS Username,Remove,Remove,,AccountsAoPS Username,RemoveRemove,TRUE,FALSE
+Accounts,Applicant Status,Remove,Remove,Information belongs in Applicant module,AccountsApplicant Status,RemoveRemove,TRUE,FALSE
+Accounts,Applicant_Id,Remove,Remove,Information is the same as NMS Star ID,AccountsApplicant_Id,RemoveRemove,TRUE,FALSE
+Accounts,Billing City,Households,City,,AccountsBilling City,HouseholdsCity,TRUE,TRUE
+Accounts,Billing Code,Households,Zip Code,,AccountsBilling Code,HouseholdsZip Code,TRUE,TRUE
+Accounts,Billing State,Households,State,,AccountsBilling State,HouseholdsState,TRUE,TRUE
+Accounts,Billing Street,Households,Street,,AccountsBilling Street,HouseholdsStreet,TRUE,TRUE
+Accounts,Child In Programs,Remove,Remove,Outdated process artifact,AccountsChild In Programs,RemoveRemove,TRUE,FALSE
+Accounts,CogAT Standard Nonverbal,Test Scores,Score Value,,AccountsCogAT Standard Nonverbal,Test ScoresScore Value,TRUE,TRUE
+Accounts,CoGAT Standard Quant,Test Scores,Score Value,,AccountsCoGAT Standard Quant,Test ScoresScore Value,TRUE,TRUE
+Accounts,Cohort Entry Year,Stars,Cohort Year,,AccountsCohort Entry Year,StarsCohort Year,TRUE,TRUE
+Accounts,Cohort Region,Stars,Cohort Region,,AccountsCohort Region,StarsCohort Region,TRUE,TRUE
+Accounts,Cohort Status,Stars,Status,,AccountsCohort Status,StarsStatus,TRUE,TRUE
+Accounts,Created By,Stars,Created By,,AccountsCreated By,StarsCreated By,TRUE,TRUE
+Accounts,Created From Form,Remove,Remove,Outdated process artifact,AccountsCreated From Form,RemoveRemove,TRUE,FALSE
+Accounts,Current Child Grade,Stars,Current Grade,,AccountsCurrent Child Grade,StarsCurrent Grade,TRUE,TRUE
+Accounts,Date of Withdrawal,Stars,Program End Date,,AccountsDate of Withdrawal,StarsProgram End Date,TRUE,TRUE
+Accounts,Description,Remove,Remove,Standard Accounts field,AccountsDescription,RemoveRemove,TRUE,FALSE
+Accounts,Designated Metro Area,Households,Metro Area,,AccountsDesignated Metro Area,HouseholdsMetro Area,TRUE,TRUE
+Accounts,Emergency Email,Contacts,Email,,AccountsEmergency Email,ContactsEmail,TRUE,TRUE
+Accounts,Emergency First Name,Contacts,First Name,,AccountsEmergency First Name,ContactsFirst Name,TRUE,TRUE
+Accounts,Emergency Last Name,Contacts,Last Name,,AccountsEmergency Last Name,ContactsLast Name,TRUE,TRUE
+Accounts,Emergency Phone,Contacts,Phone,,AccountsEmergency Phone,ContactsPhone,TRUE,TRUE
+Accounts,Emergency Relationship to Star,Guardian-Star Associations,Relationship Type,,AccountsEmergency Relationship to Star,Guardian-Star AssociationsRelationship Type,TRUE,TRUE
+Accounts,Family Benefits,Households,Family Benefits,,AccountsFamily Benefits,HouseholdsFamily Benefits,TRUE,TRUE
+Accounts,Family Income,Households,Income,,AccountsFamily Income,HouseholdsIncome,TRUE,TRUE
+Accounts,Guardians,Remove,Remove,Handled by Guardian-Star Associations,AccountsGuardians,RemoveRemove,TRUE,FALSE
+Accounts,Highest Level of Education,Households,Highest Level of Education,,AccountsHighest Level of Education,HouseholdsHighest Level of Education,TRUE,TRUE
+Accounts,Media Release,Households,Media Release,,AccountsMedia Release,HouseholdsMedia Release,TRUE,TRUE
+Accounts,Mentor Name,Stars,Current Mentor Name,,AccountsMentor Name,StarsCurrent Mentor Name,TRUE,TRUE
+Accounts,Modified By,Stars,Modified By,,AccountsModified By,StarsModified By,TRUE,TRUE
+Accounts,Most Recent Advisor Meeting,Households,Last Advisor Meeting,,AccountsMost Recent Advisor Meeting,HouseholdsLast Advisor Meeting,TRUE,TRUE
+Accounts,Name of Current School,Stars,Current School,,AccountsName of Current School,StarsCurrent School,TRUE,TRUE
+Accounts,Number of People in Household,Households,Family Size,,AccountsNumber of People in Household,HouseholdsFamily Size,TRUE,TRUE
+Accounts,Occupations,Contacts,Occupation,,AccountsOccupations,ContactsOccupation,TRUE,TRUE
+Accounts,Other  Family Information,Households,Special Cirumstances,,AccountsOther  Family Information,HouseholdsSpecial Cirumstances,TRUE,FALSE
+Accounts,Ownership,Remove,Remove,Redundant field from Accounts,AccountsOwnership,RemoveRemove,TRUE,FALSE
+Accounts,Parent Account,Remove,Remove,Concept replaced by Mentor-Star association,AccountsParent Account,RemoveRemove,TRUE,FALSE
+Accounts,Primary Guardian City,Contacts,Mailing City,,AccountsPrimary Guardian City,ContactsMailing City,TRUE,TRUE
+Accounts,Primary Guardian Country,Contacts,Mailing Country,,AccountsPrimary Guardian Country,ContactsMailing Country,TRUE,TRUE
+Accounts,Primary Guardian Email,Contacts,Email,,AccountsPrimary Guardian Email,ContactsEmail,TRUE,TRUE
+Accounts,Primary Guardian First Name,Contacts,First Name,,AccountsPrimary Guardian First Name,ContactsFirst Name,TRUE,TRUE
+Accounts,Primary Guardian is Only Legal Guardian,Guardian-Star Associations,Is Only Legal Guardian,,AccountsPrimary Guardian is Only Legal Guardian,Guardian-Star AssociationsIs Only Legal Guardian,TRUE,TRUE
+Accounts,Primary Guardian Last Name,Contacts,Last Name,,AccountsPrimary Guardian Last Name,ContactsLast Name,TRUE,TRUE
+Accounts,Primary Guardian Listed in Directory,Contacts,Opt-out Directory,,AccountsPrimary Guardian Listed in Directory,ContactsOpt-out Directory,TRUE,TRUE
+Accounts,Primary Guardian Other Language,Contacts,Other Language,,AccountsPrimary Guardian Other Language,ContactsOther Language,TRUE,TRUE
+Accounts,Primary Guardian Phone,Contacts,Phone,,AccountsPrimary Guardian Phone,ContactsPhone,TRUE,TRUE
+Accounts,Primary Guardian Preferred Language,Contacts,Preferred Language,,AccountsPrimary Guardian Preferred Language,ContactsPreferred Language,TRUE,TRUE
+Accounts,Primary Guardian Relationship to Star,Guardian-Star Associations,Relationship Type,,AccountsPrimary Guardian Relationship to Star,Guardian-Star AssociationsRelationship Type,TRUE,TRUE
+Accounts,Primary Guardian Send Emails,Contacts,Opt-out Email,,AccountsPrimary Guardian Send Emails,ContactsOpt-out Email,TRUE,TRUE
+Accounts,Primary Guardian Send Texts,Contacts,Opt-out Text (SMS),,AccountsPrimary Guardian Send Texts,ContactsOpt-out Text (SMS),TRUE,TRUE
+Accounts,Primary Guardian State,Contacts,Mailing State,,AccountsPrimary Guardian State,ContactsMailing State,TRUE,TRUE
+Accounts,Primary Guardian Street,Contacts,Mailing Street,,AccountsPrimary Guardian Street,ContactsMailing Street,TRUE,TRUE
+Accounts,Primary Guardian Zip,Contacts,Mailing Zip Code,,AccountsPrimary Guardian Zip,ContactsMailing Zip Code,TRUE,TRUE
+Accounts,School NCES ID,Schools,NCES ID,,AccountsSchool NCES ID,SchoolsNCES ID,TRUE,TRUE
+Accounts,Schools,Star-School Associations,School,,AccountsSchools,Star-School AssociationsSchool,TRUE,TRUE
+Accounts,Second Guardian Other Language,Contacts,Other Language,,AccountsSecond Guardian Other Language,ContactsOther Language,TRUE,TRUE
+Accounts,Secondary Guardian City,Contacts,Mailing City,,AccountsSecondary Guardian City,ContactsMailing City,TRUE,TRUE
+Accounts,Secondary Guardian Country,Contacts,Mailing Country,,AccountsSecondary Guardian Country,ContactsMailing Country,TRUE,TRUE
+Accounts,Secondary Guardian First Name,Contacts,First Name,,AccountsSecondary Guardian First Name,ContactsFirst Name,TRUE,TRUE
+Accounts,Secondary Guardian Last Name,Contacts,Last Name,,AccountsSecondary Guardian Last Name,ContactsLast Name,TRUE,TRUE
+Accounts,Secondary Guardian Listed in Directory,Contacts,Opt-out Directory,,AccountsSecondary Guardian Listed in Directory,ContactsOpt-out Directory,TRUE,TRUE
+Accounts,Secondary Guardian Phone,Contacts,Phone,,AccountsSecondary Guardian Phone,ContactsPhone,TRUE,TRUE
+Accounts,Secondary Guardian Preferred Language,Contacts,Preferred Language,,AccountsSecondary Guardian Preferred Language,ContactsPreferred Language,TRUE,TRUE
+Accounts,Secondary Guardian Relationship to Star,Guardian-Star Associations,Relationship Type,,AccountsSecondary Guardian Relationship to Star,Guardian-Star AssociationsRelationship Type,TRUE,TRUE
+Accounts,Secondary Guardian Send Emails,Contacts,Opt-out Email,,AccountsSecondary Guardian Send Emails,ContactsOpt-out Email,TRUE,TRUE
+Accounts,Secondary Guardian Send Texts,Contacts,Opt-out Text (SMS),,AccountsSecondary Guardian Send Texts,ContactsOpt-out Text (SMS),TRUE,TRUE
+Accounts,Secondary Guardian State,Contacts,Mailing State,,AccountsSecondary Guardian State,ContactsMailing State,TRUE,TRUE
+Accounts,Secondary Guardian Street,Contacts,Mailing Street,,AccountsSecondary Guardian Street,ContactsMailing Street,TRUE,TRUE
+Accounts,Secondary Guardian Zip,Contacts,Mailing Zip Code,,AccountsSecondary Guardian Zip,ContactsMailing Zip Code,TRUE,TRUE
+Accounts,Show Admin,Remove,Remove,Operational need unclear,AccountsShow Admin,RemoveRemove,TRUE,FALSE
+Accounts,Star Date of Birth,Stars,Date of Birth (DOB),,AccountsStar Date of Birth,StarsDate of Birth (DOB),TRUE,TRUE
+Accounts,Star Dietary Restrictions,Stars,Dietary Restrictions,,AccountsStar Dietary Restrictions,StarsDietary Restrictions,TRUE,TRUE
+Accounts,Star Email,Stars,email,,AccountsStar Email,Starsemail,TRUE,TRUE
+Accounts,Star First Name,Stars,First Name,,AccountsStar First Name,StarsFirst Name,TRUE,TRUE
+Accounts,Star Identity,Stars,Gender Identity,,AccountsStar Identity,StarsGender Identity,TRUE,TRUE
+Accounts,Star Last Name,Stars,Last Name,,AccountsStar Last Name,StarsLast Name,TRUE,TRUE
+Accounts,Star Middle Name,Stars,Middle Name,,AccountsStar Middle Name,StarsMiddle Name,TRUE,TRUE
+Accounts,Star Phone,Stars,Phone,,AccountsStar Phone,StarsPhone,TRUE,TRUE
+Accounts,Star Race or Ethnicity,Stars,Race or Ethnicity,,AccountsStar Race or Ethnicity,StarsRace or Ethnicity,TRUE,TRUE
+Accounts,Star T-Shirt Size,Remove,Remove,Information changes regularly,AccountsStar T-Shirt Size,RemoveRemove,TRUE,FALSE
+Accounts,Student ID,Stars,NMS Star ID,,AccountsStudent ID,StarsNMS Star ID,TRUE,TRUE
+Accounts,Third Guardian City,Contacts,Mailing City,,AccountsThird Guardian City,ContactsMailing City,TRUE,TRUE
+Accounts,Third Guardian Country,Contacts,Mailing Country,,AccountsThird Guardian Country,ContactsMailing Country,TRUE,TRUE
+Accounts,Third Guardian Email,Contacts,Email,,AccountsThird Guardian Email,ContactsEmail,TRUE,TRUE
+Accounts,Third Guardian First Name,Contacts,First Name,,AccountsThird Guardian First Name,ContactsFirst Name,TRUE,TRUE
+Accounts,Third Guardian Last Name,Contacts,Last Name,,AccountsThird Guardian Last Name,ContactsLast Name,TRUE,TRUE
+Accounts,Third Guardian Listed in Directory,Contacts,Opt-out Directory,Outdated process artifact,AccountsThird Guardian Listed in Directory,ContactsOpt-out Directory,TRUE,TRUE
+Accounts,Third Guardian Other Language,Contacts,Other Language,,AccountsThird Guardian Other Language,ContactsOther Language,TRUE,TRUE
+Accounts,Third Guardian Phone,Contacts,Phone,,AccountsThird Guardian Phone,ContactsPhone,TRUE,TRUE
+Accounts,Third Guardian Preferred Language,Contacts,Preferred Language,,AccountsThird Guardian Preferred Language,ContactsPreferred Language,TRUE,TRUE
+Accounts,Third Guardian Relationship to Star,Guardian-Star Associations,Relationship Type,,AccountsThird Guardian Relationship to Star,Guardian-Star AssociationsRelationship Type,TRUE,TRUE
+Accounts,Third Guardian Send Emails,Contacts,Opt-out Email,,AccountsThird Guardian Send Emails,ContactsOpt-out Email,TRUE,TRUE
+Accounts,Third Guardian Send Texts,Contacts,Opt-out Text (SMS),,AccountsThird Guardian Send Texts,ContactsOpt-out Text (SMS),TRUE,TRUE
+Accounts,Third Guardian State,Contacts,Mailing State,,AccountsThird Guardian State,ContactsMailing State,TRUE,TRUE
+Accounts,Third Guardian Street,Contacts,Mailing Street,,AccountsThird Guardian Street,ContactsMailing Street,TRUE,TRUE
+Accounts,Third Guardian Zip,Contacts,Mailing Zip Code,,AccountsThird Guardian Zip,ContactsMailing Zip Code,TRUE,TRUE
+Accounts,Website,Remove,Remove,Standard Accounts field,AccountsWebsite,RemoveRemove,TRUE,FALSE
+Contacts,Account Name,Remove/Hide,Remove/Hide,Contacts link to Stars/Mentors via associations,ContactsAccount Name,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Advisor Meetings,Remove,Remove,Related list belongs in Advisor Meetings module,ContactsAdvisor Meetings,RemoveRemove,TRUE,FALSE
+Contacts,Applicant Source,Remove/Hide,Remove/Hide,Information belongs in Applicant module,ContactsApplicant Source,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Applicant_Id,Remove,Remove,,ContactsApplicant_Id,RemoveRemove,TRUE,FALSE
+Contacts,Assigned Profile,Remove,Remove,Operational need unclear,ContactsAssigned Profile,RemoveRemove,TRUE,FALSE
+Contacts,Assistant,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsAssistant,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Asst Phone,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsAsst Phone,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Auto Approve,Remove,Remove,Operational need unclear,ContactsAuto Approve,RemoveRemove,TRUE,FALSE
+Contacts,Average Time Spent (Minutes),Remove/Hide,Remove/Hide,Standard Contacts field,ContactsAverage Time Spent (Minutes),Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Child(ren) / Stars,Remove,Remove,Guardians link to Stars via associations,ContactsChild(ren) / Stars,RemoveRemove,TRUE,FALSE
+Contacts,Cohort Region,Remove,Remove,Redundant field from Accounts,ContactsCohort Region,RemoveRemove,TRUE,FALSE
+Contacts,Cohort Status,Remove,Remove,Redundant field from Accounts,ContactsCohort Status,RemoveRemove,TRUE,FALSE
+Contacts,Cohort Year,Remove,Remove,Redundant field from Accounts,ContactsCohort Year,RemoveRemove,TRUE,FALSE
+Contacts,Contact Image,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsContact Image,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Contact Owner,Contacts,Owner,,ContactsContact Owner,ContactsOwner,TRUE,TRUE
+Contacts,Contact Type,Contacts,Role (General),,ContactsContact Type,ContactsRole (General),TRUE,TRUE
+Contacts,Created By,Contacts,Created By,,ContactsCreated By,ContactsCreated By,TRUE,TRUE
+Contacts,Days Visited,Remove/Hide,Remove/Hide,Redundant field from Accounts,ContactsDays Visited,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Deactivate User,Contacts,Status,,ContactsDeactivate User,ContactsStatus,TRUE,TRUE
+Contacts,Description,Contacts,Notes,,ContactsDescription,ContactsNotes,TRUE,TRUE
+Contacts,District,Remove,Remove,Districts link to Stars via associations,ContactsDistrict,RemoveRemove,TRUE,FALSE
+Contacts,Email,Contacts,Email,,ContactsEmail,ContactsEmail,TRUE,TRUE
+Contacts,Email Opt Out,Contacts,Opt-out Email,,ContactsEmail Opt Out,ContactsOpt-out Email,TRUE,TRUE
+Contacts,First Name,Contacts,First Name,,ContactsFirst Name,ContactsFirst Name,TRUE,TRUE
+Contacts,First Page Visited,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsFirst Page Visited,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,First Visit,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsFirst Visit,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Foundation Name,Contacts,Organization,,ContactsFoundation Name,ContactsOrganization,TRUE,TRUE
+Contacts,Guardian Date of Birth,Contacts,Date of Birth (DOB),,ContactsGuardian Date of Birth,ContactsDate of Birth (DOB),TRUE,TRUE
+Contacts,Guardian is Only Legal Guardian,Guardian-Star Associations,Is Only Legal Guardian,,ContactsGuardian is Only Legal Guardian,Guardian-Star AssociationsIs Only Legal Guardian,TRUE,TRUE
+Contacts,Guardian Listed in Directory,Contacts,Opt-out Directory,,ContactsGuardian Listed in Directory,ContactsOpt-out Directory,TRUE,TRUE
+Contacts,Guardian Other Language,Contacts,Other Language,,ContactsGuardian Other Language,ContactsOther Language,TRUE,TRUE
+Contacts,Guardian Preferred Language,Contacts,Preferred Language,,ContactsGuardian Preferred Language,ContactsPreferred Language,TRUE,TRUE
+Contacts,Guardian Relationship to Star,Guardian-Star Associations,Relationship Type,,ContactsGuardian Relationship to Star,Guardian-Star AssociationsRelationship Type,TRUE,TRUE
+Contacts,Guardian Send Emails,Contacts,Opt-out Email,,ContactsGuardian Send Emails,ContactsOpt-out Email,TRUE,TRUE
+Contacts,Guardian Send Texts,Contacts,Opt-out Text (SMS),,ContactsGuardian Send Texts,ContactsOpt-out Text (SMS),TRUE,TRUE
+Contacts,Last Login Date,Remove,Remove,Standard Contacts field,ContactsLast Login Date,RemoveRemove,TRUE,FALSE
+Contacts,Last Name,Contacts,Last Name,,ContactsLast Name,ContactsLast Name,TRUE,TRUE
+Contacts,Mailing City,Contacts,Mailing City,,ContactsMailing City,ContactsMailing City,TRUE,TRUE
+Contacts,Mailing Country,Contacts,Mailing Country,,ContactsMailing Country,ContactsMailing Country,TRUE,TRUE
+Contacts,Mailing State,Contacts,Mailing State,,ContactsMailing State,ContactsMailing State,TRUE,TRUE
+Contacts,Mailing Street,Contacts,Mailing Street,,ContactsMailing Street,ContactsMailing Street,TRUE,TRUE
+Contacts,Mailing Zip,Contacts,Mailing Zip Code,,ContactsMailing Zip,ContactsMailing Zip Code,TRUE,TRUE
+Contacts,Middle Name,Contacts,Middle Name,,ContactsMiddle Name,ContactsMiddle Name,TRUE,TRUE
+Contacts,Modified By,Contacts,Modified By,,ContactsModified By,ContactsModified By,TRUE,TRUE
+Contacts,Most Recent Visit,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsMost Recent Visit,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,NMS Point of Contact,Contacts,Owner,,ContactsNMS Point of Contact,ContactsOwner,TRUE,TRUE
+Contacts,NMS Points of Contact,Remove,Remove,Operational need unclear,ContactsNMS Points of Contact,RemoveRemove,TRUE,FALSE
+Contacts,Number Of Chats,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsNumber Of Chats,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Other City,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsOther City,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Other Country,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsOther Country,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Other State,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsOther State,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Other Street,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsOther Street,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Other Zip,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsOther Zip,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Partner Name,Partners,Partner Name,,ContactsPartner Name,PartnersPartner Name,TRUE,TRUE
+Contacts,Phone,Contacts,Phone,,ContactsPhone,ContactsPhone,TRUE,TRUE
+Contacts,Portal Assigned Profile,Remove,Remove,Outdated process artifact,ContactsPortal Assigned Profile,RemoveRemove,TRUE,FALSE
+Contacts,Portal Invitation Sent,Remove,Remove,Outdated process artifact,ContactsPortal Invitation Sent,RemoveRemove,TRUE,FALSE
+Contacts,Primary Guardian is Only Legal Guardian,Guardian-Star Associations,Is Only Legal Guardian,,ContactsPrimary Guardian is Only Legal Guardian,Guardian-Star AssociationsIs Only Legal Guardian,TRUE,TRUE
+Contacts,Referrer,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsReferrer,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Reporting To,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsReporting To,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Role and/or Title,Contacts,Role (General),,ContactsRole and/or Title,ContactsRole (General),TRUE,TRUE
+Contacts,Role or Title,Contacts,Role (General),,ContactsRole or Title,ContactsRole (General),TRUE,TRUE
+Contacts,Role/Title,Contacts,Role (General),,ContactsRole/Title,ContactsRole (General),TRUE,TRUE
+Contacts,School,Educator-Star Associations,School,,ContactsSchool,Educator-Star AssociationsSchool,TRUE,TRUE
+Contacts,Secondary Email,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Show Admin,Remove,Remove,Operational need unclear,ContactsShow Admin,RemoveRemove,TRUE,FALSE
+Contacts,Skype ID,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsSkype ID,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Star Date of Birth,Remove,Remove,Redundant field from Accounts,ContactsStar Date of Birth,RemoveRemove,TRUE,FALSE
+Contacts,Star Dietary Restrictions,Remove,Remove,Redundant field from Accounts,ContactsStar Dietary Restrictions,RemoveRemove,TRUE,FALSE
+Contacts,Star Identity,Remove,Remove,Redundant field from Accounts,ContactsStar Identity,RemoveRemove,TRUE,FALSE
+Contacts,Star Interests,Remove,Remove,Redundant field from Accounts,ContactsStar Interests,RemoveRemove,TRUE,FALSE
+Contacts,Star Race or Ethnicity,Remove,Remove,Redundant field from Accounts,ContactsStar Race or Ethnicity,RemoveRemove,TRUE,FALSE
+Contacts,Star T-Shirt Size,Remove,Remove,Redundant field from Accounts,ContactsStar T-Shirt Size,RemoveRemove,TRUE,FALSE
+Contacts,Student ID,Remove,Remove,Redundant field from Accounts,ContactsStudent ID,RemoveRemove,TRUE,FALSE
+Contacts,Time Zone,Contacts,Time Zone,,ContactsTime Zone,ContactsTime Zone,TRUE,TRUE
+Contacts,Title,Contacts,Title,,ContactsTitle,ContactsTitle,TRUE,TRUE
+Contacts,Twitter,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsTwitter,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,User Permissions,Remove,Remove,Operational need unclear,ContactsUser Permissions,RemoveRemove,TRUE,FALSE
+Contacts,Username,Remove,Remove,Outdated process artifact,ContactsUsername,RemoveRemove,TRUE,FALSE
+Contacts,Visitor Score,Remove/Hide,Remove/Hide,Standard Contacts field,ContactsVisitor Score,Remove/HideRemove/Hide,TRUE,FALSE
+Contacts,Weekday Availability,Remove,Remove,Availability to be recollected and stored in Star and Mentor modules,ContactsWeekday Availability,RemoveRemove,TRUE,FALSE
+Contacts,Weekday Availability Times,Remove,Remove,Availability to be recollected and stored in Star and Mentor modules,ContactsWeekday Availability Times,RemoveRemove,TRUE,FALSE
+Contacts,Weekend Availability,Remove,Remove,Availability to be recollected and stored in Star and Mentor modules,ContactsWeekend Availability,RemoveRemove,TRUE,FALSE
+Contacts,Weekend Availability Time,Remove,Remove,Availability to be recollected and stored in Star and Mentor modules,ContactsWeekend Availability Time,RemoveRemove,TRUE,FALSE
+Stem Course Progress,Accounts,Course Enrollments,Star,,Stem Course ProgressAccounts,Course EnrollmentsStar,TRUE,TRUE
+Stem Course Progress,Course Cost,Remove,Remove,Budget information handled externally in RAMP,Stem Course ProgressCourse Cost,RemoveRemove,TRUE,FALSE
+Stem Course Progress,Course End Date,Course Enrollments,End Date,,Stem Course ProgressCourse End Date,Course EnrollmentsEnd Date,TRUE,TRUE
+Stem Course Progress,Course Format,Products,Product Type,,Stem Course ProgressCourse Format,ProductsProduct Type,TRUE,TRUE
+Stem Course Progress,Course Grade 0-100,Course Enrollments,Grade Value,,Stem Course ProgressCourse Grade 0-100,Course EnrollmentsGrade Value,TRUE,TRUE
+Stem Course Progress,Course Grade A-F,Course Enrollments,Grade Value,,Stem Course ProgressCourse Grade A-F,Course EnrollmentsGrade Value,TRUE,TRUE
+Stem Course Progress,Course Grade Format,Course Enrollments,Grade Format,,Stem Course ProgressCourse Grade Format,Course EnrollmentsGrade Format,TRUE,TRUE
+Stem Course Progress,Course Grade Other,Course Enrollments,Grade Value,,Stem Course ProgressCourse Grade Other,Course EnrollmentsGrade Value,TRUE,TRUE
+Stem Course Progress,Course Outcome,Course Enrollments,Result,,Stem Course ProgressCourse Outcome,Course EnrollmentsResult,TRUE,TRUE
+Stem Course Progress,Course Start Date,Course Enrollments,Start Date,,Stem Course ProgressCourse Start Date,Course EnrollmentsStart Date,TRUE,TRUE
+Stem Course Progress,Course Topic(s),Products,Topic,,Stem Course ProgressCourse Topic(s),ProductsTopic,TRUE,TRUE
+Stem Course Progress,Course Vendor,Products,Vendor,,Stem Course ProgressCourse Vendor,ProductsVendor,TRUE,TRUE
+Stem Course Progress,Created By,Course Enrollments,Created By,,Stem Course ProgressCreated By,Course EnrollmentsCreated By,TRUE,TRUE
+Stem Course Progress,Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Stem Course ProgressEmail,Remove/HideRemove/Hide,TRUE,FALSE
+Stem Course Progress,Email Opt Out,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Stem Course ProgressEmail Opt Out,Remove/HideRemove/Hide,TRUE,FALSE
+Stem Course Progress,Instructional Hours Per Week,Products,Hours per Week,,Stem Course ProgressInstructional Hours Per Week,ProductsHours per Week,TRUE,TRUE
+Stem Course Progress,Math Course Level,Remove,Remove,Operational need unclear,Stem Course ProgressMath Course Level,RemoveRemove,TRUE,FALSE
+Stem Course Progress,Modified By,Course Enrollments,Modified By,,Stem Course ProgressModified By,Course EnrollmentsModified By,TRUE,TRUE
+Stem Course Progress,Other Course Notes,Course Enrollments,Notes,,Stem Course ProgressOther Course Notes,Course EnrollmentsNotes,TRUE,TRUE
+Stem Course Progress,Provided By,Products,Vendor,,Stem Course ProgressProvided By,ProductsVendor,TRUE,TRUE
+Stem Course Progress,Secondary Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Stem Course ProgressSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
+Stem Course Progress,Show Admin Section,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Stem Course ProgressShow Admin Section,Remove/HideRemove/Hide,TRUE,FALSE
+Stem Course Progress,STEM Course,Course Enrollments,Product (Course),,Stem Course ProgressSTEM Course,Course EnrollmentsProduct (Course),TRUE,TRUE
+Stem Course Progress,STEM Course Progress Image,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Stem Course ProgressSTEM Course Progress Image,Remove/HideRemove/Hide,TRUE,FALSE
+Stem Course Progress,STEM Course Progress Name,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Stem Course ProgressSTEM Course Progress Name,Remove/HideRemove/Hide,TRUE,FALSE
+Stem Course Progress,STEM Course Progress Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Stem Course ProgressSTEM Course Progress Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Stem Enrichments Progress,Account,Enrichment Enrollments,Star,,Stem Enrichments ProgressAccount,Enrichment EnrollmentsStar,TRUE,TRUE
+Stem Enrichments Progress,Amount of Financial Aid Provided,Remove,Remove,Budget information handled externally in RAMP,Stem Enrichments ProgressAmount of Financial Aid Provided,RemoveRemove,TRUE,FALSE
+Stem Enrichments Progress,Budget Used,Remove,Remove,Budget information handled externally in RAMP,Stem Enrichments ProgressBudget Used,RemoveRemove,TRUE,FALSE
+Stem Enrichments Progress,Cost,Remove,Remove,Budget information handled externally in RAMP,Stem Enrichments ProgressCost,RemoveRemove,TRUE,FALSE
+Stem Enrichments Progress,Created By,Enrichment Enrollments,Created By,,Stem Enrichments ProgressCreated By,Enrichment EnrollmentsCreated By,TRUE,TRUE
+Stem Enrichments Progress,Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Stem Enrichments ProgressEmail,Remove/HideRemove/Hide,TRUE,FALSE
+Stem Enrichments Progress,Email Opt Out,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Stem Enrichments ProgressEmail Opt Out,Remove/HideRemove/Hide,TRUE,FALSE
+Stem Enrichments Progress,End Date,Enrichment Enrollments,End Date,,Stem Enrichments ProgressEnd Date,Enrichment EnrollmentsEnd Date,TRUE,TRUE
+Stem Enrichments Progress,Enrichment,Enrichment Enrollments,Product (Enrichment),,Stem Enrichments ProgressEnrichment,Enrichment EnrollmentsProduct (Enrichment),TRUE,TRUE
+Stem Enrichments Progress,Financial Aid Provided,Remove,Remove,Can be deduced from Financial Aid Amount,Stem Enrichments ProgressFinancial Aid Provided,RemoveRemove,TRUE,FALSE
+Stem Enrichments Progress,Format,Products,Product Type,,Stem Enrichments ProgressFormat,ProductsProduct Type,TRUE,TRUE
+Stem Enrichments Progress,Instructional Hours Per Week,Products,Hours Per Week,,Stem Enrichments ProgressInstructional Hours Per Week,ProductsHours Per Week,TRUE,TRUE
+Stem Enrichments Progress,Modified By,Enrichment Enrollments,Modified By,,Stem Enrichments ProgressModified By,Enrichment EnrollmentsModified By,TRUE,TRUE
+Stem Enrichments Progress,Other Notes,Enrichment Enrollments,Notes,,Stem Enrichments ProgressOther Notes,Enrichment EnrollmentsNotes,TRUE,TRUE
+Stem Enrichments Progress,Outcome,Enrichment Enrollments,Status,,Stem Enrichments ProgressOutcome,Enrichment EnrollmentsStatus,TRUE,TRUE
+Stem Enrichments Progress,Secondary Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Stem Enrichments ProgressSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
+Stem Enrichments Progress,Selectiveness,Products,Selectiveness,,Stem Enrichments ProgressSelectiveness,ProductsSelectiveness,TRUE,TRUE
+Stem Enrichments Progress,Show Admin Section,Remove,Remove,Operational need unclear,Stem Enrichments ProgressShow Admin Section,RemoveRemove,TRUE,FALSE
+Stem Enrichments Progress,Start Date,Enrichment Enrollments,Start Date,,Stem Enrichments ProgressStart Date,Enrichment EnrollmentsStart Date,TRUE,TRUE
+Stem Enrichments Progress,STEM Enrichments Progress Image,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Stem Enrichments ProgressSTEM Enrichments Progress Image,Remove/HideRemove/Hide,TRUE,FALSE
+Stem Enrichments Progress,STEM Enrichments Progress Name,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Stem Enrichments ProgressSTEM Enrichments Progress Name,Remove/HideRemove/Hide,TRUE,FALSE
+Stem Enrichments Progress,STEM Enrichments Progress Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Stem Enrichments ProgressSTEM Enrichments Progress Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Stem Enrichments Progress,Topics,Products,Topic,,Stem Enrichments ProgressTopics,ProductsTopic,TRUE,TRUE
+Stem Enrichments Progress,Vendor,Products,Vendor,,Stem Enrichments ProgressVendor,ProductsVendor,TRUE,TRUE
+Outcomes,ACT Math Score,Test Scores,Score Value,,OutcomesACT Math Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,ACT Overall Score,Test Scores,Score Value,,OutcomesACT Overall Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,ACT Percentile,Test Scores,Score Value,,OutcomesACT Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,ACT Science Score,Test Scores,Score Value,,OutcomesACT Science Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,AMC10 Percentile,Test Scores,Score Value,,OutcomesAMC10 Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,AMC10 Score,Test Scores,Score Value,,OutcomesAMC10 Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,AMC12 Percentile,Test Scores,Score Value,,OutcomesAMC12 Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,AMC12 Score,Test Scores,Score Value,,OutcomesAMC12 Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,AMC8 Percentile,Test Scores,Score Value,,OutcomesAMC8 Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,AMC8 Score,Test Scores,Score Value,,OutcomesAMC8 Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Created By,Outcomes,Created By,,OutcomesCreated By,OutcomesCreated By,TRUE,TRUE
+Outcomes,Date Achieved,Outcomes,Achieved Date,,OutcomesDate Achieved,OutcomesAchieved Date,TRUE,TRUE
+Outcomes,Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,OutcomesEmail,Remove/HideRemove/Hide,TRUE,FALSE
+Outcomes,Email Opt Out,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,OutcomesEmail Opt Out,Remove/HideRemove/Hide,TRUE,FALSE
+Outcomes,Extraordinary Outcome,Outcomes,Extroardinary,,OutcomesExtraordinary Outcome,OutcomesExtroardinary,TRUE,TRUE
+Outcomes,Fluid Reasoning Percentile,Test Scores,Score Value,,OutcomesFluid Reasoning Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Fluid Reasoning Scaled Score,Test Scores,Score Value,,OutcomesFluid Reasoning Scaled Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Full Scale IQ Percentile,Test Scores,Score Value,,OutcomesFull Scale IQ Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Full Scale IQ Scaled Score,Test Scores,Score Value,,OutcomesFull Scale IQ Scaled Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Math Achievement Percentile,Test Scores,Score Value,,OutcomesMath Achievement Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Math Growth Percentile,Test Scores,Score Value,,OutcomesMath Growth Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Math RIT Score,Test Scores,Score Value,,OutcomesMath RIT Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Modified By,Outcomes,Modified By,,OutcomesModified By,OutcomesModified By,TRUE,TRUE
+Outcomes,Outcome Description,Outcomes,Description,,OutcomesOutcome Description,OutcomesDescription,TRUE,TRUE
+Outcomes,Outcome Image,Media,File URL / Attachment,,OutcomesOutcome Image,MediaFile URL / Attachment,TRUE,TRUE
+Outcomes,Outcome Name,Outcomes,Outcome Name,,OutcomesOutcome Name,OutcomesOutcome Name,TRUE,TRUE
+Outcomes,Outcome Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,OutcomesOutcome Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Outcomes,Outcome Type,Outcomes,Outcome Type,,OutcomesOutcome Type,OutcomesOutcome Type,TRUE,TRUE
+Outcomes,Partner,Outcomes,Partner (if applicable),,OutcomesPartner,OutcomesPartner (if applicable),TRUE,TRUE
+Outcomes,Processing Speed Percentile,Test Scores,Score Value,,OutcomesProcessing Speed Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Processing Speed Scaled Score,Test Scores,Score Value,,OutcomesProcessing Speed Scaled Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,PSAT Math Score,Test Scores,Score Value,,OutcomesPSAT Math Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,PSAT Overall Score,Test Scores,Score Value,,OutcomesPSAT Overall Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,PSAT Percentile,Test Scores,Score Value,,OutcomesPSAT Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Reading Achievement Percentile,Test Scores,Score Value,,OutcomesReading Achievement Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Reading Growth Percentile,Test Scores,Score Value,,OutcomesReading Growth Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Reading RIT Score,Test Scores,Score Value,,OutcomesReading RIT Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,SAT Math Score,Test Scores,Score Value,,OutcomesSAT Math Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,SAT Overall Score,Test Scores,Score Value,,OutcomesSAT Overall Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,SAT Percentile,Test Scores,Score Value,,OutcomesSAT Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Secondary Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,OutcomesSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
+Outcomes,Show Admin Section,Remove,Remove,Operational need unclear,OutcomesShow Admin Section,RemoveRemove,TRUE,FALSE
+Outcomes,Star,Outcomes,Star,,OutcomesStar,OutcomesStar,TRUE,TRUE
+Outcomes,Verbal Comprehension Percentile,Test Scores,Score Value,,OutcomesVerbal Comprehension Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Verbal Comprehension Scaled Score,Test Scores,Score Value,,OutcomesVerbal Comprehension Scaled Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Visual Spatial Percentile,Test Scores,Score Value,,OutcomesVisual Spatial Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Visual Spatial Scaled Score,Test Scores,Score Value,,OutcomesVisual Spatial Scaled Score,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Working Memory Percentile,Test Scores,Score Value,,OutcomesWorking Memory Percentile,Test ScoresScore Value,TRUE,TRUE
+Outcomes,Working Memory Scaled Score,Test Scores,Score Value,,OutcomesWorking Memory Scaled Score,Test ScoresScore Value,TRUE,TRUE
+Products,Commission Rate,Remove/Hide,Remove/Hide,Standard Products field,ProductsCommission Rate,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Created By,Products,Created By,,ProductsCreated By,ProductsCreated By,TRUE,TRUE
+Products,Description,Products,Description,,ProductsDescription,ProductsDescription,TRUE,TRUE
+Products,Handler,Remove/Hide,Remove/Hide,Standard Products field,ProductsHandler,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Link,Products,Link,,ProductsLink,ProductsLink,TRUE,TRUE
+Products,Manufacturer,Products,Vendor,,ProductsManufacturer,ProductsVendor,TRUE,TRUE
+Products,Modified By,Products,Modified By,,ProductsModified By,ProductsModified By,TRUE,TRUE
+Products,Product Active,Remove/Hide,Remove/Hide,Standard Products field,ProductsProduct Active,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Product Category,Products,Product Type,,ProductsProduct Category,ProductsProduct Type,TRUE,TRUE
+Products,Product Code,Remove/Hide,Remove/Hide,Standard Products field,ProductsProduct Code,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Product Image,Remove/Hide,Remove/Hide,Standard Products field,ProductsProduct Image,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Product Name,Products,Product Name,,ProductsProduct Name,ProductsProduct Name,TRUE,TRUE
+Products,Product Owner,Remove/Hide,Remove/Hide,Standard Products field,ProductsProduct Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Product Vendor,Products,Vendor,,ProductsProduct Vendor,ProductsVendor,TRUE,TRUE
+Products,Qty Ordered,Remove/Hide,Remove/Hide,Standard Products field,ProductsQty Ordered,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Quantity in Demand,Remove/Hide,Remove/Hide,Standard Products field,ProductsQuantity in Demand,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Quantity in Stock,Remove/Hide,Remove/Hide,Standard Products field,ProductsQuantity in Stock,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Reorder Level,Remove/Hide,Remove/Hide,Standard Products field,ProductsReorder Level,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Sales End Date,Remove/Hide,Remove/Hide,Standard Products field,ProductsSales End Date,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Sales Start Date,Remove/Hide,Remove/Hide,Standard Products field,ProductsSales Start Date,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Show Admin,Remove,Remove,Operational need unclear,ProductsShow Admin,RemoveRemove,TRUE,FALSE
+Products,Support End Date,Remove/Hide,Remove/Hide,Standard Products field,ProductsSupport End Date,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Support Start Date,Remove/Hide,Remove/Hide,Standard Products field,ProductsSupport Start Date,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Tax,Remove/Hide,Remove/Hide,Standard Products field,ProductsTax,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Taxable,Remove/Hide,Remove/Hide,Standard Products field,ProductsTaxable,Remove/HideRemove/Hide,TRUE,FALSE
+Products,Topic,Products,Topic,,ProductsTopic,ProductsTopic,TRUE,TRUE
+Products,Unit Price,Remove,Remove,,ProductsUnit Price,RemoveRemove,TRUE,FALSE
+Products,Usage Unit,Remove/Hide,Remove/Hide,Standard Products field,ProductsUsage Unit,Remove/HideRemove/Hide,TRUE,FALSE
+Partners,City,Partners,City,,PartnersCity,PartnersCity,TRUE,TRUE
+Partners,Country,Partners,Country,,PartnersCountry,PartnersCountry,TRUE,TRUE
+Partners,Created By,Partners,Created By,,PartnersCreated By,PartnersCreated By,TRUE,TRUE
+Partners,Description,Partners,Description,,PartnersDescription,PartnersDescription,TRUE,TRUE
+Partners,Email,Partners,Email,,PartnersEmail,PartnersEmail,TRUE,TRUE
+Partners,Email Opt Out,Partners,Opt-out Email,,PartnersEmail Opt Out,PartnersOpt-out Email,TRUE,TRUE
+Partners,GL Account,Remove/Hide,Remove/Hide,Standard Partners field,PartnersGL Account,Remove/HideRemove/Hide,TRUE,FALSE
+Partners,Modified By,Partners,Modified By,,PartnersModified By,PartnersModified By,TRUE,TRUE
+Partners,NMS Points of Contact,Partners,Owner,,PartnersNMS Points of Contact,PartnersOwner,TRUE,TRUE
+Partners,Partner Image,Remove/Hide,Remove/Hide,Standard Partners field,PartnersPartner Image,Remove/HideRemove/Hide,TRUE,FALSE
+Partners,Partner Name,Partners,Partner Name,,PartnersPartner Name,PartnersPartner Name,TRUE,TRUE
+Partners,Partner Owner,Remove/Hide,Remove/Hide,Standard Partners field,PartnersPartner Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Partners,Partner Type,Partners,Partner Type,,PartnersPartner Type,PartnersPartner Type,TRUE,TRUE
+Partners,Phone,Partners,Phone,,PartnersPhone,PartnersPhone,TRUE,TRUE
+Partners,Show Admin,Remove,Remove,Unlcear operational need,PartnersShow Admin,RemoveRemove,TRUE,FALSE
+Partners,State_,Partners,State,,PartnersState_,PartnersState,TRUE,TRUE
+Partners,Street,Partners,Street,,PartnersStreet,PartnersStreet,TRUE,TRUE
+Partners,Website,Partners,Website,,PartnersWebsite,PartnersWebsite,TRUE,TRUE
+Partners,Zip Code,Partners,Zip Code,,PartnersZip Code,PartnersZip Code,TRUE,TRUE
+Districts / Schools,City,Schools,City,,Districts / SchoolsCity,SchoolsCity,TRUE,TRUE
+Districts / Schools,City,Districts,City,,Districts / SchoolsCity,DistrictsCity,TRUE,TRUE
+Districts / Schools,Created By,Schools,Created By,,Districts / SchoolsCreated By,SchoolsCreated By,TRUE,TRUE
+Districts / Schools,District,Schools,District,,Districts / SchoolsDistrict,SchoolsDistrict,TRUE,TRUE
+Districts / Schools,District / School Image,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Districts / SchoolsDistrict / School Image,Remove/HideRemove/Hide,TRUE,FALSE
+Districts / Schools,Created By,Districts,Created By,,Districts / SchoolsCreated By,DistrictsCreated By,TRUE,TRUE
+Districts / Schools,District / School Name,Schools,Name,,Districts / SchoolsDistrict / School Name,SchoolsName,TRUE,TRUE
+Districts / Schools,District / School Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Districts / SchoolsDistrict / School Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Districts / Schools,District / School Name,Districts,Name,,Districts / SchoolsDistrict / School Name,DistrictsName,TRUE,TRUE
+Districts / Schools,District Type,Districts,Type,,Districts / SchoolsDistrict Type,DistrictsType,TRUE,TRUE
+Districts / Schools,District Website,Districts,Website,,Districts / SchoolsDistrict Website,DistrictsWebsite,TRUE,TRUE
+Districts / Schools,Email,Districts,Email,,Districts / SchoolsEmail,DistrictsEmail,TRUE,TRUE
+Districts / Schools,Modified By,Schools,Modified By,,Districts / SchoolsModified By,SchoolsModified By,TRUE,TRUE
+Districts / Schools,Modified By,Districts,Modified By,,Districts / SchoolsModified By,DistrictsModified By,TRUE,TRUE
+Districts / Schools,NCES District ID,Districts,NCES ID,,Districts / SchoolsNCES District ID,DistrictsNCES ID,TRUE,TRUE
+Districts / Schools,NCES District Link,Districts,NCES District Link,,Districts / SchoolsNCES District Link,DistrictsNCES District Link,TRUE,TRUE
+Districts / Schools,NCES School ID,Schools,NCES ID,,Districts / SchoolsNCES School ID,SchoolsNCES ID,TRUE,TRUE
+Districts / Schools,NCES School Link,Schools,NCES School Link,,Districts / SchoolsNCES School Link,SchoolsNCES School Link,TRUE,TRUE
+Districts / Schools,School Grades,Schools,Grades Served,,Districts / SchoolsSchool Grades,SchoolsGrades Served,TRUE,TRUE
+Districts / Schools,School Size,Schools,Size,,Districts / SchoolsSchool Size,SchoolsSize,TRUE,TRUE
+Districts / Schools,School Type,Schools,Type,,Districts / SchoolsSchool Type,SchoolsType,TRUE,TRUE
+Districts / Schools,School Website,Schools,Website,,Districts / SchoolsSchool Website,SchoolsWebsite,TRUE,TRUE
+Districts / Schools,Secondary Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Districts / SchoolsSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
+Districts / Schools,Setting,Schools,Setting,,Districts / SchoolsSetting,SchoolsSetting,TRUE,TRUE
+Districts / Schools,Show Admin Section,Remove,Remove,Operational need unclear,Districts / SchoolsShow Admin Section,RemoveRemove,TRUE,FALSE
+Districts / Schools,State,Schools,State,,Districts / SchoolsState,SchoolsState,TRUE,TRUE
+Districts / Schools,State,Districts,State,,Districts / SchoolsState,DistrictsState,TRUE,TRUE
+Districts / Schools,Street,Schools,Street,,Districts / SchoolsStreet,SchoolsStreet,TRUE,TRUE
+Districts / Schools,Students,Remove,Remove,Districts/School link to Stars via associations,Districts / SchoolsStudents,RemoveRemove,TRUE,FALSE
+Districts / Schools,Street,Districts,Street,,Districts / SchoolsStreet,DistrictsStreet,TRUE,TRUE
+Districts / Schools,Type,Remove,Remove,,Districts / SchoolsType,RemoveRemove,TRUE,FALSE
+Districts / Schools,Zip Code,Schools,Zip Code,,Districts / SchoolsZip Code,SchoolsZip Code,TRUE,TRUE
+Districts / Schools,Zip Code,Districts,Zip Code,,Districts / SchoolsZip Code,DistrictsZip Code,TRUE,TRUE
+Mentor Session Notes,Accounts,Mentor Session Notes,Star,,Mentor Session NotesAccounts,Mentor Session NotesStar,TRUE,TRUE
+Mentor Session Notes,Attended Session,Mentor Session Notes,Star,,Mentor Session NotesAttended Session,Mentor Session NotesStar,TRUE,TRUE
+Mentor Session Notes,Created By,Mentor Session Notes,Created By,,Mentor Session NotesCreated By,Mentor Session NotesCreated By,TRUE,TRUE
+Mentor Session Notes,Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor Session NotesEmail,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Session Notes,Email Opt Out,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor Session NotesEmail Opt Out,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Session Notes,"""If Yes, Student Shared Details""",Mentor Session Notes,Shared Interest Details,,"Mentor Session Notes""If Yes, Student Shared Details""",Mentor Session NotesShared Interest Details,TRUE,TRUE
+Mentor Session Notes,Mentor Session Note Image,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor Session NotesMentor Session Note Image,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Session Notes,Mentor Session Note Name,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor Session NotesMentor Session Note Name,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Session Notes,Mentor Session Note Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor Session NotesMentor Session Note Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Session Notes,Modified By,Mentor Session Notes,Modified By,,Mentor Session NotesModified By,Mentor Session NotesModified By,TRUE,TRUE
+Mentor Session Notes,Recording,Mentor Session Events,Session Recording URL,,Mentor Session NotesRecording,Mentor Session EventsSession Recording URL,TRUE,TRUE
+Mentor Session Notes,Secondary Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor Session NotesSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Session Notes,Session,Mentor Session Notes,Mentor Session Event,,Mentor Session NotesSession,Mentor Session NotesMentor Session Event,TRUE,TRUE
+Mentor Session Notes,Session Feedback,Mentor Session Notes,Star-Specific Session Notes,,Mentor Session NotesSession Feedback,Mentor Session NotesStar-Specific Session Notes,TRUE,TRUE
+Mentor Session Notes,Show Admin Section,Remove,Remove,Operational need unclear,Mentor Session NotesShow Admin Section,RemoveRemove,TRUE,FALSE
+Mentor Session Notes,Start Date,Mentor Session Events,Session Date & Time,,Mentor Session NotesStart Date,Mentor Session EventsSession Date & Time,TRUE,TRUE
+Mentor Session Notes,Student Shared Anything STEM Related?,Mentor Session Notes,Student Shared STEM Interest?,,Mentor Session NotesStudent Shared Anything STEM Related?,Mentor Session NotesStudent Shared STEM Interest?,TRUE,TRUE
+Mentor Sessions,Created By,Mentor Session Events,Created By,,Mentor SessionsCreated By,Mentor Session EventsCreated By,TRUE,TRUE
+Mentor Sessions,Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor SessionsEmail,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Sessions,Email Opt Out,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor SessionsEmail Opt Out,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Sessions,Mentor Account,Mentor Session Events,Mentor,,Mentor SessionsMentor Account,Mentor Session EventsMentor,TRUE,TRUE
+Mentor Sessions,Mentor Session Image,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor SessionsMentor Session Image,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Sessions,Mentor Session Name,Mentor Session Events,Overall Session Topic,,Mentor SessionsMentor Session Name,Mentor Session EventsOverall Session Topic,TRUE,TRUE
+Mentor Sessions,Mentor Session Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor SessionsMentor Session Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Sessions,Modified By,Mentor Session Events,Modified By,,Mentor SessionsModified By,Mentor Session EventsModified By,TRUE,TRUE
+Mentor Sessions,Note Sync Flag,Remove,Remove,Outdated process artifact,Mentor SessionsNote Sync Flag,RemoveRemove,TRUE,FALSE
+Mentor Sessions,Recording,Mentor Session Events,Session Recording URL,,Mentor SessionsRecording,Mentor Session EventsSession Recording URL,TRUE,TRUE
+Mentor Sessions,Secondary Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor SessionsSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Sessions,Session Notes Subform Attempt,Remove,Remove,Outdated process artifact,Mentor SessionsSession Notes Subform Attempt,RemoveRemove,TRUE,FALSE
+Mentor Sessions,Session Notes Subform Status,Remove,Remove,Outdated process artifact,Mentor SessionsSession Notes Subform Status,RemoveRemove,TRUE,FALSE
+Mentor Sessions,Show Admin Section,Remove,Remove,Operational need unclear,Mentor SessionsShow Admin Section,RemoveRemove,TRUE,FALSE
+Mentor Sessions,Start Date,Mentor Session Events,Session Date & Time,,Mentor SessionsStart Date,Mentor Session EventsSession Date & Time,TRUE,TRUE
+Mentor Sessions,Status,Mentor Session Events,Status,,Mentor SessionsStatus,Mentor Session EventsStatus,TRUE,TRUE
+Mentor Sessions,Topic,Mentor Session Events,Overall Session Topic,,Mentor SessionsTopic,Mentor Session EventsOverall Session Topic,TRUE,TRUE
+Budget Disbursements,Accounts,Remove,Remove,Budget information handled externally in RAMP,Budget DisbursementsAccounts,RemoveRemove,TRUE,FALSE
+Budget Disbursements,Amount of Financial Aid Provided,Remove,Remove,Budget information handled externally in RAMP,Budget DisbursementsAmount of Financial Aid Provided,RemoveRemove,TRUE,FALSE
+Budget Disbursements,Budget Category,Remove,Remove,Budget information handled externally in RAMP,Budget DisbursementsBudget Category,RemoveRemove,TRUE,FALSE
+Budget Disbursements,Budget Disbursement Image,Remove,Remove,Budget information handled externally in RAMP,Budget DisbursementsBudget Disbursement Image,RemoveRemove,TRUE,FALSE
+Budget Disbursements,Budget Disbursement Name,Remove,Remove,Budget information handled externally in RAMP,Budget DisbursementsBudget Disbursement Name,RemoveRemove,TRUE,FALSE
+Budget Disbursements,Budget Disbursement Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Budget DisbursementsBudget Disbursement Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Budget Disbursements,Created By,Remove,Remove,Budget information handled externally in RAMP,Budget DisbursementsCreated By,RemoveRemove,TRUE,FALSE
+Budget Disbursements,Date of Disbursement,Remove,Remove,Budget information handled externally in RAMP,Budget DisbursementsDate of Disbursement,RemoveRemove,TRUE,FALSE
+Budget Disbursements,Disbursement Amount,Remove,Remove,Budget information handled externally in RAMP,Budget DisbursementsDisbursement Amount,RemoveRemove,TRUE,FALSE
+Budget Disbursements,Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Budget DisbursementsEmail,Remove/HideRemove/Hide,TRUE,FALSE
+Budget Disbursements,Email Opt Out,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Budget DisbursementsEmail Opt Out,Remove/HideRemove/Hide,TRUE,FALSE
+Budget Disbursements,Modified By,Remove,Remove,Budget information handled externally in RAMP,Budget DisbursementsModified By,RemoveRemove,TRUE,FALSE
+Budget Disbursements,Other Notes,Remove,Remove,Budget information handled externally in RAMP,Budget DisbursementsOther Notes,RemoveRemove,TRUE,FALSE
+Budget Disbursements,Provider Financial Aid Provided,Remove,Remove,Budget information handled externally in RAMP,Budget DisbursementsProvider Financial Aid Provided,RemoveRemove,TRUE,FALSE
+Budget Disbursements,Request Vendor,Products,Vendor,,Budget DisbursementsRequest Vendor,ProductsVendor,TRUE,TRUE
+Budget Disbursements,Secondary Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Budget DisbursementsSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
+Budget Disbursements,Show Admin Section,Remove,Remove,Operational need unclear,Budget DisbursementsShow Admin Section,RemoveRemove,TRUE,FALSE
+Budget Disbursements,STEM Enrichments and Camps,Remove,Remove,Budget information handled externally in RAMP,Budget DisbursementsSTEM Enrichments and Camps,RemoveRemove,TRUE,FALSE
+Advisor Meetings,Account,Advisor Meetings,Household,,Advisor MeetingsAccount,Advisor MeetingsHousehold,TRUE,TRUE
+Advisor Meetings,Advisor Meeting Image,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Advisor MeetingsAdvisor Meeting Image,Remove/HideRemove/Hide,TRUE,FALSE
+Advisor Meetings,Advisor Meeting Name,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Advisor MeetingsAdvisor Meeting Name,Remove/HideRemove/Hide,TRUE,FALSE
+Advisor Meetings,Advisor Meeting Owner,Advisor Meetings,Advisor,,Advisor MeetingsAdvisor Meeting Owner,Advisor MeetingsAdvisor,TRUE,TRUE
+Advisor Meetings,Created By,Advisor Meetings,Created By,,Advisor MeetingsCreated By,Advisor MeetingsCreated By,TRUE,TRUE
+Advisor Meetings,Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Advisor MeetingsEmail,Remove/HideRemove/Hide,TRUE,FALSE
+Advisor Meetings,Email Opt Out,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Advisor MeetingsEmail Opt Out,Remove/HideRemove/Hide,TRUE,FALSE
+Advisor Meetings,End Time,Advisor Meetings,End Time,,Advisor MeetingsEnd Time,Advisor MeetingsEnd Time,TRUE,TRUE
+Advisor Meetings,Meeting Agenda,Advisor Meetings,Agenda URL,,Advisor MeetingsMeeting Agenda,Advisor MeetingsAgenda URL,TRUE,TRUE
+Advisor Meetings,Meeting Attendees,Advisor Meetings,attendees,,Advisor MeetingsMeeting Attendees,Advisor Meetingsattendees,TRUE,TRUE
+Advisor Meetings,Meeting Format,Advisor Meetings,Meeting Format,,Advisor MeetingsMeeting Format,Advisor MeetingsMeeting Format,TRUE,TRUE
+Advisor Meetings,Meeting Purpose,Advisor Meetings,Purpose,,Advisor MeetingsMeeting Purpose,Advisor MeetingsPurpose,TRUE,TRUE
+Advisor Meetings,Modified By,Advisor Meetings,Modified By,,Advisor MeetingsModified By,Advisor MeetingsModified By,TRUE,TRUE
+Advisor Meetings,Secondary Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Advisor MeetingsSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
+Advisor Meetings,Show Admin Section,Remove,Remove,Operational need unclear,Advisor MeetingsShow Admin Section,RemoveRemove,TRUE,FALSE
+Advisor Meetings,Start Time,Advisor Meetings,Start Time,,Advisor MeetingsStart Time,Advisor MeetingsStart Time,TRUE,TRUE
+Guardian / Stars,Cohort Entry Year,Remove,Remove,Information belongs in Stars module,Guardian / StarsCohort Entry Year,RemoveRemove,TRUE,FALSE
+Guardian / Stars,Created By,Guardian-Star Associations,Created By,,Guardian / StarsCreated By,Guardian-Star AssociationsCreated By,TRUE,TRUE
+Guardian / Stars,Created Time,Guardian-Star Associations,Created Time,,Guardian / StarsCreated Time,Guardian-Star AssociationsCreated Time,TRUE,TRUE
+Guardian / Stars,Email Opt Out,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Guardian / StarsEmail Opt Out,Remove/HideRemove/Hide,TRUE,FALSE
+Guardian / Stars,G/Star Linking ID,Remove,Remove,Operational need unclear,Guardian / StarsG/Star Linking ID,RemoveRemove,TRUE,FALSE
+Guardian / Stars,Guardian / Stars Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Guardian / StarsGuardian / Stars Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Guardian / Stars,Guardian Email,Remove,Remove,Information belongs in Contacts module,Guardian / StarsGuardian Email,RemoveRemove,TRUE,FALSE
+Guardian / Stars,Guardians,Guardian-Star Associations,Guardian,,Guardian / StarsGuardians,Guardian-Star AssociationsGuardian,TRUE,TRUE
+Guardian / Stars,Last Activity Time,Guardian-Star Associations,Last Activity Time,,Guardian / StarsLast Activity Time,Guardian-Star AssociationsLast Activity Time,TRUE,TRUE
+Guardian / Stars,Modified By,Guardian-Star Associations,Modified By,,Guardian / StarsModified By,Guardian-Star AssociationsModified By,TRUE,TRUE
+Guardian / Stars,Modified Time,Guardian-Star Associations,Modified Time,,Guardian / StarsModified Time,Guardian-Star AssociationsModified Time,TRUE,TRUE
+Guardian / Stars,Relationship,Guardian-Star Associations,Relationship Type,,Guardian / StarsRelationship,Guardian-Star AssociationsRelationship Type,TRUE,TRUE
+Guardian / Stars,Show Admin Section,Remove,Remove,Operational need unclear,Guardian / StarsShow Admin Section,RemoveRemove,TRUE,FALSE
+Guardian / Stars,Star,Guardian-Star Associations,Star,,Guardian / StarsStar,Guardian-Star AssociationsStar,TRUE,TRUE
+Guardian / Stars,Star ID,Remove,Remove,Information belongs in Stars module,Guardian / StarsStar ID,RemoveRemove,TRUE,FALSE
+Guardian / Stars,Star's Cohort Region,Remove,Remove,Information belongs in Stars module,Guardian / StarsStar's Cohort Region,RemoveRemove,TRUE,FALSE
+Educator Star Association,Created By,Educator-Star Associations,Created By,,Educator Star AssociationCreated By,Educator-Star AssociationsCreated By,TRUE,TRUE
+Educator Star Association,Educator,Educator-Star Associations,Educator,,Educator Star AssociationEducator,Educator-Star AssociationsEducator,TRUE,TRUE
+Educator Star Association,Educator Star Association Image,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Educator Star AssociationEducator Star Association Image,Remove/HideRemove/Hide,TRUE,FALSE
+Educator Star Association,Educator Star Association Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Educator Star AssociationEducator Star Association Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Educator Star Association,Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Educator Star AssociationEmail,Remove/HideRemove/Hide,TRUE,FALSE
+Educator Star Association,Email Opt Out,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Educator Star AssociationEmail Opt Out,Remove/HideRemove/Hide,TRUE,FALSE
+Educator Star Association,Modified By,Educator-Star Associations,Modified By,,Educator Star AssociationModified By,Educator-Star AssociationsModified By,TRUE,TRUE
+Educator Star Association,National Math Star,Educator-Star Associations,Star,,Educator Star AssociationNational Math Star,Educator-Star AssociationsStar,TRUE,TRUE
+Educator Star Association,School Year,Remove,Remove,Information represented using Start/End dates,Educator Star AssociationSchool Year,RemoveRemove,TRUE,FALSE
+Educator Star Association,Secondary Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Educator Star AssociationSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
+Educator Star Association,Show Admin Section,Remove,Remove,Operational need unclear,Educator Star AssociationShow Admin Section,RemoveRemove,TRUE,FALSE
+Educator Star Association,Status,Educator-Star Associations,Status,,Educator Star AssociationStatus,Educator-Star AssociationsStatus,TRUE,TRUE
+Educator Star Association,T/Star Linking ID,Remove,Remove,Operational need unclear,Educator Star AssociationT/Star Linking ID,RemoveRemove,TRUE,FALSE
+Educator Star Association,Type,Educator-Star Associations,Role (at School/Context),,Educator Star AssociationType,Educator-Star AssociationsRole (at School/Context),TRUE,TRUE
+School Star Associations,Created By,Star-School Associations,Created By,,School Star AssociationsCreated By,Star-School AssociationsCreated By,TRUE,TRUE
+School Star Associations,Created Time,Star-School Associations,Created Time,,School Star AssociationsCreated Time,Star-School AssociationsCreated Time,TRUE,TRUE
+School Star Associations,Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,School Star AssociationsEmail,Remove/HideRemove/Hide,TRUE,FALSE
+School Star Associations,Email Opt Out,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,School Star AssociationsEmail Opt Out,Remove/HideRemove/Hide,TRUE,FALSE
+School Star Associations,End,Star-School Associations,End Date,,School Star AssociationsEnd,Star-School AssociationsEnd Date,TRUE,TRUE
+School Star Associations,Last Activity Time,Star-School Associations,Last Activity Time,,School Star AssociationsLast Activity Time,Star-School AssociationsLast Activity Time,TRUE,TRUE
+School Star Associations,Modified By,Star-School Associations,Modified By,,School Star AssociationsModified By,Star-School AssociationsModified By,TRUE,TRUE
+School Star Associations,Modified Time,Star-School Associations,Modified Time,,School Star AssociationsModified Time,Star-School AssociationsModified Time,TRUE,TRUE
+School Star Associations,S/Star Linking ID,Remove,Remove,Operational need unclear,School Star AssociationsS/Star Linking ID,RemoveRemove,TRUE,FALSE
+School Star Associations,School Star Associations Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,School Star AssociationsSchool Star Associations Owner,Remove/HideRemove/Hide,TRUE,FALSE
+School Star Associations,Schools,Star-School Associations,School,,School Star AssociationsSchools,Star-School AssociationsSchool,TRUE,TRUE
+School Star Associations,Secondary Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,School Star AssociationsSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
+School Star Associations,Show Admin Section,Remove,Remove,Operational need unclear,School Star AssociationsShow Admin Section,RemoveRemove,TRUE,FALSE
+School Star Associations,Star,Star-School Associations,Star,,School Star AssociationsStar,Star-School AssociationsStar,TRUE,TRUE
+School Star Associations,Start,Star-School Associations,Start Date,,School Star AssociationsStart,Star-School AssociationsStart Date,TRUE,TRUE
+School Star Associations,Status,Star-School Associations,Status,,School Star AssociationsStatus,Star-School AssociationsStatus,TRUE,TRUE
+Mentor Star Associations,Created By,Mentor-Star Associations,Created By,,Mentor Star AssociationsCreated By,Mentor-Star AssociationsCreated By,TRUE,TRUE
+Mentor Star Associations,Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor Star AssociationsEmail,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Star Associations,Email Opt Out,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor Star AssociationsEmail Opt Out,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Star Associations,Math Mentor,Mentor-Star Associations,Mentor,,Mentor Star AssociationsMath Mentor,Mentor-Star AssociationsMentor,TRUE,TRUE
+Mentor Star Associations,Mentor Star Association Image,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor Star AssociationsMentor Star Association Image,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Star Associations,Mentor Star Association Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor Star AssociationsMentor Star Association Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Star Associations,MM/Star Linking ID,Remove,Remove,Operational need unclear,Mentor Star AssociationsMM/Star Linking ID,RemoveRemove,TRUE,FALSE
+Mentor Star Associations,Modified By,Mentor-Star Associations,Modified By,,Mentor Star AssociationsModified By,Mentor-Star AssociationsModified By,TRUE,TRUE
+Mentor Star Associations,National Math Star,Mentor-Star Associations,Star,,Mentor Star AssociationsNational Math Star,Mentor-Star AssociationsStar,TRUE,TRUE
+Mentor Star Associations,School Year,Remove,Remove,Information represented using Start/End dates,Mentor Star AssociationsSchool Year,RemoveRemove,TRUE,FALSE
+Mentor Star Associations,Secondary Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Mentor Star AssociationsSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
+Mentor Star Associations,Show Admin Section,Remove,Remove,Operational need unclear,Mentor Star AssociationsShow Admin Section,RemoveRemove,TRUE,FALSE
+Mentor Star Associations,Status,Mentor-Star Associations,Status,,Mentor Star AssociationsStatus,Mentor-Star AssociationsStatus,TRUE,TRUE
+Mentor Star Associations,Type,Remove,Remove,Operational need unclear,Mentor Star AssociationsType,RemoveRemove,TRUE,FALSE
+Advisor Star Association,Advisor Email,Remove,Remove,Information belongs in Contacts module,Advisor Star AssociationAdvisor Email,RemoveRemove,TRUE,FALSE
+Advisor Star Association,Advisor Name Alias,Remove,Remove,Unlcear operational need,Advisor Star AssociationAdvisor Name Alias,RemoveRemove,TRUE,FALSE
+Advisor Star Association,Advisor Star Association Image,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Advisor Star AssociationAdvisor Star Association Image,Remove/HideRemove/Hide,TRUE,FALSE
+Advisor Star Association,Advisor Star Association Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Advisor Star AssociationAdvisor Star Association Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Advisor Star Association,Created By,Advisor-Star Associations,Created By,,Advisor Star AssociationCreated By,Advisor-Star AssociationsCreated By,TRUE,TRUE
+Advisor Star Association,Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Advisor Star AssociationEmail,Remove/HideRemove/Hide,TRUE,FALSE
+Advisor Star Association,Email Opt Out,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Advisor Star AssociationEmail Opt Out,Remove/HideRemove/Hide,TRUE,FALSE
+Advisor Star Association,FA/Star Linking ID,Remove,Remove,Operational need unclear,Advisor Star AssociationFA/Star Linking ID,RemoveRemove,TRUE,FALSE
+Advisor Star Association,Family Advisor,Advisor-Star Associations,Advisor,,Advisor Star AssociationFamily Advisor,Advisor-Star AssociationsAdvisor,TRUE,TRUE
+Advisor Star Association,Modified By,Advisor-Star Associations,Modified By,,Advisor Star AssociationModified By,Advisor-Star AssociationsModified By,TRUE,TRUE
+Advisor Star Association,School Year,Remove,Remove,Information represented using Start/End dates,Advisor Star AssociationSchool Year,RemoveRemove,TRUE,FALSE
+Advisor Star Association,Secondary Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Advisor Star AssociationSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
+Advisor Star Association,Show Admin Section,Remove,Remove,Operational need unlcear,Advisor Star AssociationShow Admin Section,RemoveRemove,TRUE,FALSE
+Advisor Star Association,Star,Advisor-Star Associations,Star,,Advisor Star AssociationStar,Advisor-Star AssociationsStar,TRUE,TRUE
+Advisor Star Association,Status,Advisor-Star Associations,Status,,Advisor Star AssociationStatus,Advisor-Star AssociationsStatus,TRUE,TRUE
+Media,Date of Media Creation,Media,Media Date,,MediaDate of Media Creation,MediaMedia Date,TRUE,TRUE
+Media,Image Uploads (Max 10),Media,File URL / Attachment,,MediaImage Uploads (Max 10),MediaFile URL / Attachment,TRUE,TRUE
+Media,Media Link,Media,File URL / Attachment,,MediaMedia Link,MediaFile URL / Attachment,TRUE,TRUE
+Media,Media Name,Media,Description,,MediaMedia Name,MediaDescription,TRUE,TRUE
+Media,Media Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,MediaMedia Owner,Remove/HideRemove/Hide,TRUE,FALSE
+Media,Outcome (if applicable),Media,Outcome (if applicable),,MediaOutcome (if applicable),MediaOutcome (if applicable),TRUE,TRUE
+Media,Star,Media,Star (if not via Outcome),,MediaStar,MediaStar (if not via Outcome),TRUE,TRUE
+Media,STEM Enrichment (if applicable),Media,Enrichment (If applicable),,MediaSTEM Enrichment (if applicable),MediaEnrichment (If applicable),TRUE,TRUE
+Media,Video Upload,Media,File URL / Attachment,,MediaVideo Upload,MediaFile URL / Attachment,TRUE,TRUE
