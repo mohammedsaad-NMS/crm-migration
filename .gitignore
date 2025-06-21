@@ -1,2 +1,19 @@
-git init
+# macOS
+.DS_Store
 
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtualenvs
+.venv/
+venv/
+env/
+
+# VS Code
+.vscode/
+
+# Logs / outputs
+logs/
+output/
