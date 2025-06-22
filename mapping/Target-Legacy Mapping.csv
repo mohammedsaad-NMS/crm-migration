@@ -7,10 +7,10 @@ Accounts,Add Third Guardian,Remove,Remove,Outdated process artifact,AccountsAdd 
 Accounts,AoPS Username,Remove,Remove,,AccountsAoPS Username,RemoveRemove,TRUE,FALSE
 Accounts,Applicant Status,Remove,Remove,Information belongs in Applicant module,AccountsApplicant Status,RemoveRemove,TRUE,FALSE
 Accounts,Applicant_Id,Remove,Remove,Information is the same as NMS Star ID,AccountsApplicant_Id,RemoveRemove,TRUE,FALSE
-Accounts,Billing City,Households,City,,AccountsBilling City,HouseholdsCity,TRUE,TRUE
-Accounts,Billing Code,Households,Zip Code,,AccountsBilling Code,HouseholdsZip Code,TRUE,TRUE
-Accounts,Billing State,Households,State,,AccountsBilling State,HouseholdsState,TRUE,TRUE
-Accounts,Billing Street,Households,Street,,AccountsBilling Street,HouseholdsStreet,TRUE,TRUE
+Accounts,Billing City,Remove/Hide,Remove/Hide,,AccountsBilling City,Remove/HideRemove/Hide,TRUE,FALSE
+Accounts,Billing Code,Remove/Hide,Remove/Hide,,AccountsBilling Code,Remove/HideRemove/Hide,TRUE,FALSE
+Accounts,Billing State,Remove/Hide,Remove/Hide,,AccountsBilling State,Remove/HideRemove/Hide,TRUE,FALSE
+Accounts,Billing Street,Remove/Hide,Remove/Hide,,AccountsBilling Street,Remove/HideRemove/Hide,TRUE,FALSE
 Accounts,Child In Programs,Remove,Remove,Outdated process artifact,AccountsChild In Programs,RemoveRemove,TRUE,FALSE
 Accounts,CogAT Standard Nonverbal,Test Scores,Score Value,,AccountsCogAT Standard Nonverbal,Test ScoresScore Value,TRUE,TRUE
 Accounts,CoGAT Standard Quant,Test Scores,Score Value,,AccountsCoGAT Standard Quant,Test ScoresScore Value,TRUE,TRUE
@@ -39,11 +39,13 @@ Accounts,Most Recent Advisor Meeting,Households,Last Advisor Meeting,,AccountsMo
 Accounts,Name of Current School,Stars,Current School,,AccountsName of Current School,StarsCurrent School,TRUE,TRUE
 Accounts,Number of People in Household,Households,Family Size,,AccountsNumber of People in Household,HouseholdsFamily Size,TRUE,TRUE
 Accounts,Occupations,Contacts,Occupation,,AccountsOccupations,ContactsOccupation,TRUE,TRUE
-Accounts,Other  Family Information,Households,Special Cirumstances,,AccountsOther  Family Information,HouseholdsSpecial Cirumstances,TRUE,FALSE
+Accounts,Other  Family Information,Households,Special Circumstances,,AccountsOther  Family Information,HouseholdsSpecial Circumstances,TRUE,TRUE
 Accounts,Ownership,Remove,Remove,Redundant field from Accounts,AccountsOwnership,RemoveRemove,TRUE,FALSE
 Accounts,Parent Account,Remove,Remove,Concept replaced by Mentor-Star association,AccountsParent Account,RemoveRemove,TRUE,FALSE
 Accounts,Primary Guardian City,Contacts,Mailing City,,AccountsPrimary Guardian City,ContactsMailing City,TRUE,TRUE
 Accounts,Primary Guardian Country,Contacts,Mailing Country,,AccountsPrimary Guardian Country,ContactsMailing Country,TRUE,TRUE
+Accounts,Primary Guardian City,Households,City,,AccountsPrimary Guardian City,HouseholdsCity,TRUE,TRUE
+Accounts,Primary Guardian Country,Contacts,Country,,AccountsPrimary Guardian Country,ContactsCountry,TRUE,FALSE
 Accounts,Primary Guardian Email,Contacts,Email,,AccountsPrimary Guardian Email,ContactsEmail,TRUE,TRUE
 Accounts,Primary Guardian First Name,Contacts,First Name,,AccountsPrimary Guardian First Name,ContactsFirst Name,TRUE,TRUE
 Accounts,Primary Guardian is Only Legal Guardian,Guardian-Star Associations,Is Only Legal Guardian,,AccountsPrimary Guardian is Only Legal Guardian,Guardian-Star AssociationsIs Only Legal Guardian,TRUE,TRUE
@@ -57,7 +59,10 @@ Accounts,Primary Guardian Send Emails,Contacts,Opt-out Email,,AccountsPrimary Gu
 Accounts,Primary Guardian Send Texts,Contacts,Opt-out Text (SMS),,AccountsPrimary Guardian Send Texts,ContactsOpt-out Text (SMS),TRUE,TRUE
 Accounts,Primary Guardian State,Contacts,Mailing State,,AccountsPrimary Guardian State,ContactsMailing State,TRUE,TRUE
 Accounts,Primary Guardian Street,Contacts,Mailing Street,,AccountsPrimary Guardian Street,ContactsMailing Street,TRUE,TRUE
-Accounts,Primary Guardian Zip,Contacts,Mailing Zip Code,,AccountsPrimary Guardian Zip,ContactsMailing Zip Code,TRUE,TRUE
+Accounts,Primary Guardian Zip,Contacts,Zip Code,,AccountsPrimary Guardian Zip,ContactsZip Code,TRUE,FALSE
+Accounts,Primary Guardian State,Households,State,,AccountsPrimary Guardian State,HouseholdsState,TRUE,TRUE
+Accounts,Primary Guardian Street,Households,Street,,AccountsPrimary Guardian Street,HouseholdsStreet,TRUE,TRUE
+Accounts,Primary Guardian Zip,Households,Zip Code,,AccountsPrimary Guardian Zip,HouseholdsZip Code,TRUE,TRUE
 Accounts,School NCES ID,Schools,NCES ID,,AccountsSchool NCES ID,SchoolsNCES ID,TRUE,TRUE
 Accounts,Schools,Star-School Associations,School,,AccountsSchools,Star-School AssociationsSchool,TRUE,TRUE
 Accounts,Second Guardian Other Language,Contacts,Other Language,,AccountsSecond Guardian Other Language,ContactsOther Language,TRUE,TRUE
@@ -341,15 +346,18 @@ Districts / Schools,Created By,Districts,Created By,,Districts / SchoolsCreated 
 Districts / Schools,District / School Name,Schools,Name,,Districts / SchoolsDistrict / School Name,SchoolsName,TRUE,TRUE
 Districts / Schools,District / School Owner,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Districts / SchoolsDistrict / School Owner,Remove/HideRemove/Hide,TRUE,FALSE
 Districts / Schools,District / School Name,Districts,Name,,Districts / SchoolsDistrict / School Name,DistrictsName,TRUE,TRUE
+Districts / Schools,District Size,Remove,Remove,,Districts / SchoolsDistrict Size,RemoveRemove,TRUE,FALSE
 Districts / Schools,District Type,Districts,Type,,Districts / SchoolsDistrict Type,DistrictsType,TRUE,TRUE
 Districts / Schools,District Website,Districts,Website,,Districts / SchoolsDistrict Website,DistrictsWebsite,TRUE,TRUE
 Districts / Schools,Email,Districts,Email,,Districts / SchoolsEmail,DistrictsEmail,TRUE,TRUE
+Districts / Schools,Email Opt Out,Remove,Remove,,Districts / SchoolsEmail Opt Out,RemoveRemove,TRUE,FALSE
 Districts / Schools,Modified By,Schools,Modified By,,Districts / SchoolsModified By,SchoolsModified By,TRUE,TRUE
 Districts / Schools,Modified By,Districts,Modified By,,Districts / SchoolsModified By,DistrictsModified By,TRUE,TRUE
 Districts / Schools,NCES District ID,Districts,NCES ID,,Districts / SchoolsNCES District ID,DistrictsNCES ID,TRUE,TRUE
 Districts / Schools,NCES District Link,Districts,NCES District Link,,Districts / SchoolsNCES District Link,DistrictsNCES District Link,TRUE,TRUE
 Districts / Schools,NCES School ID,Schools,NCES ID,,Districts / SchoolsNCES School ID,SchoolsNCES ID,TRUE,TRUE
 Districts / Schools,NCES School Link,Schools,NCES School Link,,Districts / SchoolsNCES School Link,SchoolsNCES School Link,TRUE,TRUE
+Districts / Schools,Regional Service Center,Remove,Remove,,Districts / SchoolsRegional Service Center,RemoveRemove,TRUE,FALSE
 Districts / Schools,School Grades,Schools,Grades Served,,Districts / SchoolsSchool Grades,SchoolsGrades Served,TRUE,TRUE
 Districts / Schools,School Size,Schools,Size,,Districts / SchoolsSchool Size,SchoolsSize,TRUE,TRUE
 Districts / Schools,School Type,Schools,Type,,Districts / SchoolsSchool Type,SchoolsType,TRUE,TRUE
@@ -357,6 +365,7 @@ Districts / Schools,School Website,Schools,Website,,Districts / SchoolsSchool We
 Districts / Schools,Secondary Email,Remove/Hide,Remove/Hide,Standard fields; operational need unclear,Districts / SchoolsSecondary Email,Remove/HideRemove/Hide,TRUE,FALSE
 Districts / Schools,Setting,Schools,Setting,,Districts / SchoolsSetting,SchoolsSetting,TRUE,TRUE
 Districts / Schools,Show Admin Section,Remove,Remove,Operational need unclear,Districts / SchoolsShow Admin Section,RemoveRemove,TRUE,FALSE
+Districts / Schools,Setting,Remove,Remove,,Districts / SchoolsSetting,RemoveRemove,TRUE,FALSE
 Districts / Schools,State,Schools,State,,Districts / SchoolsState,SchoolsState,TRUE,TRUE
 Districts / Schools,State,Districts,State,,Districts / SchoolsState,DistrictsState,TRUE,TRUE
 Districts / Schools,Street,Schools,Street,,Districts / SchoolsStreet,SchoolsStreet,TRUE,TRUE

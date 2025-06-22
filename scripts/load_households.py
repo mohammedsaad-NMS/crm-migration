@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Households Loader — National Math Stars CRM Migration
 ----------------------------------------------------
@@ -20,7 +19,7 @@ from pathlib import Path
 
 import pandas as pd
 
-pd.options.mode.chained_assignment = None          
+pd.options.mode.chained_assignment = None
 
 from scripts.etl_lib import (
     read_mapping, read_target_catalog, assert_target_pairs_exist,
@@ -45,6 +44,7 @@ log = logging.getLogger(__name__)
 
 # ───────────────────── HELPERS ──────────────────────
 def make_family_key(row: pd.Series) -> str | None:
+    """Generates a consistent key for a family based on guardian and zip."""
     fn = str(row.get("Primary Guardian First Name", "")).strip().lower()
     ln = str(row.get("Primary Guardian Last Name", "")).strip().lower()
     zp = str(row.get("Primary Guardian Zip", "")).strip()
@@ -57,18 +57,21 @@ def main() -> None:
     # 1. LOAD & PREP LEGACY DATA
     log.info("Loading and preparing legacy Accounts data...")
     df_raw = pd.read_csv(ACCOUNTS_CSV)
-    df_raw = df_raw[df_raw["Account Type"].str.strip().eq("Star")]
+    df_raw = df_raw[df_raw["Account Type"].str.strip().eq("Star")].copy()
     log.info(f"Filtered to {len(df_raw)} 'Star' account records.")
+
+    df_raw["family_key"] = df_raw.apply(make_family_key, axis=1)
+    df_raw = df_raw[df_raw["family_key"].notna()]
+    log.info(f"Successfully generated family keys for {len(df_raw)} records.")
 
     mapping  = read_mapping().query("`Target Module` == 'Households'")
     catalog  = read_target_catalog()
     assert_target_pairs_exist("Households", mapping, catalog)
 
     df_ui = transform_legacy_df(df_raw, mapping)
+
+    df_ui["family_key"] = df_raw["family_key"]
     df_ui[COHORT_COL]   = pd.to_numeric(df_raw[COHORT_COL], errors="coerce")
-    df_ui["family_key"] = df_raw.apply(make_family_key, axis=1)
-    df_ui = df_ui[df_ui["family_key"].notna()]
-    log.info(f"Successfully generated family keys for {len(df_ui)} records.")
 
     # 2. DEDUPLICATION & AGGREGATION
     log.info("Deduplicating records to keep the most recent for each family...")
@@ -91,17 +94,18 @@ def main() -> None:
 
     # 3. FINAL FORMATTING & CLEANING
     log.info("Applying final formatting and cleaning rules...")
-
-    # Build Household Name using data from the latest record
+    
     latest_guard = (
         df_raw.sort_values(COHORT_COL, na_position="first")
               .groupby("family_key")
               .tail(1)
               .set_index("family_key")
     )
+    
+    # Use .loc to ensure we are modifying the 'latest' DataFrame safely
     latest["Household Name"] = latest_guard.apply(
-        lambda r: f"{r['Primary Guardian First Name'][0].upper()}. "
-                  f"{r['Primary Guardian Last Name'].title()} Household",
+        lambda r: f"{str(r['Primary Guardian First Name'])[0].upper()}. "
+                  f"{str(r['Primary Guardian Last Name']).title()} Household",
         axis=1,
     )
     

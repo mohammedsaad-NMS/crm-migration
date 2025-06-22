@@ -7,7 +7,7 @@ Households,households,Metro Area,metro_area,Stored (Picklist),,Data exists,Use s
 Households,households,Family Benefits,family_benefits,Stored (Multi-Select Picklist),,Data exists,SNAP; WIC; TANF; Free or Reduced-Price School Lunch; Medicaid; CHIP; Housing Assistance,HouseholdsFamily Benefits
 Households,households,Highest Level of Education,education_level,Stored (Picklist),,Data exists,Same values from Applicants module (Parent Education Level).,HouseholdsHighest Level of Education
 Households,households,Media Release,media_release,Stored (Boolean),,Data exists,,HouseholdsMedia Release
-Households,households,Special Circumstances,special_circumstances,Stored (Multi-Select Picklist),,New addition,Same values from Applicant module (Family Circumstances). ,HouseholdsSpecial Circumstances
+Households,households,Special Circumstances,special_circumstances,Stored (Multi-Select Picklist),,Data exists,Same values from Applicant module (Family Circumstances). ,HouseholdsSpecial Circumstances
 Households,households,Last Advisor Meeting,last_advisor_meeting,Formula (Pull from Advisor Meetings Module),,Non-stored data,,HouseholdsLast Advisor Meeting
 Households,households,Related Stars,(N/A),Related List (Visual),Shows Stars records linked via stars.household_id (Zoho ID),Non-stored data,Section on layout.,HouseholdsRelated Stars
 Households,households,Related Guardians (All),(N/A),Related List (Visual) / Custom View,Shows Contact (Guardians) linked via Stars in this Household,Non-stored data,Section on layout; may need custom functions to show unique guardians across all Stars.,HouseholdsRelated Guardians (All)
@@ -145,15 +145,14 @@ Educator-Star Associations,educator_star,Created By,(Zoho System Field),System (
 Educator-Star Associations,educator_star,Modified By,(Zoho System Field),System (Zoho Managed),,Non-stored data,,Educator-Star AssociationsModified By
 Districts,districts,District Record ID (Zoho ID),district_id (represents Zoho PK),System (Zoho Primary Key),(N/A - is PK),Non-stored data,Zoho's unique system-generated ID for this District record.,DistrictsDistrict Record ID (Zoho ID)
 Districts,districts,Name,name,Stored (Text),,Data exists,Mandatory.,DistrictsName
-Districts,districts,NCES ID,nces_id,Stored (Text),,Data exists,National Center for Education Statistics ID.,DistrictsNCES ID
 Districts,districts,City,city,Stored (Text),,Data exists,,DistrictsCity
 Districts,districts,State,state,Stored (Picklist),,Data exists,Standard US States and Territories list.,DistrictsState
 Districts,districts,Street,street,Stored (Text),,Data exists,,DistrictsStreet
 Districts,districts,Zip Code,zip_code,Stored (Text),,Data exists,,DistrictsZip Code
 Districts,districts,Phone,phone,Stored (Phone),,New addition,,DistrictsPhone
 Districts,districts,Email,email,Stored (Email),,Data exists,,DistrictsEmail
+Districts,districts,NCES ID,nces_id,Stored (Text),,Data exists,National Center for Education Statistics ID.,DistrictsNCES ID
 Districts,districts,NCES District Link,nces_link,Stored (URL),,Data exists,,DistrictsNCES District Link
-Districts,districts,Size,district_size,Stored (Text/Number),,Data exists,,DistrictsSize
 Districts,districts,Type,district_type,Stored (Picklist),,Data exists,"Charter, Regular Local, Regional (RESA), State (From NCES)",DistrictsType
 Districts,districts,Website,website,Stored (URL),,Data exists,,DistrictsWebsite
 Districts,districts,Schools in District,(N/A),Related List (Visual),Shows schools records linked via schools.district_id (Zoho ID),Non-stored data,Section on layout.,DistrictsSchools in District

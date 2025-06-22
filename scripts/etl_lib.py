@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 ETL Library — National Math Stars CRM Migration
 =================================================================
