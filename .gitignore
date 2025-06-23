@@ -17,3 +17,5 @@ env/
 # Logs / outputs
 logs/
 output/
+.env
+cache/

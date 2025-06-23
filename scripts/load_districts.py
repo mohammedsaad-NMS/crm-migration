@@ -232,10 +232,6 @@ def main() -> None:
         latest.loc[has_nces_id_mask, 'NCES District Link'] = NCES_URL_BASE + latest.loc[has_nces_id_mask, 'NCES ID']
         log.info(f"Generated {has_nces_id_mask.sum()} NCES district links.")
 
-    # Clean any remaining simple text fields
-    if "District Size" in latest.columns:
-        latest["District Size"] = to_int_if_whole(latest["District Size"])
-
     # 6. FINALIZE COLUMNS AND OUTPUT
     log.info("Finalizing columns for output...")
     # Get the final list of columns required for the UI from the catalog

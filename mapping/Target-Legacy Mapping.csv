@@ -318,6 +318,7 @@ Products,Taxable,Remove/Hide,Remove/Hide,Standard Products field,ProductsTaxable
 Products,Topic,Products,Topic,,ProductsTopic,ProductsTopic,TRUE,TRUE
 Products,Unit Price,Remove,Remove,,ProductsUnit Price,RemoveRemove,TRUE,FALSE
 Products,Usage Unit,Remove/Hide,Remove/Hide,Standard Products field,ProductsUsage Unit,Remove/HideRemove/Hide,TRUE,FALSE
+Partners,Record Id,Partners,Partner Record ID (Zoho ID)
 Partners,City,Partners,City,,PartnersCity,PartnersCity,TRUE,TRUE
 Partners,Country,Partners,Country,,PartnersCountry,PartnersCountry,TRUE,TRUE
 Partners,Created By,Partners,Created By,,PartnersCreated By,PartnersCreated By,TRUE,TRUE
