@@ -91,6 +91,59 @@ def ui_to_api_headers(df_ui: pd.DataFrame,
 # ════════════════════════════════════════════════════════════════════════════
 #                               GENERAL CLEANERS
 # ════════════════════════════════════════════════════════════════════════════
+def intelligent_title_case(text: str) -> str:
+    """
+    Applies intelligent title casing to a string.
+    - Expands common abbreviations.
+    - Handles ordinal suffixes (e.g., '1st').
+    - Keeps minor words lowercase.
+    - Forces specific acronyms to uppercase.
+    """
+    if pd.isna(text):
+        return text
+
+    text = str(text).lower()
+
+    # 1. Expand abbreviations
+    replacements = {
+        r'\bel\b': 'Elementary School',
+        r'\bhts\b': 'Heights',
+        r'\bpri\b': 'Primary',
+        r'\bmiddle\b': 'Middle School',
+        r'\bcharter\b': 'Charter School'
+    }
+    for pattern, repl in replacements.items():
+        text = re.sub(pattern, repl, text, flags=re.I)
+    
+    # 2. Basic title casing
+    words = text.split()
+    
+    # 3. Handle minor words, ordinals, and acronyms
+    minor_words = {'of', 'for', 'and', 'the', 'a', 'an', 'in', 'on', 'at'}
+    acronyms = {'IDEA', 'ILTexas', 'ISD'}
+    
+    final_words = []
+    for i, word in enumerate(words):
+        # Keep acronyms uppercase
+        if word.upper() in acronyms:
+            final_words.append(word.upper())
+            continue
+            
+        # Handle ordinals (e.g., 1st, 2nd)
+        if re.match(r'^\d+(st|nd|rd|th)$', word):
+            final_words.append(word)
+            continue
+            
+        # Title case the word
+        titled_word = word.capitalize()
+        
+        # Lowercase minor words unless it's the first word
+        if i > 0 and titled_word.lower() in minor_words:
+            final_words.append(word.lower())
+        else:
+            final_words.append(titled_word)
+
+    return ' '.join(final_words)
 
 # Strip extensions from zip codes (e.g., "78757-1234" -> "78757").
 _ZIP_RE = re.compile(r"[\s-].*$")
@@ -157,7 +210,7 @@ def standardize_address_block(df: pd.DataFrame,
         addr1 = _clean(parsed_df["address_line_1"])
         addr2 = _clean(parsed_df.get("address_line_2", pd.Series(index=parsed_df.index)))
         full_street = (addr1 + " " + addr2).str.strip()
-        parsed_df["address_line_1"] = full_street.str.title()
+        parsed_df["address_line_1"] = full_street.apply(intelligent_title_case)
         if "address_line_2" in parsed_df.columns:
             parsed_df.drop(columns=["address_line_2"], inplace=True)
 
