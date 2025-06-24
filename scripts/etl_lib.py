@@ -75,19 +75,6 @@ def transform_legacy_df(df_legacy: pd.DataFrame,
     cols_to_rename = [col for col in rename_map.keys() if col in df_legacy.columns]
     return df_legacy[cols_to_rename].rename(columns=rename_map)
 
-# Convert a UI-ready DataFrame's headers to the technical API names for import.
-def ui_to_api_headers(df_ui: pd.DataFrame,
-                      module_ui: str,
-                      target_cat: pd.DataFrame) -> pd.DataFrame:
-    lookup = (
-        target_cat
-        .query("`User-Facing Module Name` == @module_ui")
-        .set_index("User-Facing Field Name")["Technical Field Name"]
-        .dropna()
-    )
-    rename_api = {ui: api for ui, api in lookup.items() if ui in df_ui.columns}
-    return df_ui.rename(columns=rename_api)
-
 # ════════════════════════════════════════════════════════════════════════════
 #                               GENERAL CLEANERS
 # ════════════════════════════════════════════════════════════════════════════

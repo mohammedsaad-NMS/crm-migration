@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Schools Loader — National Math Stars CRM Migration
 ============================================================
@@ -12,7 +11,7 @@ The process includes:
 * Deduplicating records post-enrichment to keep only the most recently modified entry.
 * Standardizing and formatting all fields, including addresses and names.
 * Generating a direct NCES link for every school with an NCES ID.
-* Generating final UI and API-ready CSV files.
+* Generating final UI-ready CSV files.
 """
 
 from __future__ import annotations
@@ -27,8 +26,7 @@ pd.options.mode.chained_assignment = None
 
 from scripts.etl_lib import (
     read_mapping, read_target_catalog, assert_target_pairs_exist,
-    transform_legacy_df, ui_to_api_headers,
-    standardize_address_block, intelligent_title_case, # Import the centralized function
+    transform_legacy_df, standardize_address_block, intelligent_title_case,
 )
 
 # ───────────────────────── CONFIG ──────────────────────────
@@ -244,16 +242,10 @@ def main() -> None:
     latest = latest[[col for col in ui_cols if col in latest.columns]]
 
     # 7. WRITE OUTPUTS
-    ui_path = OUTPUT_DIR / "Schools_ui.csv"
-    api_path = OUTPUT_DIR / "Schools_api.csv"
+    ui_path = OUTPUT_DIR / "Schools.csv"
 
     latest.to_csv(ui_path, index=False)
-    log.info(f"Wrote UI data to {ui_path}")
-
-    api_df = ui_to_api_headers(latest, "Schools", catalog)
-    api_df.to_csv(api_path, index=False)
-    log.info(f"Wrote API data to {api_path}")
-
+    log.info(f"Wrote data to {ui_path}")
 
 if __name__ == "__main__":
     main()

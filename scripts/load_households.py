@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
 """
 Households Loader — National Math Stars CRM Migration
-----------------------------------------------------
+============================================================
 This script processes the legacy Accounts export to create a clean list of
 unique Household records.
 
@@ -11,7 +10,7 @@ The process includes:
 * Keeping only the most recent record for each family based on Cohort Entry Year.
 * Aggregating all historical notes for a family into a single record.
 * Standardizing and cleaning address and text fields.
-* Generating final UI and API-ready CSV files.
+* Generating final UI-ready CSV files.
 """
 
 from __future__ import annotations
@@ -24,8 +23,7 @@ pd.options.mode.chained_assignment = None
 
 from scripts.etl_lib import (
     read_mapping, read_target_catalog, assert_target_pairs_exist,
-    transform_legacy_df, ui_to_api_headers,
-    to_int_if_whole, strip_translation,
+    transform_legacy_df, to_int_if_whole, strip_translation,
     standardize_address_block, intelligent_title_case, # Import the enhanced function
 )
 
@@ -154,15 +152,9 @@ def main() -> None:
     log.info("Writing output files...")
     
     # Write the UI-ready CSV
-    ui_path = OUTPUT_DIR / "Households_ui.csv"
+    ui_path = OUTPUT_DIR / "Households.csv"
     latest.reset_index(drop=True).to_csv(ui_path, index=False)
-    log.info(f"Wrote UI data to {ui_path}")
-
-    # Write the API-ready CSV
-    api_df = ui_to_api_headers(latest.reset_index(drop=True), "Households", catalog)
-    api_path = OUTPUT_DIR / "Households_api.csv"
-    api_df.to_csv(api_path, index=False)
-    log.info(f"Wrote API data to {api_path}")
+    log.info(f"Wrote data to {ui_path}")
 
 if __name__ == "__main__":
     main()
