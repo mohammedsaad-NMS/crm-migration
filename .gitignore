@@ -14,8 +14,9 @@ env/
 # VS Code
 .vscode/
 
-# Logs / outputs
+# Logs / inputs / outputs
 logs/
 output/
 .env
 cache/
+mapping/
