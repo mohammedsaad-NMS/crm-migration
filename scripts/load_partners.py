@@ -53,10 +53,10 @@ def main() -> None:
     df_ui = transform_legacy_df(df_raw, mapping)
 
     # 4. ENSURE ALL UI COLUMNS EXIST (ADD EMPTY ONES AS NEEDED)
-    ui_cols = (
-        catalog.query("`User-Facing Module Name` == 'Partners'")
-               .query("`Data Source / Type`.str.contains('Related List') == False")
-               ["User-Facing Field Name"].tolist()
+    ui_cols = (catalog.query("`User-Facing Module Name` == 'Partners'")
+               .query("`Data Source / Type`.str.contains('Related List') == False "
+                      "and `Data Source / Type`.str.contains('System') == False")
+                      ["User-Facing Field Name"].tolist()
     )
     for col in ui_cols:
         if col not in df_ui.columns:

@@ -188,9 +188,11 @@ def main() -> None:
 
     # 6. FINALIZE COLUMNS AND OUTPUT
     log.info("Finalizing columns for output...")
-    ui_cols = catalog.query("`User-Facing Module Name` == 'Districts'")\
-                    .query("`Data Source / Type`.str.contains('Related List') == False")\
-                    ["User-Facing Field Name"].tolist()
+    ui_cols = (catalog.query("`User-Facing Module Name` == 'Districts'")
+               .query("`Data Source / Type`.str.contains('Related List') == False "
+                      "and `Data Source / Type`.str.contains('System') == False")
+                      ["User-Facing Field Name"].tolist()
+    )
 
     for col in ui_cols:
         if col not in latest.columns:

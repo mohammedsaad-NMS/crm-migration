@@ -78,6 +78,15 @@ def transform_legacy_df(df_legacy: pd.DataFrame,
 # ════════════════════════════════════════════════════════════════════════════
 #                               GENERAL CLEANERS
 # ════════════════════════════════════════════════════════════════════════════
+def make_household_key(row: pd.Series) -> str | None:
+    fn = str(row.get("Primary Guardian First Name", "")).strip().lower()
+    ln = str(row.get("Primary Guardian Last Name", "")).strip().lower()
+    zp = str(row.get("Primary Guardian Zip", "")).strip()
+
+    if not fn or not ln or not zp or fn in ("nan", "none") or ln in ("nan", "none"):
+        return None
+    return f"{fn[0]}|{ln}|{zp}"
+
 def intelligent_title_case(text: str) -> str:
     """
     Applies intelligent title casing to a string.
