@@ -27,12 +27,13 @@ pd.options.mode.chained_assignment = None
 from scripts.etl_lib import (
     read_mapping, read_target_catalog, assert_target_pairs_exist,
     transform_legacy_df, standardize_address_block, intelligent_title_case,
+    digits_only_phone
 )
 
 # ───────────────────────── CONFIG ──────────────────────────
 RECENCY_COL = "Modified Time"
 BASE_DIR    = Path(__file__).resolve().parent
-LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Districts___Schools_2025_06_23.csv"
+LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Districts___Schools_2025_06_25.csv"
 NCES_CSV    = BASE_DIR.parent / "reference" / "20250623 NCES School Extract.csv"
 OUTPUT_DIR  = BASE_DIR.parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
@@ -152,7 +153,7 @@ def main() -> None:
         "Location City [Public School] 2023-24": "City",
         "Location ZIP [Public School] 2023-24": "Zip Code",
         "Web Site URL [Public School] 2023-24": "Website",
-        "Agency Name [Public School] 2023-24": "District",
+        "Agency ID - NCES Assigned [Public School] Latest available year": "District (Dummy)",
     }
     ref = pd.read_csv(NCES_CSV, dtype=str, usecols=nces_to_ui.keys(), low_memory=False).rename(columns=nces_to_ui)
     
@@ -182,7 +183,7 @@ def main() -> None:
     log.info("Overwriting legacy data with authoritative NCES data...")
     matched_mask = df_ui["match_idx"].notna()
     
-    cols_to_enrich = ["Name", "NCES ID", "Street", "City", "State", "Zip Code", "Phone", "Website", "Type", "District", "Setting", "Size", "Grades Served"]
+    cols_to_enrich = ["Name", "NCES ID", "Street", "City", "State", "Zip Code", "Phone", "Website", "Type", "District (Dummy)", "Setting", "Size", "Grades Served"]
     
     for col_name in cols_to_enrich:
         target_col = col_name
@@ -208,13 +209,15 @@ def main() -> None:
     latest["Name"] = latest["Name"].apply(intelligent_title_case)
 
     # Apply school-specific business rules
-    latest["Setting"] = latest["Setting"].str.extract(r"-\s*([^:]+):", expand=False).str.title().replace({"Suburb": "Suburban"})
+    latest["Setting"] = latest["Setting"].str.extract(r"-\s*([^:]+):", expand=False).str.title()
     latest["Size"] = latest["Size"].apply(size_bucket)
 
     # Standardize address block using etl_lib function
     standardize_address_block(latest, {
         "address_line_1": "Street", "city": "City", "state": "State", "postal_code": "Zip Code"
     })
+
+    latest["Phone"] = digits_only_phone(latest["Phone"])
     
     # Generate NCES Link
     log.info("Generating NCES links...")

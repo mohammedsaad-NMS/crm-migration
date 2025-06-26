@@ -157,8 +157,12 @@ def strip_translation(val: str) -> str:
 # Convert float values to integers if they have no decimal part (e.g., 3.0 -> 3).
 def to_int_if_whole(series: pd.Series) -> pd.Series:
     return series.apply(
-        lambda x: int(x) if pd.notna(x) and float(x).is_integer() else x
-    )
+        lambda x: int(x) if pd.notna(x) and float(x).is_integer() else x)
+
+_PHONE_RE = re.compile(r"\D+")
+def digits_only_phone(series: pd.Series) -> pd.Series:
+    cleaned = series.astype(str).apply(lambda s: _PHONE_RE.sub("", s))
+    return cleaned.replace("", pd.NA)
 
 # ════════════════════════════════════════════════════════════════════════════
 #                ADDRESS NORMALISER (scourgify)
