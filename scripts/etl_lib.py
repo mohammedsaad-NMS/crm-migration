@@ -229,3 +229,4 @@ def standardize_address_block(df: pd.DataFrame,
         df.update(parsed_df)
 
     return df
+
