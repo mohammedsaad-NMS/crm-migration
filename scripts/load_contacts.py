@@ -16,7 +16,7 @@ from scripts.etl_lib import (
     read_mapping, read_target_catalog, assert_target_pairs_exist,
     transform_legacy_df,
     intelligent_title_case, strip_translation,
-    standardize_address_block,
+    standardize_address_block, digits_only_phone
 )
 
 # ───────── CONFIG ─────────
@@ -207,6 +207,10 @@ def main() -> None:
         "state":          "Mailing State",
         "postal_code":    "Mailing Zip Code",
     })
+
+    df_all['Phone'] = digits_only_phone(df_all['Phone'])
+    df_all['Email'] = df_all['Email'].str.lower()
+
 
     # --- NEW: Set default opt-out values for any empty rows ---
     if "Opt-out Email" in df_all.columns:
