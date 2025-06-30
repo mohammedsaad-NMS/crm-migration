@@ -24,7 +24,9 @@ BASE = Path(__file__).resolve().parent
 ACCOUNTS_CSV = BASE.parent / "mapping" / "legacy-exports" / "Accounts_2025_06_24.csv"
 CONTACTS_CSV = BASE.parent / "mapping" / "legacy-exports" / "Contacts_2025_06_25.csv"
 OUTPUT_DIR   = BASE.parent / "output"
+CACHE_DIR   = BASE.parent / "cache"
 OUTPUT_DIR.mkdir(exist_ok=True)
+CACHE_DIR.mkdir(exist_ok=True)
 
 logging.basicConfig(level="INFO",
     format="%(asctime)s [%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
@@ -235,6 +237,8 @@ def main() -> None:
     df_all = df_all[[c for c in ui_cols if c in df_all.columns]]
 
     # ---------- 6. Write output ---------------------------------
+    df_all[df_all[ROLE_FIELD] == "Math Mentor"][['First Name', 'Last Name']].to_csv(CACHE_DIR / "math_mentors_names.csv", index=False)
+    
     out_file = OUTPUT_DIR / "Contacts.csv"
     df_all.to_csv(out_file, index=False)
     log.info("Wrote %s (%d rows)", out_file, len(df_all))
