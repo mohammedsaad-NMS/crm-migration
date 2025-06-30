@@ -44,7 +44,6 @@ LEGACY_FILES = {
 OUTPUT_DIR   = BASE_DIR.parent / "output"
 CACHE_DIR    = BASE_DIR.parent / "cache"
 OUTPUT_CSV   = OUTPUT_DIR / "Products.csv"
-CONFLICT_CSV = OUTPUT_DIR / "Products_conflict_ids.csv"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -165,12 +164,6 @@ def main() -> None:
 
     df_enrich  = transform_legacy_df(enrich_raw, map_enrich)
     df_enrich["Record Id"] = enrich_raw["Enrichment.id"].str.strip()
-
-    # 5. Detect & report conflicts
-    dup_ids: Set[str] = set(df_course["Record Id"]).intersection(df_enrich["Record Id"])
-    if dup_ids:
-        pd.DataFrame({"Record Id": sorted(list(dup_ids))}).to_csv(CONFLICT_CSV, index=False)
-        log.warning("Duplicate Record Ids across Course & Enrichment: %d (see %s)", len(dup_ids), CONFLICT_CSV.name)
 
     # 6. De-duplicate enrichment frames, keeping the most recent record
     df_course.drop_duplicates(subset=["Record Id"], keep="last", inplace=True)

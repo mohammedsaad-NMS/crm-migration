@@ -22,30 +22,32 @@ log = logging.getLogger(__name__)
 # --- Settings ---
 SIMILARITY_THRESHOLD = 85
 ID_COLUMN = "Record Id"
-TEXT_COLUMN = "Product Name"
 MODIFIED_TIME_COLUMN = "Modified Time"
 CACHE_DIR = Path("cache")
 
 # --- UI Class for Group Review ---
 class GroupReviewDialog(Toplevel):
-    """A custom dialog to review and confirm members of a duplicate group."""
-    def __init__(self, parent, group_items):
+    """
+    A custom dialog to review and confirm members of a duplicate group.
+    It now accepts a list of (display_text, unique_id) tuples.
+    """
+    def __init__(self, parent, group_items_with_ids):
         super().__init__(parent)
         self.title("Review Potential Duplicate Group")
         self.transient(parent)
         self.grab_set()
 
-        self.approved_subset = []
+        self.approved_ids = []
         self.vars = []
 
-        Label(self, text="The following items were found to be similar.\nUn-check any items that are NOT duplicates.", justify="left", padx=10).pack(pady=10)
+        Label(self, text="The following records were found to be similar.\nUn-check any that are NOT duplicates.", justify="left", padx=10).pack(pady=10)
         
         items_frame = Frame(self, relief="sunken", borderwidth=1)
         items_frame.pack(pady=5, padx=10, fill="both", expand=True)
 
-        for item in group_items:
-            var = StringVar(value=item)
-            cb = Checkbutton(items_frame, text=item, variable=var, onvalue=item, offvalue="", anchor='w')
+        for display_text, record_id in group_items_with_ids:
+            var = StringVar(value=record_id) # Use the ID as the value
+            cb = Checkbutton(items_frame, text=display_text, variable=var, onvalue=record_id, offvalue="", anchor='w')
             cb.pack(fill='x', padx=5, pady=2)
             self.vars.append(var)
 
@@ -57,11 +59,11 @@ class GroupReviewDialog(Toplevel):
         self.protocol("WM_DELETE_WINDOW", self.on_skip)
 
     def on_confirm(self):
-        self.approved_subset = [var.get() for var in self.vars if var.get()]
+        self.approved_ids = [var.get() for var in self.vars if var.get()]
         self.destroy()
 
     def on_skip(self):
-        self.approved_subset = [] # Return an empty list if skipped
+        self.approved_ids = []
         self.destroy()
 
 
@@ -76,56 +78,81 @@ def main():
         return
     input_path = Path(input_path_str)
 
+    prefix = input_path.stem.split('_')[0]
+    text_column = (prefix[:-1] if prefix.endswith('s') else prefix) + " Name"
+    log.info(f"Dedup column derived from filename: '{text_column}'")
+
     try:
-        df = pd.read_csv(input_path, dtype=str).dropna(subset=[TEXT_COLUMN, MODIFIED_TIME_COLUMN])
+        csv_columns = pd.read_csv(input_path, nrows=0).columns
+        if text_column not in csv_columns:
+            messagebox.showerror("Column Not Found", f"Column '{text_column}' not found in the file.")
+            return
+        
+        df = pd.read_csv(input_path, dtype=str).dropna(subset=[text_column, MODIFIED_TIME_COLUMN])
         df[MODIFIED_TIME_COLUMN] = pd.to_datetime(df[MODIFIED_TIME_COLUMN])
     except Exception as e:
         messagebox.showerror("Error", f"Failed to read or process CSV:\n{e}")
         return
         
     log.info("Finding potential duplicate groups...")
-    names_to_compare = df[TEXT_COLUMN].unique()
+    names_to_compare = df[text_column].unique()
     linkage, groups = {}, defaultdict(list)
+
     for name1 in names_to_compare:
         if name1 in linkage: continue
         linkage[name1] = name1
         groups[name1].append(name1)
         for name2 in names_to_compare:
             if name1 == name2 or name2 in linkage: continue
-            score = fuzz.token_sort_ratio(name1, name2)
-            if score >= SIMILARITY_THRESHOLD:
+            if fuzz.token_sort_ratio(name1, name2) >= SIMILARITY_THRESHOLD:
                 linkage[name2] = name1
                 groups[name1].append(name2)
     
-    log.info(f"Found {len(groups)} potential duplicate groups. Starting interactive review...")
+    name_counts = df[text_column].value_counts()
+    perfect_dupe_names = name_counts[name_counts > 1].index
+    for name in perfect_dupe_names:
+        if not any(name in L for L in groups.values()):
+            log.info(f"Found standalone perfect-match group: '{name}'")
+            groups[name] = [name]
 
     user_decisions = []
+    log.info(f"Found {len(groups)} potential groups. Starting interactive review...")
     for representative_name, similar_names_list in groups.items():
-        if len(similar_names_list) < 2:
+        group_df = df[df[text_column].isin(similar_names_list)].copy()
+
+        if len(group_df) < 2:
             continue
 
         log.info(f"Presenting group for review: {similar_names_list}")
-        dialog = GroupReviewDialog(root, similar_names_list)
+        
+        # *** THE CRITICAL FIX IS HERE ***
+        # Create a list of tuples with (display_text, record_id) to ensure
+        # each checkbox is unique, even if names are identical.
+        items_for_dialog = []
+        for _, row in group_df.iterrows():
+            display_text = f"{row[text_column]} (ID: {row[ID_COLUMN]})"
+            items_for_dialog.append((display_text, row[ID_COLUMN]))
+        
+        dialog = GroupReviewDialog(root, items_for_dialog)
         root.wait_window(dialog)
         
-        approved_subset = dialog.approved_subset
+        approved_record_ids = dialog.approved_ids
         
-        if len(approved_subset) < 2:
-            log.info("Group skipped or not enough items selected for a match.")
+        if len(approved_record_ids) < 2:
+            log.info("Group skipped or less than 2 items selected.")
             continue
 
-        # Process the user-confirmed subset of duplicates
-        log.info(f"User confirmed subset: {approved_subset}")
-        group_df = df[df[TEXT_COLUMN].isin(approved_subset)].copy()
-        
-        # Find the canonical record (newest) within the approved subset
-        canonical_record = group_df.loc[group_df[MODIFIED_TIME_COLUMN].idxmax()]
-        canonical_id = canonical_record[ID_COLUMN]
-        canonical_name = canonical_record[TEXT_COLUMN]
-        log.info(f"Canonical for this group is '{canonical_name}'")
+        # Filter the group dataframe based on the selected IDs
+        final_group_df = group_df[group_df[ID_COLUMN].isin(approved_record_ids)].copy()
 
-        # Create merge decisions for all other items in the subset
-        for index, potential_match_record in group_df.iterrows():
+        log.info(f"User confirmed {len(final_group_df)} records for merge.")
+
+        canonical_record = final_group_df.loc[final_group_df[MODIFIED_TIME_COLUMN].idxmax()]
+        canonical_id = canonical_record[ID_COLUMN]
+        canonical_name = canonical_record[text_column]
+        log.info(f"Canonical for this group is '{canonical_name}' (ID: {canonical_id})")
+
+        for _, potential_match_record in final_group_df.iterrows():
             if potential_match_record[ID_COLUMN] == canonical_id:
                 continue
             
@@ -133,10 +160,10 @@ def main():
                 'canonical_record_id': canonical_id,
                 'canonical_name': canonical_name,
                 'duplicate_record_id': potential_match_record[ID_COLUMN],
-                'duplicate_name': potential_match_record[TEXT_COLUMN],
+                'duplicate_name': potential_match_record[text_column],
                 'user_decision': "MERGE"
             })
-            log.info(f"Decision: MERGE '{potential_match_record[TEXT_COLUMN]}' into '{canonical_name}'")
+            log.info(f"Decision: MERGE '{potential_match_record[text_column]}' (ID: {potential_match_record[ID_COLUMN]}) into canonical.")
 
     if not user_decisions:
         log.info("Interactive session complete. No merge decisions were confirmed.")
