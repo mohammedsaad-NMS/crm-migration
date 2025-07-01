@@ -86,20 +86,20 @@ def main() -> None:
             hh_lu, on="family_key", how="left", validate="many_to_one"
         )
         # copy into stub lookup
-        df_ui["Household (Dummy)"] = df_ui.pop("Household Name")
+        df_ui["Household (Match Key)"] = df_ui.pop("Household Name")
 
-        missing = df_ui["Household (Dummy)"].isna().sum()
+        missing = df_ui["Household (Match Key)"].isna().sum()
         if missing:
             log.warning("%d Stars missing household match", missing)
     else:
         log.error("Lookup file %s not found. Run load_households.py first.", LOOKUP_FILE)
-        df_ui["Household (Dummy)"] = pd.NA
+        df_ui["Household (Match Key)"] = pd.NA
 
     # 5. FIELD‑LEVEL CLEANING ----------------------------------------
     # 5a. Names → intelligent title‑case
     for col in [
         c
-        for c in ["First Name", "Last Name", "Middle Name", "Preferred Name"]
+        for c in ["First Name", "Last Name", "Middle Name"]
         if c in df_ui.columns
     ]:
         df_ui[col] = df_ui[col].apply(intelligent_title_case)
@@ -122,15 +122,22 @@ def main() -> None:
         if col in df_ui.columns:
             df_ui[col] = df_ui[col].apply(strip_translation)
 
-    # 6. FINAL COLUMN ORDER -----------------------------------------
-    ui_cols = (
-        catalog.query("`User-Facing Module Name` == 'Stars'")
-        .query(
-            "`Data Source / Type`.str.contains('Related List') == False "
-            "and `Data Source / Type`.str.contains('System') == False"
-        )["User-Facing Field Name"].tolist()
-    )
+    if "Date of Birth" in df_ui.columns:
+        dob = pd.to_datetime(df_ui["Date of Birth"], errors="coerce")
+        # NaT will result in NaN age
+        age = (pd.Timestamp.now() - dob).dt.days / 365.25
+        df_ui["Age"] = age.apply(lambda x: int(x) if pd.notna(x) else pd.NA)
+        df_ui["Age"] = df_ui["Age"].astype("Int64")
 
+    if "First Name" in df_ui.columns and "Last Name" in df_ui.columns:
+        # Ensure first and last name are strings before concatenating
+        first_name = df_ui["First Name"].astype(str).fillna('')
+        last_name = df_ui["Last Name"].astype(str).fillna('')
+        df_ui["Full Name"] = (first_name + " " + last_name).str.strip()
+
+    # 6. FINAL COLUMN ORDER -----------------------------------------
+    ui_cols = (catalog.query("`User-Facing Module Name` == 'Stars'"))["User-Facing Field Name"].tolist()
+    
     for col in ui_cols:
         if col not in df_ui.columns:
             df_ui[col] = pd.NA

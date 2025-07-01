@@ -131,11 +131,7 @@ def main() -> None:
 
     # 5. FINALISE COLUMNS & WRITE OUTPUT
     ui_cols = (
-        catalog.query("`User-Facing Module Name` == 'Households'")
-        .query(
-            "`Data Source / Type`.str.contains('Related List') == False "
-            "and `Data Source / Type`.str.contains('System') == False"
-        )["User-Facing Field Name"].tolist()
+        catalog.query("`User-Facing Module Name` == 'Households'")["User-Facing Field Name"].tolist()
     )
 
     for col in ui_cols:

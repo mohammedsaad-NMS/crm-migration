@@ -1,0 +1,5 @@
+Account Type,Star First Name,Star Last Name,Middle Name,Date of Birth,Guardian 1 First Name,Guardian 1 Last Name,Mailing Zip/Postal Code,Current Grade,Cohort Entry Year,Race or Ethnicity,Gender Identity
+Star,John,Doe,Robert,2010-05-15,Mary,Doe,12345,Grade 9,2022,Caucasian || White,Male || Man
+Star,Jane,Smith,,2011-02-20,David,Smith,67890,8th Grade,2023.0,African American,Female
+Guardian,,,L.,1980-01-01,Susan,Miller,11223,N/A,N/A,Hispanic || Latino,Non-binary
+Star,Peter,Jones,Michael,2010-08-10,Chris,Jones,12345,10,2022,Asian,Male

@@ -108,7 +108,7 @@ def main() -> None:
     df_ui = transform_legacy_df(df_raw, mapping)
     df_ui[RECENCY_COL] = pd.to_datetime(df_raw[RECENCY_COL], errors="coerce")
     df_ui["NCES ID"] = df_raw["NCES District ID"].apply(clean_nces_id)
-    df_ui["Original Name"] = df_ui["Name"]
+    df_ui["Original Name"] = df_ui["District Name"]
 
     if "State" not in df_ui.columns:
         df_ui["State"] = df_raw["State"].fillna("")
@@ -116,7 +116,7 @@ def main() -> None:
     # 2. LOAD & PREP CCD REFERENCE DATA
     log.info("Loading and preparing NCES CCD reference data...")
     ccd_to_ui: Dict[str, str] = {
-        "LEA_NAME"      : "Name",
+        "LEA_NAME"      : "District Name",
         "STATENAME"     : "State",
         "MSTREET1"      : "Street",
         "MCITY"         : "City",
@@ -129,7 +129,7 @@ def main() -> None:
     ref = pd.read_csv(CCD_CSV, dtype=str, usecols=ccd_to_ui.keys(), low_memory=False).rename(columns=ccd_to_ui)
     
     ref["NCES ID"] = ref["NCES ID"].apply(clean_nces_id)
-    ref["norm_name"] = ref["Name"].apply(norm_name)
+    ref["norm_name"] = ref["District Name"].apply(norm_name)
     ref['State'] = ref['State'].str.title()
     ref['Type'] = ref['Type'].str.split(' that is not a component').str[0]
 
@@ -152,7 +152,7 @@ def main() -> None:
     log.info("Overwriting legacy data with authoritative CCD data...")
     matched_mask = df_ui["match_idx"].notna()
     
-    cols_to_enrich = ["Name", "NCES ID", "Street", "City", "State", "Zip Code", "Phone", "Website", "Type"]
+    cols_to_enrich = ["District Name", "NCES ID", "Street", "City", "State", "Zip Code", "Phone", "Website", "Type"]
     
     for col in cols_to_enrich:
         if col in ref.columns:
@@ -162,7 +162,7 @@ def main() -> None:
     log.info(f"Deduplicating {len(df_ui)} records...")
     def district_key(r):
         state_part = str(r.get("State", "")).strip().title()
-        return clean_nces_id(r["NCES ID"]) or f"{str(r['Name']).lower()}|{state_part}"
+        return clean_nces_id(r["NCES ID"]) or f"{str(r['District Name']).lower()}|{state_part}"
 
     df_ui["district_key"] = df_ui.apply(district_key, axis=1)
     latest = df_ui.sort_values(RECENCY_COL, na_position="first").drop_duplicates("district_key", keep="last")
@@ -170,7 +170,7 @@ def main() -> None:
 
     # 5. FINAL FORMATTING
     log.info("Applying final formatting rules...")
-    latest["Name"] = latest["Name"].apply(intelligent_title_case)
+    latest["District Name"] = latest["District Name"].apply(intelligent_title_case)
 
     # Standardize the full address block
     standardize_address_block(latest, {
@@ -191,10 +191,7 @@ def main() -> None:
 
     # 6. FINALIZE COLUMNS AND OUTPUT
     log.info("Finalizing columns for output...")
-    ui_cols = (catalog.query("`User-Facing Module Name` == 'Districts'")
-               .query("`Data Source / Type`.str.contains('Related List') == False "
-                      "and `Data Source / Type`.str.contains('System') == False")
-                      ["User-Facing Field Name"].tolist()
+    ui_cols = (catalog.query("`User-Facing Module Name` == 'Districts'")["User-Facing Field Name"].tolist()
     )
 
     for col in ui_cols:

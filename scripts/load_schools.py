@@ -134,7 +134,7 @@ def main() -> None:
     df_ui['School Type'] = df_raw['School Type'] # Carry over for matching logic
     df_ui[RECENCY_COL] = pd.to_datetime(df_raw[RECENCY_COL], errors="coerce")
     df_ui["Legacy NCES ID"] = df_raw["NCES School ID"].apply(digits_only) # Keep incomplete ID for matching
-    df_ui["Original Name"] = df_ui["Name"] # Preserve for matching
+    df_ui["Original Name"] = df_ui["School Name"] # Preserve for matching
     if "State" not in df_ui.columns:
         df_ui["State"] = df_raw["State"] # Ensure State column exists for matching
 
@@ -153,7 +153,7 @@ def main() -> None:
         "Location City [Public School] 2023-24": "City",
         "Location ZIP [Public School] 2023-24": "Zip Code",
         "Web Site URL [Public School] 2023-24": "Website",
-        "Agency ID - NCES Assigned [Public School] Latest available year": "District (Dummy)",
+        "Agency ID - NCES Assigned [Public School] Latest available year": "District (Match Key)",
     }
     ref = pd.read_csv(NCES_CSV, dtype=str, usecols=nces_to_ui.keys(), low_memory=False).rename(columns=nces_to_ui)
     
@@ -183,11 +183,11 @@ def main() -> None:
     log.info("Overwriting legacy data with authoritative NCES data...")
     matched_mask = df_ui["match_idx"].notna()
     
-    cols_to_enrich = ["Name", "NCES ID", "Street", "City", "State", "Zip Code", "Phone", "Website", "Type", "District (Dummy)", "Setting", "Size", "Grades Served"]
+    cols_to_enrich = ["School Name", "NCES ID", "Street", "City", "State", "Zip Code", "Phone", "Website", "Type", "District (Match Key)", "Setting", "Size", "Grades Served"]
     
     for col_name in cols_to_enrich:
         target_col = col_name
-        source_col = "NCES Name" if col_name == "Name" else col_name
+        source_col = "NCES Name" if col_name == "School Name" else col_name
         if source_col in ref.columns:
             # Use the unique match_idx to pull data from the correct row in the reference 'ref' dataframe
             df_ui.loc[matched_mask, target_col] = df_ui.loc[matched_mask, "match_idx"].map(ref[source_col])
@@ -197,7 +197,7 @@ def main() -> None:
     def school_key(r):
         state_part = str(r.get("State", "")).strip().upper()
         # Use the final, enriched NCES ID for the key
-        return clean_nces_id_ref(r["NCES ID"]) or f"{str(r['Name']).lower()}|{state_part}"
+        return clean_nces_id_ref(r["NCES ID"]) or f"{str(r['School Name']).lower()}|{state_part}"
     
     df_ui["school_key"] = df_ui.apply(school_key, axis=1)
     latest = df_ui.sort_values(RECENCY_COL, na_position="first").drop_duplicates("school_key", keep="last")
@@ -206,7 +206,7 @@ def main() -> None:
     # 5. FINAL FORMATTING
     log.info("Applying final formatting rules...")
     # Use the new, more robust function from the ETL library
-    latest["Name"] = latest["Name"].apply(intelligent_title_case)
+    latest["School Name"] = latest["School Name"].apply(intelligent_title_case)
 
     # Apply school-specific business rules
     latest["Setting"] = latest["Setting"].str.extract(r"-\s*([^:]+):", expand=False).str.title()
@@ -230,10 +230,7 @@ def main() -> None:
     # 6. FINALIZE COLUMNS AND OUTPUT
     log.info("Finalizing columns for output...")
     # Get the final list of columns required for the UI from the catalog, excluding related lists
-    ui_cols = (catalog.query("`User-Facing Module Name` == 'Schools'")
-               .query("`Data Source / Type`.str.contains('Related List') == False "
-                      "and `Data Source / Type`.str.contains('System') == False")
-                      ["User-Facing Field Name"].tolist()
+    ui_cols = (catalog.query("`User-Facing Module Name` == 'Schools'")["User-Facing Field Name"].tolist()
     )
     
     for col in ui_cols:
