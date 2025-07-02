@@ -33,8 +33,8 @@ from scripts.etl_lib import (
 # ───────────────────────── CONFIG ──────────────────────────
 RECENCY_COL = "Modified Time"
 BASE_DIR    = Path(__file__).resolve().parent
-LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Districts___Schools_2025_06_25.csv"
-CCD_CSV     = BASE_DIR.parent / "reference" / "ccd_lea_029_2324_w_1a_073124.csv"
+LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Districts___Schools_2025_07_02.csv"
+CCD_CSV     = BASE_DIR.parent / "reference" / "20250619 NCES Districts Extract.csv"
 CACHE_DIR   = BASE_DIR.parent / "cache"
 CACHE_DIR.mkdir(exist_ok=True)              
 OUTPUT_DIR  = BASE_DIR.parent / "output"
