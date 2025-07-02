@@ -35,6 +35,8 @@ RECENCY_COL = "Modified Time"
 BASE_DIR    = Path(__file__).resolve().parent
 LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Districts___Schools_2025_06_25.csv"
 CCD_CSV     = BASE_DIR.parent / "reference" / "ccd_lea_029_2324_w_1a_073124.csv"
+CACHE_DIR   = BASE_DIR.parent / "cache"
+CACHE_DIR.mkdir(exist_ok=True)              
 OUTPUT_DIR  = BASE_DIR.parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
@@ -109,6 +111,7 @@ def main() -> None:
     df_ui[RECENCY_COL] = pd.to_datetime(df_raw[RECENCY_COL], errors="coerce")
     df_ui["NCES ID"] = df_raw["NCES District ID"].apply(clean_nces_id)
     df_ui["Original Name"] = df_ui["District Name"]
+    df_ui["Record Id"] = df_raw["Record Id"]
 
     if "State" not in df_ui.columns:
         df_ui["State"] = df_raw["State"].fillna("")
@@ -188,6 +191,14 @@ def main() -> None:
     if has_nces_id_mask.any():
         latest.loc[has_nces_id_mask, 'NCES District Link'] = NCES_URL_BASE + latest.loc[has_nces_id_mask, 'NCES ID']
         log.info(f"Generated {has_nces_id_mask.sum()} NCES district links.")
+
+
+    # ── WRITE LOOK-UP CACHE ────────────────────────────────
+    log.info("Writing district-lookup cache (Record Id → District Name)…")
+    lookup_df  = latest[["Record Id", "District Name"]].copy()
+    cache_path = CACHE_DIR / "district_lookup.csv"
+    lookup_df.to_csv(cache_path, index=False)
+    log.info(f"Wrote Record-Id ⇢ District-Name lookup to {cache_path}")
 
     # 6. FINALIZE COLUMNS AND OUTPUT
     log.info("Finalizing columns for output...")

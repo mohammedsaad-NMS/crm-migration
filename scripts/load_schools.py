@@ -35,6 +35,8 @@ RECENCY_COL = "Modified Time"
 BASE_DIR    = Path(__file__).resolve().parent
 LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Districts___Schools_2025_06_25.csv"
 NCES_CSV    = BASE_DIR.parent / "reference" / "20250623 NCES School Extract.csv"
+CACHE_DIR   = BASE_DIR.parent / "cache"
+CACHE_DIR.mkdir(exist_ok=True)
 OUTPUT_DIR  = BASE_DIR.parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
@@ -135,8 +137,8 @@ def main() -> None:
     df_ui[RECENCY_COL] = pd.to_datetime(df_raw[RECENCY_COL], errors="coerce")
     df_ui["Legacy NCES ID"] = df_raw["NCES School ID"].apply(digits_only) # Keep incomplete ID for matching
     df_ui["Original Name"] = df_ui["School Name"] # Preserve for matching
-    if "State" not in df_ui.columns:
-        df_ui["State"] = df_raw["State"] # Ensure State column exists for matching
+    df_ui["State"] = df_raw["State"] # Ensure State column exists for matching
+    df_ui["Record Id"] = df_raw["Record Id"]
 
     # 2. LOAD & PREP NCES REFERENCE DATA
     log.info("Loading and preparing NCES reference data...")
@@ -227,6 +229,12 @@ def main() -> None:
     latest.loc[has_nces_id, 'NCES School Link'] = NCES_URL_BASE + latest.loc[has_nces_id, 'NCES ID']
     log.info(f"Generated {has_nces_id.sum()} NCES school links.")
 
+    # WRITE LOOK-UP CACHE  ────────────────────────────────────────
+    lookup_df  = latest[["Record Id", "School Name"]].copy()
+    cache_path = CACHE_DIR / "school_lookup.csv"
+    lookup_df.to_csv(cache_path, index=False)
+    log.info(f"Wrote Record-Id ⇢ School-Name lookup to {cache_path}")
+
     # 6. FINALIZE COLUMNS AND OUTPUT
     log.info("Finalizing columns for output...")
     # Get the final list of columns required for the UI from the catalog, excluding related lists
@@ -237,7 +245,7 @@ def main() -> None:
         if col not in latest.columns:
             latest[col] = pd.NA
 
-    helper_cols = ["school_key", "STATE_FULL", "Original Name", "match_idx", "Legacy NCES ID", "School Type"]
+    helper_cols = ["Record Id", "school_key", "STATE_FULL", "Original Name", "match_idx", "Legacy NCES ID", "School Type"]
     latest.drop(columns=helper_cols, inplace=True, errors='ignore')
     
     # Reorder columns to match the final specification

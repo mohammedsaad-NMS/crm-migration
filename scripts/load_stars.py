@@ -2,18 +2,19 @@
 """
 Stars Loader — National Math Stars CRM Migration
 ================================================
-Creates UI‑ready **Stars** records, fills the temporary "Household (Dummy)"
-lookup using the household key handshake, and writes `output/Stars.csv`.
+Creates UI-ready **Stars** records, writes `output/Stars.csv`,
+and persists a lookup file `cache/star_lookup.csv` mapping **Record Id**
+(from the legacy extract) → **Full Name** (final value).
 
 Flow
 ----
-1. Load legacy *Accounts* export → keep Account Type == "Star".
-2. Generate a deterministic `family_key` via `make_household_key` (shared).
-3. Map + rename columns per *Target‑Legacy Mapping.csv* (Stars rows only).
-4. Merge with the lookup `cache/household_lookup.parquet` to copy
-   **Household Name → Household (Dummy)**.
-5. Clean specific fields (title‑case names, grade cast, translation strip …).
-6. Drop helper columns & write the UI CSV in catalogue order.
+1. Load legacy *Accounts* export → keep `Account Type == "Star"`.
+2. Generate deterministic `family_key` (shared with Households).
+3. Map & rename columns per *Target-Legacy Mapping.csv*.
+4. Merge `cache/household_lookup.csv` → populate **Household (Match Key)**.
+5. Clean fields (title-case names, grade ints, translation strip …).
+6. Persist **Record Id → Full Name** lookup to `cache/star_lookup.csv`.
+7. Drop helper columns & write the UI CSV in catalogue order.
 """
 
 from __future__ import annotations
@@ -37,14 +38,13 @@ from scripts.etl_lib import (
 # ───────────────────────── CONFIG ──────────────────────────
 BASE_DIR   = Path(__file__).resolve().parent
 CACHE_DIR  = BASE_DIR.parent / "cache"
+CACHE_DIR.mkdir(exist_ok=True)                      # ensure cache dir exists
 
-LEGACY_CSV = (
-    BASE_DIR.parent / "mapping" / "legacy-exports" / "Accounts_2025_06_24.csv"
-)
+LEGACY_CSV = BASE_DIR.parent / "mapping" / "legacy-exports" / "Accounts_2025_06_24.csv"
 OUTPUT_DIR = BASE_DIR.parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
-# handshake lookup written by load_households.py\CACHE_DIR   = BASE_DIR.parent / "cache"
+# handshake lookup written by load_households.py
 LOOKUP_FILE = CACHE_DIR / "household_lookup.csv"
 
 logging.basicConfig(
@@ -77,15 +77,13 @@ def main() -> None:
     assert_target_pairs_exist("Stars", mapping, catalog)
 
     df_ui = transform_legacy_df(df_raw, mapping)
-    df_ui["family_key"] = df_raw["family_key"]  # carry helper key forward
+    df_ui["family_key"] = df_raw["family_key"]              # carry helper key
+    df_ui["Record Id"]  = df_raw["Record Id"]               # passthrough for caching
 
     # 4. MERGE HOUSEHOLD LOOKUP
     if LOOKUP_FILE.exists():
         hh_lu = pd.read_csv(LOOKUP_FILE)
-        df_ui = df_ui.merge(
-            hh_lu, on="family_key", how="left", validate="many_to_one"
-        )
-        # copy into stub lookup
+        df_ui = df_ui.merge(hh_lu, on="family_key", how="left", validate="many_to_one")
         df_ui["Household (Match Key)"] = df_ui.pop("Household Name")
 
         missing = df_ui["Household (Match Key)"].isna().sum()
@@ -95,21 +93,16 @@ def main() -> None:
         log.error("Lookup file %s not found. Run load_households.py first.", LOOKUP_FILE)
         df_ui["Household (Match Key)"] = pd.NA
 
-    # 5. FIELD‑LEVEL CLEANING ----------------------------------------
-    # 5a. Names → intelligent title‑case
-    for col in [
-        c
-        for c in ["First Name", "Last Name", "Middle Name"]
-        if c in df_ui.columns
-    ]:
-        df_ui[col] = df_ui[col].apply(intelligent_title_case)
+    # 5. FIELD-LEVEL CLEANING ----------------------------------------
+    # 5a. Names → intelligent title-case
+    for col in ["First Name", "Last Name", "Middle Name"]:
+        if col in df_ui.columns:
+            df_ui[col] = df_ui[col].apply(intelligent_title_case)
 
     # 5b. Grade ordinals → int
     if "Current Grade" in df_ui.columns:
         df_ui["Current Grade"] = df_ui["Current Grade"].str.extract(r"(\d+)")[0]
-        df_ui["Current Grade"] = pd.to_numeric(
-            df_ui["Current Grade"], errors="coerce"
-        )
+        df_ui["Current Grade"] = pd.to_numeric(df_ui["Current Grade"], errors="coerce")
         df_ui["Current Grade"] = to_int_if_whole(df_ui["Current Grade"])
         df_ui["Current Grade"] = df_ui["Current Grade"].astype("Int64")
 
@@ -122,32 +115,40 @@ def main() -> None:
         if col in df_ui.columns:
             df_ui[col] = df_ui[col].apply(strip_translation)
 
+    # 5e. Age calculation
     if "Date of Birth" in df_ui.columns:
         dob = pd.to_datetime(df_ui["Date of Birth"], errors="coerce")
-        # NaT will result in NaN age
         age = (pd.Timestamp.now() - dob).dt.days / 365.25
-        df_ui["Age"] = age.apply(lambda x: int(x) if pd.notna(x) else pd.NA)
-        df_ui["Age"] = df_ui["Age"].astype("Int64")
+        df_ui["Age"] = age.apply(lambda x: int(x) if pd.notna(x) else pd.NA).astype("Int64")
 
-    if "First Name" in df_ui.columns and "Last Name" in df_ui.columns:
-        # Ensure first and last name are strings before concatenating
-        first_name = df_ui["First Name"].astype(str).fillna('')
-        last_name = df_ui["Last Name"].astype(str).fillna('')
-        df_ui["Full Name"] = (first_name + " " + last_name).str.strip()
+    # 5f. Construct Full Name
+    if {"First Name", "Last Name"}.issubset(df_ui.columns):
+        df_ui["Full Name"] = (
+            df_ui["First Name"].astype(str).fillna("") + " " +
+            df_ui["Last Name"].astype(str).fillna("")
+        ).str.strip()
 
-    # 6. FINAL COLUMN ORDER -----------------------------------------
-    ui_cols = (catalog.query("`User-Facing Module Name` == 'Stars'"))["User-Facing Field Name"].tolist()
-    
+    # 6. WRITE LOOK-UP CACHE -----------------------------------------
+    log.info("Writing star-lookup cache (Record Id → Full Name)…")
+    lookup_df  = df_ui[["Record Id", "Full Name"]].copy()
+    cache_path = CACHE_DIR / "star_lookup.csv"
+    lookup_df.to_csv(cache_path, index=False)
+    log.info("Wrote lookup to %s (%d rows)", cache_path, len(lookup_df))
+
+    # 7. FINAL COLUMN ORDER -----------------------------------------
+    ui_cols = (catalog.query("`User-Facing Module Name` == 'Stars'")
+               ["User-Facing Field Name"].tolist())
+
     for col in ui_cols:
         if col not in df_ui.columns:
             df_ui[col] = pd.NA
 
     # drop helpers
-    df_ui.drop(columns=["family_key"], inplace=True, errors="ignore")
+    df_ui.drop(columns=["family_key", "Record Id"], inplace=True, errors="ignore")
 
     df_ui = df_ui[[c for c in ui_cols if c in df_ui.columns]]
 
-    # 7. WRITE OUTPUT ------------------------------------------------
+    # 8. WRITE OUTPUT ------------------------------------------------
     ui_path = OUTPUT_DIR / "Stars.csv"
     df_ui.to_csv(ui_path, index=False)
     log.info("Wrote %s (%d rows)", ui_path, len(df_ui))
