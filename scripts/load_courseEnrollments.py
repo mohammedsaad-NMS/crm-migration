@@ -9,9 +9,10 @@ This script executes the following workflow:
 1.  Loads legacy data and target schema definitions.
 2.  Canonicalizes product information using a pre-approved deduplication cache.
 3.  Transforms legacy column names to their target equivalents.
-4.  Consolidates multiple legacy grade fields into a single "Grade Value" field.
-5.  Derives the enrollment "Status" (Upcoming, Ongoing, Completed) from date fields.
-6.  Formats the final data to match the target schema and exports it to CSV.
+4.  Replaces Star ID with Star Full Name using a cached lookup file.
+5.  Consolidates multiple legacy grade fields into a single "Grade Value" field.
+6.  Derives the enrollment "Status" (Upcoming, Ongoing, Completed) from date fields.
+7.  Formats the final data to match the target schema and exports it to CSV.
 """
 
 from __future__ import annotations
@@ -40,13 +41,14 @@ OUTPUT_DIR = BASE_DIR.parent / "output"
 
 LEGACY_FILE = INPUT_DIR / "STEM_Course_Progress_2025_06_27.csv"
 PRODUCT_DECISIONS_FILE = CACHE_DIR / "decisions_Products_2025_06_27.csv"
+STAR_LOOKUP_FILE = CACHE_DIR / "star_lookup.csv"
 OUTPUT_CSV_FILE = OUTPUT_DIR / "Course_Enrollments.csv"
 
 MODULE_UI = "Course Enrollments"
 LEGACY_MODULE = "Stem Course Progress"
 LEGACY_PRODUCT_ID_COL = "STEM Course.id"
 LEGACY_PRODUCT_NAME_COL = "STEM Course"
-
+STAR_MATCH_KEY_COL = "Star (Match Key)"
 
 # ======================================================================================
 # LOGGING SETUP
@@ -94,12 +96,6 @@ def _load_product_decisions(cache_file: Path) -> tuple[dict, dict]:
 def _consolidate_grade_columns(df: pd.DataFrame) -> pd.DataFrame:
     """
     Finds and robustly collapses multiple 'Grade Value*' columns into one.
-
-    This function isolates the logic to prevent side effects:
-    1. Identifies all columns starting with 'Grade Value'.
-    2. Explicitly creates a new Series containing the coalesced grade values.
-    3. Drops all the original grade columns from the DataFrame.
-    4. Assigns the new Series to the 'Grade Value' column.
     """
     grade_cols = sorted([c for c in df.columns if c.startswith("Grade Value")])
     if len(grade_cols) <= 1:
@@ -108,22 +104,14 @@ def _consolidate_grade_columns(df: pd.DataFrame) -> pd.DataFrame:
     log.info(f"Consolidating {len(grade_cols)} grade columns: {grade_cols}")
 
     def find_first_valid_grade(row):
-        """Find the first non-empty value in a row."""
         for grade in row:
-            # Check for pandas nulls and empty strings
             if pd.notna(grade) and str(grade).strip():
                 return grade
         return pd.NA
 
-    # 1. Create the new consolidated Series
     consolidated_grades = df[grade_cols].apply(find_first_valid_grade, axis=1)
-
-    # 2. Drop all original source grade columns
     df.drop(columns=grade_cols, inplace=True)
-
-    # 3. Add the new, single 'Grade Value' column to the DataFrame
     df["Grade Value"] = consolidated_grades
-
     log.info("Grade column consolidation complete.")
     return df
 
@@ -174,13 +162,34 @@ def main() -> None:
     if id_to_name and LEGACY_PRODUCT_NAME_COL in df_raw.columns:
         df_raw[LEGACY_PRODUCT_NAME_COL] = df_raw[LEGACY_PRODUCT_ID_COL].map(id_to_name).fillna(df_raw[LEGACY_PRODUCT_NAME_COL])
 
-    # 4. Transform column names and perform enrichments
+    # 4. Transform column names
     df_ui = transform_legacy_df(df_raw, map_this)
+
+    # 5. Enrich Star Name
+    if STAR_MATCH_KEY_COL in df_ui.columns:
+        try:
+            log.info("Loading Star lookup file to replace ID with Full Name...")
+            df_star_lookup = _read_csv(STAR_LOOKUP_FILE)
+            star_name_map = pd.Series(
+                df_star_lookup["Full Name"].values, index=df_star_lookup["Record Id"]
+            ).to_dict()
+
+            original_ids = df_ui[STAR_MATCH_KEY_COL].nunique()
+            df_ui[STAR_MATCH_KEY_COL] = df_ui[STAR_MATCH_KEY_COL].map(star_name_map)
+            found_names = df_ui[STAR_MATCH_KEY_COL].notna().sum()
+            log.info(f"Successfully mapped {found_names} of {original_ids} unique Star IDs to full names.")
+
+        except FileNotFoundError:
+            log.warning(f"Star lookup file not found at '{STAR_LOOKUP_FILE}'. Skipping name enrichment.")
+        except Exception as e:
+            log.error(f"An error occurred during Star name enrichment: {e}")
+
+    # 6. Perform enrichments
     df_ui = _consolidate_grade_columns(df_ui)
     if {"Start Date", "End Date"}.issubset(df_ui.columns):
         df_ui["Status"] = _derive_status(df_ui["Start Date"], df_ui["End Date"])
 
-    # 5. Align DataFrame with the full target schema
+    # 7. Align DataFrame with the full target schema
     ui_cols = catalog.query(
         "`User-Facing Module Name` == @MODULE_UI and not `Data Source / Type`.str.contains('Related List', na=False)"
     )["User-Facing Field Name"].tolist()
@@ -189,7 +198,7 @@ def main() -> None:
         if col not in df_ui.columns:
             df_ui[col] = pd.NA
 
-    # 6. Save final ordered output
+    # 8. Save final ordered output
     df_final = df_ui[ui_cols]
     df_final.to_csv(OUTPUT_CSV_FILE, index=False)
     log.info(f"{MODULE_UI} loader complete. Output: {OUTPUT_CSV_FILE.name} ({len(df_final)} rows)")

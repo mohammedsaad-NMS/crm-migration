@@ -189,7 +189,7 @@ def main() -> None:
         df_prod[col] = to_int_if_whole(pd.to_numeric(df_prod[col], errors="coerce"))
 
     # 9. Final ordering and write
-    final_cols = ["Record Id"] + [c for c in ui_cols if c in df_prod.columns]
+    final_cols = [c for c in ui_cols if c in df_prod.columns]
     df_prod = df_prod[final_cols]
     df_prod.to_csv(OUTPUT_CSV, index=False)
     log.info("Products loader complete → %s (rows: %d)", OUTPUT_CSV.name, len(df_prod))

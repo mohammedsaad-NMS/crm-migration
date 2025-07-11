@@ -9,8 +9,9 @@ This script executes the following workflow:
 1.  Loads legacy data and target schema definitions.
 2.  Canonicalizes product information (Enrichments) using a pre-approved deduplication cache.
 3.  Transforms legacy column names to their target equivalents based on the mapping file.
-4.  Derives the enrollment "Status" (Upcoming, Ongoing, Completed) from date fields.
-5.  Formats the final data to match the target schema and exports it to CSV.
+4.  Replaces Star ID with Star Full Name using a cached lookup file.
+5.  Derives the enrollment "Status" (Upcoming, Ongoing, Completed) from date fields.
+6.  Formats the final data to match the target schema and exports it to CSV.
 """
 
 from __future__ import annotations
@@ -39,16 +40,17 @@ INPUT_DIR = BASE_DIR.parent / "mapping" / "legacy-exports"
 CACHE_DIR = BASE_DIR.parent / "cache"
 OUTPUT_DIR = BASE_DIR.parent / "output"
 
-# Updated for the Enrichments module
 LEGACY_FILE = INPUT_DIR / "STEM_Enrichments_Progress_2025_06_27.csv"
 PRODUCT_DECISIONS_FILE = CACHE_DIR / "decisions_Products_2025_06_27.csv"
+STAR_LOOKUP_FILE = CACHE_DIR / "star_lookup.csv"
 OUTPUT_CSV_FILE = OUTPUT_DIR / "Enrichment_Enrollments.csv"
 
 # --- Module & Field Definitions ---
 MODULE_UI = "Enrichment Enrollments"
 LEGACY_MODULE = "Stem Enrichments Progress"
-LEGACY_PRODUCT_ID_COL = "Enrichment.id"  # Assumed legacy field name
-LEGACY_PRODUCT_NAME_COL = "Enrichment" # Assumed legacy field name
+LEGACY_PRODUCT_ID_COL = "Enrichment.id"
+LEGACY_PRODUCT_NAME_COL = "Enrichment"
+STAR_MATCH_KEY_COL = "Star (Match Key)"
 
 
 # ======================================================================================
@@ -69,8 +71,7 @@ log = logging.getLogger(__name__)
 def _read_csv(path: Path) -> pd.DataFrame:
     """Reads a CSV file into a DataFrame, raising an error if not found."""
     if not path.exists():
-        log.warning(f"File not found at: {path}. Proceeding with an empty DataFrame.")
-        return pd.DataFrame()
+        raise FileNotFoundError(f"Required file not found at: {path}")
     return pd.read_csv(path, dtype=str, keep_default_na=False).replace("", pd.NA)
 
 
@@ -78,9 +79,6 @@ def _load_product_decisions(cache_file: Path) -> tuple[dict, dict]:
     """Loads product deduplication decisions from the cache file."""
     try:
         df = _read_csv(cache_file)
-        if df.empty:
-            raise FileNotFoundError
-            
         merge_only = df[df["user_decision"] == "MERGE"]
 
         id_remap = pd.Series(
@@ -128,13 +126,10 @@ def main() -> None:
     # 1. Load mappings, catalogs, and raw data
     mapping = read_mapping()
     catalog = read_target_catalog()
-    df_raw = _read_csv(LEGACY_FILE)
-    
-    # --- DEBUG STEP 1: Check if the initial data load is successful ---
-    print(f"DEBUG: Step 1 - Initial rows loaded from {LEGACY_FILE.name}: {len(df_raw)}")
-    
-    if df_raw.empty:
-        log.warning(f"Source file {LEGACY_FILE.name} was not found or is empty. Aborting process.")
+    try:
+        df_raw = _read_csv(LEGACY_FILE)
+    except FileNotFoundError:
+        log.warning(f"Source file {LEGACY_FILE.name} was not found. Aborting process.")
         return
 
     id_remap, id_to_name = _load_product_decisions(PRODUCT_DECISIONS_FILE)
@@ -143,9 +138,6 @@ def main() -> None:
     map_this = mapping.query(
         "`Legacy Module` == @LEGACY_MODULE and `Target Module` == @MODULE_UI"
     )
-    
-    # --- DEBUG STEP 2: Check if the mapping file found the correct module names ---
-    print(f"DEBUG: Step 2 - Rows found in mapping file for '{LEGACY_MODULE}' -> '{MODULE_UI}': {len(map_this)}")
     if map_this.empty:
         log.error("Mapping failed: Could not find a match for the specified Legacy and Target modules in the mapping file.")
         log.error(f"Please check that LEGACY_MODULE='{LEGACY_MODULE}' and MODULE_UI='{MODULE_UI}' are correct.")
@@ -161,15 +153,31 @@ def main() -> None:
 
     # 4. Perform generic column rename based on mapping
     df_ui = transform_legacy_df(df_raw, map_this)
-    
-    # --- DEBUG STEP 3: Check rows after transforming column names ---
-    print(f"DEBUG: Step 3 - Rows after transforming column names: {len(df_ui)}")
 
-    # 5. Derive Status
+    # 5. Enrich Star Name
+    if STAR_MATCH_KEY_COL in df_ui.columns:
+        try:
+            log.info("Loading Star lookup file to replace ID with Full Name...")
+            df_star_lookup = _read_csv(STAR_LOOKUP_FILE)
+            star_name_map = pd.Series(
+                df_star_lookup["Full Name"].values, index=df_star_lookup["Record Id"]
+            ).to_dict()
+
+            original_ids = df_ui[STAR_MATCH_KEY_COL].nunique()
+            df_ui[STAR_MATCH_KEY_COL] = df_ui[STAR_MATCH_KEY_COL].map(star_name_map)
+            found_names = df_ui[STAR_MATCH_KEY_COL].notna().sum()
+            log.info(f"Successfully mapped {found_names} of {original_ids} unique Star IDs to full names.")
+
+        except FileNotFoundError:
+            log.warning(f"Star lookup file not found at '{STAR_LOOKUP_FILE}'. Skipping name enrichment.")
+        except Exception as e:
+            log.error(f"An error occurred during Star name enrichment: {e}")
+            
+    # 6. Derive Status
     if {"Start Date", "End Date"}.issubset(df_ui.columns):
         df_ui["Status"] = _derive_status(df_ui["Start Date"], df_ui["End Date"])
 
-    # 6. Align DataFrame with the full target schema
+    # 7. Align DataFrame with the full target schema
     ui_cols = catalog.query(
         "`User-Facing Module Name` == @MODULE_UI and not `Data Source / Type`.str.contains('Related List', na=False)"
     )["User-Facing Field Name"].tolist()
@@ -178,14 +186,11 @@ def main() -> None:
         if col not in df_ui.columns:
             df_ui[col] = pd.NA
 
-    # 7. Save final ordered output
+    # 8. Save final ordered output
     df_final = df_ui[ui_cols]
-    log.info(f"{MODULE_UI} loader complete. Output: {OUTPUT_CSV_FILE.name} ({len(df_final)} rows)")
-    
-    # --- DEBUG STEP 4: Check final row count before writing to CSV ---
-    print(f"DEBUG: Step 4 - Final rows before writing to file: {len(df_final)}")
-
     df_final.to_csv(OUTPUT_CSV_FILE, index=False)
+    log.info(f"{MODULE_UI} loader complete. Output: {OUTPUT_CSV_FILE.name} ({len(df_final)} rows)")
+
 
 if __name__ == "__main__":
     main()

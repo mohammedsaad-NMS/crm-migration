@@ -20,7 +20,7 @@ import logging
 from pathlib import Path
 import pandas as pd
 
-# It's assumed that 'etl_lib' is in a discoverable 'scripts' subdirectory.
+
 from scripts.etl_lib import read_target_catalog
 
 # ======================================================================================
@@ -36,7 +36,7 @@ MENTORS_CACHE_FILE = CACHE_DIR / "math_mentors_names.csv"
 OUTPUT_CSV_FILE = OUTPUT_DIR / "Mentors.csv"
 
 # This assumes the standard "Name" field for the "Mentors" module is "Mentor Name"
-MENTOR_NAME_FIELD = "Mentor"
+MENTOR_NAME_FIELD = "Mentor Name"
 
 
 # ======================================================================================
@@ -103,6 +103,9 @@ def main() -> None:
     for col in ui_cols:
         if col not in df_mentors.columns:
             df_mentors[col] = pd.NA
+    
+    df_mentors["Linked Contact (Match Key)"] = df_mentors[MENTOR_NAME_FIELD]
+    df_mentors["Mentor Status"] = "FALSE"
 
     # Select and order columns according to the schema
     df_final = df_mentors[ui_cols]

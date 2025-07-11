@@ -58,8 +58,7 @@ def main() -> None:
 
     ui_cols = (catalog
         .query("`User-Facing Module Name` == 'Contacts'")
-        .query("`Data Source / Type`.str.contains('Related List') == False "
-               "and `Data Source / Type`.str.contains('System') == False")
+        .query("`Data Source / Type`.str.contains('Related List') == False ")
         ["User-Facing Field Name"].tolist())
 
     for fld in (ROLE_FIELD, EMERGENCY_FLAG):
@@ -115,7 +114,13 @@ def main() -> None:
                 em[EMERGENCY_FLAG] = True
                 persons.append(em)
 
+        # Get owner from the parent account and assign to all derived contacts
+        account_owner = acc.get("Account Owner")
         for rec in persons:
+            if pd.notna(account_owner):
+                rec["Owner"] = account_owner
+            
+            # Process opt-outs and language
             for col in OPT_COLS:
                 if col in rec:
                     rec[col] = strip_translation(OPT_FLIP.get(rec[col], rec[col]))
@@ -158,12 +163,10 @@ def main() -> None:
     df_all = pd.concat([df_accounts, df_legacy],
                        ignore_index=True, sort=False)
     
-    # --- NEW: Populate defaults for records from legacy Contacts source ---
-    # These columns are only populated for 'Accounts' records during initial processing.
-    # We are setting the default for all other records (from Contacts module) here.
+    # --- Populate defaults for records from legacy Contacts source ---
     df_all[EMERGENCY_FLAG].fillna(False, inplace=True)
     df_all['Preferred Language'].fillna('English', inplace=True)
-    # --- END NEW ---
+    # --- END ---
 
     df_all['_original_order'] = df_all.index
 
@@ -214,14 +217,16 @@ def main() -> None:
     df_all['Email'] = df_all['Email'].str.lower()
 
 
-    # --- NEW: Set default opt-out values for any empty rows ---
+    # --- Set default opt-out and status values for any empty rows ---
+    if "Status" in df_all.columns:
+        df_all["Status"].fillna("FALSE", inplace=True)
     if "Opt-out Email" in df_all.columns:
         df_all["Opt-out Email"].fillna("FALSE", inplace=True)
     if "Opt-out Text (SMS)" in df_all.columns:
         df_all["Opt-out Text (SMS)"].fillna("FALSE", inplace=True)
     if "Opt-out Directory" in df_all.columns:
         df_all["Opt-out Directory"].fillna("TRUE", inplace=True)
-    # --- END NEW ---
+    # --- END ---
 
     blank_contact = df_all["Email"].fillna("").str.strip().eq("") & \
                     df_all["Phone"].fillna("").str.strip().eq("")

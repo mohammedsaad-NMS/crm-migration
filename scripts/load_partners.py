@@ -8,6 +8,7 @@ The process includes:
 * Straightforward field rename per mapping
 * Deduplication based on a cached decisions file
 * Field-specific cleaning
+* Caching a lookup file for legacy ID to final Partner Name
 """
 
 from __future__ import annotations
@@ -31,6 +32,7 @@ LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Partners_2025_06
 OUTPUT_DIR  = BASE_DIR.parent / "output"
 CACHE_DIR   = BASE_DIR.parent / "cache"
 OUTPUT_DIR.mkdir(exist_ok=True)
+CACHE_DIR.mkdir(exist_ok=True)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -56,7 +58,7 @@ def main() -> None:
     # 3. TRANSFORM COLUMNS PER MAPPING
     log.info("Transforming legacy columns...")
     df_ui = transform_legacy_df(df_raw, mapping)
-    
+
     # --- CORRECTED STEP ---
     # Ensure 'Record Id' from the raw file is present for deduplication.
     df_ui['Record Id'] = df_raw['Record Id'].str.strip()
@@ -75,10 +77,10 @@ def main() -> None:
             decision_file,
             dtype={'canonical_record_id': str, 'duplicate_record_id': str}
         )
-        
+
         merge_decisions = df_decisions[df_decisions['user_decision'] == 'MERGE']
         ids_to_drop = set(merge_decisions["duplicate_record_id"])
-        
+
         if ids_to_drop:
             log.info(f"Found {len(ids_to_drop)} partner records marked for deduplication.")
             initial_count = len(df_ui)
@@ -98,18 +100,23 @@ def main() -> None:
         log.info("Cleaning 'Partner Name' field...")
         df_ui["Partner Name"] = df_ui["Partner Name"].apply(intelligent_title_case)
 
-    # 6. ENSURE ALL UI COLUMNS EXIST (ADD EMPTY ONES AS NEEDED)
+    # 6. CACHE ID->NAME LOOKUP
+    log.info("Caching Record Id to Partner Name lookup...")
+    lookup_df = df_ui[["Record Id", "Partner Name"]].copy()
+    cache_path = CACHE_DIR / "partner_lookup.csv"
+    lookup_df.to_csv(cache_path, index=False)
+    log.info(f"Wrote Record-Id -> Partner-Name lookup to {cache_path}")
+
+    # 7. ENSURE ALL UI COLUMNS EXIST (ADD EMPTY ONES AS NEEDED)
     ui_cols = (catalog.query("`User-Facing Module Name` == 'Partners'")
-               .query("`Data Source / Type`.str.contains('Related List') == False "
-                      "and `Data Source / Type`.str.contains('System') == False")
-                      ["User-Facing Field Name"].tolist()
+               .query("`Data Source / Type`.str.contains('Related List') == False ")["User-Facing Field Name"].tolist()
     )
     for col in ui_cols:
         if col not in df_ui.columns:
             df_ui[col] = pd.NA
     df_ui = df_ui[[c for c in ui_cols if c in df_ui.columns]]
 
-    # 7. WRITE OUPUTS
+    # 8. WRITE OUPUTS
     ui_path  = OUTPUT_DIR / "Partners.csv"
 
     df_ui.to_csv(ui_path, index=False)
