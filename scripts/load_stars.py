@@ -81,8 +81,13 @@ def main() -> None:
     df_ui["Record Id"]  = df_raw["Record Id"]               # passthrough for caching
 
     # 4. MERGE HOUSEHOLD LOOKUP
+    # 4. MERGE HOUSEHOLD LOOKUP
     if LOOKUP_FILE.exists():
         hh_lu = pd.read_csv(LOOKUP_FILE)
+        
+        # Remove duplicates from the lookup table, keeping the first entry
+        hh_lu = hh_lu.drop_duplicates(subset=["family_key"], keep="first")
+        
         df_ui = df_ui.merge(hh_lu, on="family_key", how="left", validate="many_to_one")
         df_ui["Household (Match Key)"] = df_ui.pop("Household Name")
 
