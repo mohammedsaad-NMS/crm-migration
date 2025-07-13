@@ -25,7 +25,7 @@ from scripts.etl_lib import (
 BASE        = Path(__file__).resolve().parent
 OUTPUT_DIR  = BASE.parent / "output"
 CACHE_DIR   = BASE.parent / "cache"
-LEGACY_OUTCOMES_CSV = BASE.parent / "mapping" / "legacy-exports" / "Outcomes_2025_07_11.csv"
+LEGACY_OUTCOMES_CSV = BASE.parent / "mapping" / "legacy-exports" / "Outcomes_2025_07_13.csv"
 LEGACY_ACCOUNTS_CSV = BASE.parent / "mapping" / "legacy-exports" / "Accounts_2025_06_24.csv"
 STAR_LOOKUP_FILE    = CACHE_DIR / "star_lookup.csv"
 OUTPUT_DIR.mkdir(exist_ok=True)
