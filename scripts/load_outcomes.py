@@ -69,8 +69,12 @@ def main() -> None:
     mapping = mapping_full.query("`Legacy Module` == 'Outcomes' and `Target Module` == 'Outcomes'")
     assert_target_pairs_exist("Outcomes", mapping, catalog)
 
-    cat_mod = catalog.query("`User-Facing Module Name` == 'Outcomes'")
-    ui_cols: List[str] = cat_mod["User-Facing Field Name"].tolist()
+    ui_cols = (
+        catalog.query(
+            "`User-Facing Module Name` == 'Outcomes' and "
+            "not `Data Source / Type`.str.contains('Related List', na=False)"
+        )["User-Facing Field Name"].tolist()
+    )
 
     # 1. Load and filter legacy Outcomes data
     df_raw = pd.read_csv(LEGACY_CSV, dtype=str)
