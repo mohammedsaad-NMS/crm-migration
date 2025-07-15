@@ -35,7 +35,7 @@ from scripts.etl_lib import (
 # ───────────────────────── CONFIG ──────────────────────────
 BASE_DIR    = Path(__file__).resolve().parent
 CACHE_DIR   = BASE_DIR.parent / "cache"; CACHE_DIR.mkdir(exist_ok=True)
-LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Mentor_Sessions_2025_07_13.csv"
+LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Mentor_Sessions_2025_07_15.csv"
 OUTPUT_DIR  = BASE_DIR.parent / "output";  OUTPUT_DIR.mkdir(exist_ok=True)
 
 TARGET_MODULE = "Mentor Session Events"
@@ -137,18 +137,16 @@ def main() -> None:
         df_ui["Mentor Session Event Name"] = df_ui["Mentor Session Event Name"].apply(intelligent_title_case)
 
     # 9. DEFAULT SESSION FORMAT --------------------------------------------
-    if {"Session Format", "Recording URL"}.issubset(df_ui.columns):
         url_present = df_ui["Recording URL"].notna() & df_ui["Recording URL"].str.strip().ne('')
         url_valid = ~df_ui["Recording URL"].isin(INVALID_URLS)
         
         is_virtual = url_present & url_valid
         
         df_ui.loc[is_virtual, "Session Format"] = "Virtual"
-        df_ui.loc[~is_virtual, "Session Format"] = "In-person"
 
     # 10. WRITE LOOK-UP CACHE ----------------------------------------
     log.info("Writing mentor-session-lookup cache...")
-    lookup_df  = df_ui[["Record Id", "Mentor Session Event Name"]].copy()
+    lookup_df  = df_ui[["Record Id", "Mentor Session Event Name", "Mentor (Match Key)"]].copy()
     cache_path = CACHE_DIR / "mentor_session_lookup.csv"
     lookup_df.to_csv(cache_path, index=False)
     log.info("Wrote lookup to %s (%d rows)", cache_path, len(lookup_df))
