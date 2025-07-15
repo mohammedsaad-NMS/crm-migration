@@ -42,7 +42,7 @@ OUTPUT_DIR = BASE_DIR.parent / "output"
 LEGACY_FILE = INPUT_DIR / "STEM_Course_Progress_2025_06_27.csv"
 PRODUCT_DECISIONS_FILE = CACHE_DIR / "decisions_Products_2025_06_27.csv"
 STAR_LOOKUP_FILE = CACHE_DIR / "star_lookup.csv"
-OUTPUT_CSV_FILE = OUTPUT_DIR / "Course_Enrollments.csv"
+OUTPUT_CSV_FILE = OUTPUT_DIR / "Course Enrollments.csv"
 
 MODULE_UI = "Course Enrollments"
 LEGACY_MODULE = "Stem Course Progress"

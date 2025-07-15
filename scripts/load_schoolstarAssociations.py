@@ -121,7 +121,7 @@ def main() -> None:
     df_ui = df_ui[[c for c in ui_cols if c in df_ui.columns]]
 
     # 5. WRITE --------------------------------------------------------------
-    ui_path = OUTPUT_DIR / "School_Star_Associations.csv"
+    ui_path = OUTPUT_DIR / "School-Star Associations.csv"
     df_ui.to_csv(ui_path, index=False)
     log.info("Wrote %s (%d rows)", ui_path, len(df_ui))
 
