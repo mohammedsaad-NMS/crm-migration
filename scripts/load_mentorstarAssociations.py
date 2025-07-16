@@ -15,6 +15,7 @@ Flow
 3. Set the Owner for all records.
 4. Merge `star_lookup.csv` to replace Star ID with Full Name.
 5. Sort records, calculate the correct End Date, and format date fields.
+5b. Apply "Current" status logic to nullify invalid future-dated records.
 6. Finalize column order based on the target catalog.
 7. Write the UI-ready CSV to the output directory.
 """
@@ -134,6 +135,35 @@ def main() -> None:
     # Format dates to 'YYYY-MM-DD', leaving End Date blank for current (last) records.
     df_ui['Start Date'] = df_ui['Start Date'].dt.strftime('%Y-%m-%d')
     df_ui['End Date'] = df_ui['End Date'].dt.strftime('%Y-%m-%d')
+    
+    # 5b. APPLY "CURRENT" STATUS LOGIC
+    log.info("Applying 'Current' status logic to nullify invalid future-dated records...")
+    
+    # Create a map of Star -> Start Date for all "Current" records
+    # Because dates are now 'YYYY-MM-DD' strings, they sort chronologically correctly.
+    current_start_dates = df_ui[df_ui['Status'] == 'Current'].set_index('Star (Match Key)')['Start Date']
+    
+    # Map this "Current Start Date" to all records
+    df_ui['Current Start Date'] = df_ui['Star (Match Key)'].map(current_start_dates)
+    
+    # Define the mask for records to be nullified:
+    # 1. The Star must have a "Current" association.
+    # 2. The record's Start Date must be after the "Current" association's Start Date.
+    # 3. The record itself is not the "Current" one.
+    mask = (
+        df_ui['Current Start Date'].notna() &
+        (df_ui['Start Date'] > df_ui['Current Start Date']) &
+        (df_ui['Status'] != 'Current')
+    )
+    
+    num_to_nullify = mask.sum()
+    if num_to_nullify > 0:
+        log.info("Found %d future-dated records for Stars with a 'Current' status. Nullifying their dates.", num_to_nullify)
+        df_ui.loc[mask, ['Start Date', 'End Date']] = pd.NA
+
+    # Clean up the temporary helper column
+    df_ui.drop(columns=['Current Start Date'], inplace=True)
+
 
     # 6. FINALIZE COLUMN ORDER
     log.info("Finalizing column order based on target catalog...")
