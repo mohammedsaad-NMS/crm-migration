@@ -27,7 +27,7 @@ import pandas as pd
 pd.options.mode.chained_assignment = None
 
 # Assuming 'etl_lib.py' is in a 'scripts' subdirectory relative to the CWD
-from scripts.etl_lib import (
+from scripts.helpers.etl_lib import (
     read_mapping,
     read_target_catalog,
     assert_target_pairs_exist,

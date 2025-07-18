@@ -9,7 +9,7 @@ import logging
 from pathlib import Path
 import pandas as pd;  pd.options.mode.chained_assignment = None
 
-from scripts.etl_lib import (
+from scripts.helpers.etl_lib import (
     read_mapping, read_target_catalog, assert_target_pairs_exist,
     transform_legacy_df, to_int_if_whole, strip_translation,
     standardize_address_block, intelligent_title_case, make_household_key,

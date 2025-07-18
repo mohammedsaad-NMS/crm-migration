@@ -24,7 +24,7 @@ from rapidfuzz import process, fuzz
 
 pd.options.mode.chained_assignment = None
 
-from scripts.etl_lib import (
+from scripts.helpers.etl_lib import (
     read_mapping, read_target_catalog, assert_target_pairs_exist,
     transform_legacy_df, standardize_address_block, intelligent_title_case,
     digits_only_phone

@@ -16,7 +16,7 @@ import sys
 import pandas as pd
 pd.options.mode.chained_assignment = None
 
-from scripts.etl_lib import (
+from scripts.helpers.etl_lib import (
     read_mapping, read_target_catalog, assert_target_pairs_exist,
     transform_legacy_df
 )
@@ -81,7 +81,7 @@ RAW_PCT_MAP = {
 }
 OUTCOMES_SCORE_COLS = list(set(RAW_PCT_MAP.keys()) | {"ACT Math Score", "ACT Science Score", "PSAT Math Score", "SAT Math Score", "AP Score"})
 ACCOUNTS_SCORE_COLS = ["CogAT Standard Nonverbal", "CoGAT Standard Quant"]
-DYNAMIC_TGT = {"Test Name", "Sub-Test Name", "Score Value", "Percentile", "Score Unit/Type", "Score Out Of"}
+DYNAMIC_TGT = {"Test Name", "Sub-test Name", "Score Value", "Percentile", "Score Unit/Type", "Score Out Of"}
 
 # ───────── MAIN ─────────
 def main() -> None:
@@ -112,7 +112,7 @@ def main() -> None:
                 outcome_name = row.get("Outcome Name", "")
                 if pd.notna(outcome_name) and "AP " in outcome_name: sub = outcome_name.split("AP ", 1)[1].strip()
             rec = base.copy()
-            rec.update({"Test Name": test, "Sub-Test Name": sub, "Score Value": score_val, "Percentile": pct_val if pd.notna(pct_val) else pd.NA, "Score Unit/Type": unit, "Score Out Of": out_of})
+            rec.update({"Test Name": test, "Sub-test Name": sub, "Score Value": score_val, "Percentile": pct_val if pd.notna(pct_val) else pd.NA, "Score Unit/Type": unit, "Score Out Of": out_of})
             master_records.append(rec)
     log.info("Completed processing Outcomes. Found %d records.", len(master_records))
 
@@ -133,7 +133,7 @@ def main() -> None:
             if pd.isna(score_val) or str(score_val).strip() == "": continue
             test, sub, unit, out_of = META[score_col]
             rec = base.copy()
-            rec.update({"Test Name": test, "Sub-Test Name": sub, "Score Value": score_val, "Percentile": pd.NA, "Score Unit/Type": unit, "Score Out Of": out_of})
+            rec.update({"Test Name": test, "Sub-test Name": sub, "Score Value": score_val, "Percentile": pd.NA, "Score Unit/Type": unit, "Score Out Of": out_of})
             master_records.append(rec)
     log.info("Completed processing Accounts. Total records now: %d.", len(master_records))
 

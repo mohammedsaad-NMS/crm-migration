@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 pd.options.mode.chained_assignment = None
 
-from scripts.etl_lib import (
+from scripts.helpers.etl_lib import (
     read_mapping, read_target_catalog, assert_target_pairs_exist,
     transform_legacy_df,
     intelligent_title_case, strip_translation,
@@ -22,7 +22,7 @@ from scripts.etl_lib import (
 # ───────── CONFIG ─────────
 BASE = Path(__file__).resolve().parent
 ACCOUNTS_CSV = BASE.parent / "mapping" / "legacy-exports" / "Accounts_2025_06_24.csv"
-CONTACTS_CSV = BASE.parent / "mapping" / "legacy-exports" / "Contacts_2025_06_25.csv"
+CONTACTS_CSV = BASE.parent / "mapping" / "legacy-exports" / "Contacts_2025_07_16.csv"
 OUTPUT_DIR   = BASE.parent / "output"
 CACHE_DIR   = BASE.parent / "cache"
 OUTPUT_DIR.mkdir(exist_ok=True)
@@ -47,7 +47,7 @@ OPT_FLIP = {"Yes": "FALSE", "Yes/Sí": "FALSE", "No": "TRUE", "No/No": "TRUE"}
 ARTEFACT = ", Address Line 2/Línea de dirección 2"
 EXCLUDE_TYPES = {"Primary Guardian","Secondary Guardian","Third Guardian","Star"}
 
-ROLE_FIELD     = "Role (General)"
+ROLE_FIELD     = "Contact Role (General)"
 EMERGENCY_FLAG = "Emergency Contact"   # Boolean flag
 
 # ───────── MAIN ─────────

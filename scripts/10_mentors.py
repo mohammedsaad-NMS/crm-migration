@@ -21,7 +21,7 @@ from pathlib import Path
 import pandas as pd
 
 
-from scripts.etl_lib import read_target_catalog
+from scripts.helpers.etl_lib import read_target_catalog
 
 # ======================================================================================
 # CONFIGURATION

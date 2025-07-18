@@ -21,7 +21,7 @@ import pandas as pd
 pd.options.mode.chained_assignment = None
 
 # Assuming etl_lib.py is in the same directory or accessible
-from scripts.etl_lib import intelligent_title_case, strip_translation
+from scripts.helpers.etl_lib import intelligent_title_case, strip_translation
 
 # ───────────────────────── CONFIG ──────────────────────────
 BASE_DIR    = Path(__file__).resolve().parent
@@ -98,7 +98,7 @@ def main() -> None:
                 guardian_connections.append({
                     "Star (Match Key)": star_name,
                     "Guardian (Match Key)": guardian_name,
-                    "Role": role,
+                    "Relationship Type": role,
                     "Only Legal Guardian": is_only_guardian
                 })
 

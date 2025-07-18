@@ -16,6 +16,7 @@ Flow
 4. Merge `star_lookup.csv` to replace Star ID with Full Name.
 5. Sort records, calculate the correct End Date, and format date fields.
 5b. Apply "Current" status logic to nullify invalid future-dated records.
+5c. Ensure "Current" records have a blank End Date.
 6. Finalize column order based on the target catalog.
 7. Write the UI-ready CSV to the output directory.
 """
@@ -28,7 +29,7 @@ import pandas as pd
 pd.options.mode.chained_assignment = None
 
 # Assuming 'etl_lib.py' is in a 'scripts' subdirectory relative to the CWD
-from scripts.etl_lib import (
+from scripts.helpers.etl_lib import (
     read_mapping,
     read_target_catalog,
     assert_target_pairs_exist,
@@ -163,6 +164,10 @@ def main() -> None:
 
     # Clean up the temporary helper column
     df_ui.drop(columns=['Current Start Date'], inplace=True)
+
+    # 5c. ENSURE "CURRENT" RECORDS HAVE BLANK END DATE
+    log.info("Ensuring all 'Current' records have a blank End Date.")
+    df_ui.loc[df_ui['Status'] == 'Current', 'End Date'] = pd.NA
 
 
     # 6. FINALIZE COLUMN ORDER

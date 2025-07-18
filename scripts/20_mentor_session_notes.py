@@ -22,7 +22,7 @@ from pathlib import Path
 import pandas as pd
 pd.options.mode.chained_assignment = None
 
-from scripts.etl_lib import (
+from scripts.helpers.etl_lib import (
     read_mapping,
     read_target_catalog,
     assert_target_pairs_exist,

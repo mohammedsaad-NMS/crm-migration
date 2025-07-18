@@ -16,7 +16,7 @@ The process includes:
 """
 
 from __future__ import annotations
-import logging, re, subprocess
+import logging, re, subprocess, sys
 from pathlib import Path
 from typing import Dict
 
@@ -25,7 +25,7 @@ from rapidfuzz import process, fuzz
 
 pd.options.mode.chained_assignment = None
 
-from scripts.etl_lib import (
+from scripts.helpers.etl_lib import (
     read_mapping, read_target_catalog, assert_target_pairs_exist,
     transform_legacy_df, standardize_address_block, intelligent_title_case,
     digits_only_phone
@@ -44,7 +44,7 @@ OUTPUT_DIR  = BASE_DIR.parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 # Path to the districts script to be triggered for logging purposes
-DISTRICTS_SCRIPT_NAME = "load_districts.py"
+DISTRICTS_SCRIPT_NAME = "districts.py"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -250,7 +250,7 @@ def main() -> None:
         try:
             # Execute the district script as a module to ensure correct pathing
             subprocess.run(
-                ["python", "-m", "scripts.load_districts"], 
+                [sys.executable, "-m", "scripts.02_districts"], 
                 check=True,
                 cwd=PROJECT_ROOT # Set the correct working directory
             )

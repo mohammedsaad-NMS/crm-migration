@@ -26,8 +26,8 @@ log = logging.getLogger(__name__)
 # REPOSITORY-RELATIVE CSV PATHS
 # ───────────────────────────────
 BASE_DIR      = Path(__file__).resolve().parent
-MAP_FILE      = BASE_DIR.parent / "mapping" / "Target-Legacy Mapping.csv"
-TARGET_FIELDS = BASE_DIR.parent / "mapping" / "Target modules_fields.csv"
+MAP_FILE      = BASE_DIR.parent.parent / "mapping" / "Target-Legacy Mapping.csv"
+TARGET_FIELDS = BASE_DIR.parent.parent / "mapping" / "Target modules_fields.csv"
 
 # ════════════════════════════════════════════════════════════════════════════
 #                               MAPPING HELPERS

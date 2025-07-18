@@ -1,0 +1,126 @@
+#!/usr/bin/env python3
+"""
+Educator-Star Associations Loader — National Math Stars CRM Migration
+==================================================================
+Creates UI-ready **Educator-Star Associations** records and writes
+`output/Educator-Star Associations.csv`.
+
+This script handles the migration of the junction object linking Educators
+to the Stars they support.
+
+Flow
+----
+1. Load legacy data and filter out records with blank associations.
+2. Map and rename columns according to the *Target-Legacy Mapping.csv*.
+3. Merge `star_lookup.csv` to replace Star ID with Full Name for UI import.
+4. Sort records by the Star's Match Key.
+5. Finalize column order based on the target catalog.
+6. Write the UI-ready CSV to the output directory.
+"""
+
+from __future__ import annotations
+import logging
+from pathlib import Path
+
+import pandas as pd
+pd.options.mode.chained_assignment = None
+
+# Assuming 'etl_lib.py' is in a 'scripts' subdirectory relative to the CWD
+from scripts.helpers.etl_lib import (
+    read_mapping,
+    read_target_catalog,
+    assert_target_pairs_exist,
+    transform_legacy_df,
+)
+
+# ───────────────────────── CONFIG ──────────────────────────
+BASE_DIR   = Path(__file__).resolve().parent
+OUTPUT_DIR = BASE_DIR.parent / "output"
+OUTPUT_DIR.mkdir(exist_ok=True)
+
+LEGACY_CSV = BASE_DIR.parent / "mapping" / "legacy-exports" / "Educator_Star_Association_2025_07_16.csv"
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+log = logging.getLogger(__name__)
+
+# ─────────────────────────── MAIN ───────────────────────────
+
+def main() -> None:
+    """Main ETL script for Educator-Star Associations."""
+
+    # 1. LOAD LEGACY DATA
+    log.info("Loading legacy data from: %s", LEGACY_CSV)
+    try:
+        df_raw = pd.read_csv(LEGACY_CSV, dtype=str)
+    except FileNotFoundError:
+        log.error("Legacy export not found at '%s'. Halting.", LEGACY_CSV)
+        return
+
+    log.info("Loaded %d raw records.", len(df_raw))
+
+    # 1a. Remove rows where either Star or Educator are blank
+    if 'National Math Star' in df_raw.columns and 'Educator' in df_raw.columns:
+        initial_rows = len(df_raw)
+        star_blank_mask = df_raw['National Math Star'].fillna('').str.strip() == ''
+        educator_blank_mask = df_raw['Educator'].fillna('').str.strip() == ''
+        either_blank_mask = star_blank_mask | educator_blank_mask
+        df_raw = df_raw[~either_blank_mask]
+        rows_removed = initial_rows - len(df_raw)
+        if rows_removed > 0:
+            log.info("Removed %d records where either the Star or Educator was blank.", rows_removed)
+
+    # 2. MAP / RENAME PER MAPPING FILE
+    module_name = "Educator-Star Associations"
+    log.info("Reading and validating mappings for '%s'...", module_name)
+    mapping = read_mapping().query(f"`Target Module` == '{module_name}'")
+    catalog = read_target_catalog()
+    assert_target_pairs_exist(module_name, mapping, catalog)
+    log.info("Mappings validated successfully.")
+    df_ui = transform_legacy_df(df_raw, mapping)
+    log.info("Legacy data transformed to target schema.")
+
+    # 3. MERGE STAR LOOKUP
+    log.info("Merging Star lookup cache...")
+    CACHE_DIR = BASE_DIR.parent / "cache"
+    LOOKUP_FILE = CACHE_DIR / "star_lookup.csv"
+
+    if LOOKUP_FILE.exists():
+        star_lu = pd.read_csv(LOOKUP_FILE, dtype=str)
+        star_lu.rename(columns={"Full Name": "Star Full Name"}, inplace=True)
+        df_ui = df_ui.merge(star_lu, left_on='Star (Match Key)', right_on='Record Id', how='left')
+        matched_count = df_ui["Star Full Name"].notna().sum()
+        total_count = len(df_ui)
+        log.info("Matched %d of %d records in the Star lookup.", matched_count, total_count)
+        if matched_count < total_count:
+            log.warning("%d records had no matching Star lookup.", total_count - matched_count)
+        df_ui['Star (Match Key)'] = df_ui['Star Full Name'].fillna(df_ui['Star (Match Key)'])
+        df_ui.drop(columns=['Record Id', 'Star Full Name'], inplace=True, errors='ignore')
+    else:
+        log.error("Star lookup file not found at '%s'. Cannot replace IDs.", LOOKUP_FILE)
+
+    # 4. SORTING
+    log.info("Sorting records by Star...")
+    if 'Star (Match Key)' in df_ui.columns:
+        df_ui.sort_values(by=['Star (Match Key)'], inplace=True)
+
+    # 5. FINALIZE COLUMN ORDER
+    log.info("Finalizing column order based on target catalog...")
+    ui_cols = (catalog.query(f"`User-Facing Module Name` == '{module_name}'")["User-Facing Field Name"].tolist())
+    
+    for col in ui_cols:
+        if col not in df_ui.columns:
+            df_ui[col] = pd.NA
+
+    df_ui = df_ui[[c for c in ui_cols if c in df_ui.columns]]
+
+    # 6. WRITE OUTPUT
+    output_path = OUTPUT_DIR / "Educator-Star Associations.csv"
+    df_ui.to_csv(output_path, index=False)
+    log.info("Wrote %s (%d rows)", output_path.name, len(df_ui))
+
+if __name__ == "__main__":
+    main()
