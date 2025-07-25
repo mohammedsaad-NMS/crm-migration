@@ -26,7 +26,7 @@ from scripts.helpers.etl_lib import intelligent_title_case, strip_translation
 # ───────────────────────── CONFIG ──────────────────────────
 BASE_DIR    = Path(__file__).resolve().parent
 OUTPUT_DIR  = BASE_DIR.parent / "output"; OUTPUT_DIR.mkdir(exist_ok=True)
-ACCOUNTS_CSV = BASE_DIR.parent / "mapping" / "legacy-exports" / "Accounts_2025_06_24.csv"
+ACCOUNTS_CSV = BASE_DIR.parent / "mapping" / "legacy-exports" / "Accounts_2025_07_22.csv"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -48,7 +48,7 @@ def get_person_name(row: pd.Series, prefix: str) -> Optional[str]:
 
     first_name = row.get(first_name_col)
     last_name = row.get(last_name_col)
-    
+
     if pd.notna(first_name) or pd.notna(last_name):
         full_name = f"{str(first_name or '')} {str(last_name or '')}".strip()
         return full_name if full_name else None
@@ -95,12 +95,19 @@ def main() -> None:
                 # The flag is only true for the Primary Guardian and only if the source field is "Yes/Sí"
                 is_only_guardian = (role == "Primary Guardian") and only_guardian_flag
                 
+                # --- MODIFIED --- This block now handles the new 'Relationship' column and renames 'Relationship Type'
+                # Dynamically get the relationship from the correct legacy column
+                relationship_col_name = f"{prefix} Relationship to Star"
+                relationship = star_row.get(relationship_col_name)
+
                 guardian_connections.append({
                     "Star (Match Key)": star_name,
                     "Guardian (Match Key)": guardian_name,
-                    "Relationship Type": role,
+                    "Guardian Role": role, # Renamed from "Relationship Type"
+                    "Relationship": relationship, # New column
                     "Only Legal Guardian": is_only_guardian
                 })
+                # --- END MODIFICATION ---
 
         # Process Emergency Contact
         emergency_contact_name = get_person_name(star_row, "Emergency Contact")
@@ -120,6 +127,8 @@ def main() -> None:
         # Apply title casing for consistency
         df_guardians["Star (Match Key)"] = df_guardians["Star (Match Key)"].apply(intelligent_title_case)
         df_guardians["Guardian (Match Key)"] = df_guardians["Guardian (Match Key)"].apply(intelligent_title_case)
+        # --- NEW --- Apply translation stripping to the new Relationship column
+        df_guardians["Relationship"] = df_guardians["Relationship"].apply(strip_translation)
         
         out_path = OUTPUT_DIR / "Guardian-Star Associations.csv"
         df_guardians.to_csv(out_path, index=False)

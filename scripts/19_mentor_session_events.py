@@ -29,7 +29,7 @@ import pandas as pd;  pd.options.mode.chained_assignment = None
 from scripts.helpers.etl_lib import (
     read_mapping, read_target_catalog, assert_target_pairs_exist,
     transform_legacy_df,
-    intelligent_title_case, # Ensure this is imported from your library
+    intelligent_title_case,
 )
 
 # ───────────────────────── CONFIG ──────────────────────────
@@ -68,7 +68,7 @@ DATE_RE = re.compile(
           \d{4}-\d{2}-\d{2} |            # YYYY-MM-DD
           \d{1,2}[/-]\d{1,2}[/-]\d{2,4}  # M/D/YY, M-D-YYYY, etc.
         )
-        \s*[-–—:]?\s* # Optional separator (any dash or colon)
+        \s*[-–—:]?\s* 
     """,
     flags=re.I | re.X,
 )
@@ -122,7 +122,7 @@ def main() -> None:
         log.info("Applying specific mentor name corrections...")
         replacements = {
             "Al Lucero Math Mentor": "Al Lucero",
-            "Humberto Leal": "Humberto Acosta Leal Acosta"
+            "Humberto Leal": "Humberto Leal Acosta"
         }
         df_ui["Mentor (Match Key)"] = df_ui["Mentor (Match Key)"].replace(replacements)
 
@@ -137,8 +137,8 @@ def main() -> None:
         df_ui["Mentor Session Event Name"] = df_ui["Mentor Session Event Name"].apply(intelligent_title_case)
 
     # 9. DEFAULT SESSION FORMAT --------------------------------------------
-        url_present = df_ui["Recording URL"].notna() & df_ui["Recording URL"].str.strip().ne('')
-        url_valid = ~df_ui["Recording URL"].isin(INVALID_URLS)
+        url_present = df_ui["Session Recording URL"].notna() & df_ui["Session Recording URL"].str.strip().ne('')
+        url_valid = ~df_ui["Session Recording URL"].isin(INVALID_URLS)
         
         is_virtual = url_present & url_valid
         

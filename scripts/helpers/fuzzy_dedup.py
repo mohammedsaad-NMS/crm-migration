@@ -20,7 +20,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 log = logging.getLogger(__name__)
 
 # --- Settings ---
-SIMILARITY_THRESHOLD = 85
+SIMILARITY_THRESHOLD = 80
 ID_COLUMN = "Record Id"
 MODIFIED_TIME_COLUMN = "Modified Time"
 CACHE_DIR = Path("cache")

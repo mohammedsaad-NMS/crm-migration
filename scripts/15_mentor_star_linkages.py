@@ -40,8 +40,13 @@ from scripts.helpers.etl_lib import (
 BASE_DIR   = Path(__file__).resolve().parent
 OUTPUT_DIR = BASE_DIR.parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
+CACHE_DIR = BASE_DIR.parent / "cache"
 
 LEGACY_CSV = BASE_DIR.parent / "mapping" / "legacy-exports" / "Mentor_Star_Associations_2025_07_15.csv"
+STAR_LOOKUP_FILE = CACHE_DIR / "star_lookup.csv"
+# --- NEW --- Path for the mentor lookup file
+MENTOR_LOOKUP_FILE = CACHE_DIR / "mentor_lookup.csv"
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -97,15 +102,13 @@ def main() -> None:
 
     # 3. SET OWNER
     log.info("Setting Owner to 'Al Lucero' for all records...")
-    df_ui['Owner'] = 'Al Lucero'
+    df_ui['Mentor-Star Association Owner'] = 'Al Lucero'
 
     # 4. MERGE STAR LOOKUP
     log.info("Merging Star lookup cache...")
-    CACHE_DIR = BASE_DIR.parent / "cache"
-    LOOKUP_FILE = CACHE_DIR / "star_lookup.csv"
 
-    if LOOKUP_FILE.exists():
-        star_lu = pd.read_csv(LOOKUP_FILE, dtype=str)
+    if STAR_LOOKUP_FILE.exists():
+        star_lu = pd.read_csv(STAR_LOOKUP_FILE, dtype=str)
         star_lu.rename(columns={"Full Name": "Star Full Name"}, inplace=True)
         df_ui = df_ui.merge(star_lu, left_on='Star (Match Key)', right_on='Record Id', how='left')
         matched_count = df_ui["Star Full Name"].notna().sum()
@@ -116,7 +119,36 @@ def main() -> None:
         df_ui['Star (Match Key)'] = df_ui['Star Full Name'].fillna(df_ui['Star (Match Key)'])
         df_ui.drop(columns=['Record Id', 'Star Full Name'], inplace=True, errors='ignore')
     else:
-        log.error("Star lookup file not found at '%s'. Cannot replace IDs.", LOOKUP_FILE)
+        log.error("Star lookup file not found at '%s'. Cannot replace IDs.", STAR_LOOKUP_FILE)
+
+    # --- NEW: Step 4.5 ---
+    # 4.5 REPLACE MENTOR ID WITH FULL NAME
+    log.info("Replacing Mentor IDs with full names from cache...")
+    if MENTOR_LOOKUP_FILE.exists():
+        try:
+            df_mentor_lookup = pd.read_csv(MENTOR_LOOKUP_FILE, dtype=str)
+            # Create a 'Full Name' column in the lookup
+            df_mentor_lookup['Full Name'] = (
+                df_mentor_lookup['First Name'].fillna('') + ' ' + df_mentor_lookup['Last Name'].fillna('')
+            ).str.strip()
+            
+            # Create a mapping from Record Id to Full Name
+            mentor_name_map = pd.Series(
+                df_mentor_lookup['Full Name'].values,
+                index=df_mentor_lookup['Record Id']
+            ).to_dict()
+
+            # Apply the mapping to the 'Mentor (Match Key)' column
+            df_ui['Mentor (Match Key)'] = df_ui['Mentor (Match Key)'].map(mentor_name_map)
+            log.info("Successfully mapped Mentor IDs to full names.")
+
+        except FileNotFoundError:
+             log.warning(f"Mentor lookup file not found at '{MENTOR_LOOKUP_FILE}'. Skipping mentor name enrichment.")
+        except Exception as e:
+            log.error(f"An error occurred during mentor name enrichment: {e}")
+    else:
+        log.error("Mentor lookup file not found at '%s'. Cannot replace Mentor IDs.", MENTOR_LOOKUP_FILE)
+    # --- END NEW ---
 
     # 5. SORTING & END DATE CALCULATION
     log.info("Sorting records and calculating End Dates...")
@@ -136,7 +168,7 @@ def main() -> None:
     # Format dates to 'YYYY-MM-DD', leaving End Date blank for current (last) records.
     df_ui['Start Date'] = df_ui['Start Date'].dt.strftime('%Y-%m-%d')
     df_ui['End Date'] = df_ui['End Date'].dt.strftime('%Y-%m-%d')
-    
+
     # 5b. APPLY "CURRENT" STATUS LOGIC
     log.info("Applying 'Current' status logic to nullify invalid future-dated records...")
     

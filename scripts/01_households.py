@@ -18,7 +18,7 @@ from scripts.helpers.etl_lib import (
 # ───────────────────────── CONFIG ──────────────────────────
 COHORT_COL  = "Cohort Entry Year"
 BASE_DIR    = Path(__file__).resolve().parent
-ACCOUNTS_CSV= BASE_DIR.parent / "mapping" / "legacy-exports" / "Accounts_2025_06_24.csv"
+ACCOUNTS_CSV= BASE_DIR.parent / "mapping" / "legacy-exports" / "Accounts_2025_07_22.csv"
 OUTPUT_DIR  = BASE_DIR.parent / "output"; OUTPUT_DIR.mkdir(exist_ok=True)
 
 logging.basicConfig(
@@ -74,7 +74,7 @@ def main() -> None:
     last_name_clean  = guardian_last["Primary Guardian Last Name"].apply(intelligent_title_case)
     latest["Household Name"] = (first_name_clean.str[0].str.upper() + ". " + last_name_clean + " Household")
 
-    latest["Family Size"] = to_int_if_whole(latest["Family Size"])
+    latest["Household Size"] = to_int_if_whole(latest["Household Size"])
     for col in ["Highest Level of Education", "Special Circumstances"]:
         if col in latest.columns:
             latest[col] = latest[col].apply(strip_translation)
@@ -99,18 +99,18 @@ def main() -> None:
     latest.reset_index(drop=True)[ui_cols].to_csv(ui_path, index=False)
     log.info("Wrote data to %s", ui_path)
 
-    # 6. BUILD CACHE (family_key • Household Name • Account Name) ----------
+    # 6. BUILD CACHE (family_key • Household Name • Account Name • Record Id) ----------
     CACHE_DIR = BASE_DIR.parent / "cache";  CACHE_DIR.mkdir(exist_ok=True)
     lookup_path = CACHE_DIR / "household_lookup.csv"
 
     # Map family_key → Household Name
     household_name_map = latest["Household Name"]
 
-    # One row per original Star account
-    cache_df = df_raw[["family_key", "Account Name"]].copy()
+    # One row per original Star account, now including the Record Id
+    cache_df = df_raw[["family_key", "Account Name", "Record Id"]].copy()
     cache_df["Household Name"] = cache_df["family_key"].map(household_name_map)
 
-    cache_df[["family_key", "Household Name", "Account Name"]].to_csv(lookup_path, index=False)
+    cache_df[["family_key", "Household Name", "Account Name", "Record Id"]].to_csv(lookup_path, index=False)
     log.info("Wrote household lookup → %s (%d rows)", lookup_path, len(cache_df))
 
 

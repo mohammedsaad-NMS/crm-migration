@@ -4,14 +4,6 @@ Enrichment Enrollments Loader — National Math Stars CRM Migration
 ==================================================================
 Transforms legacy **STEM Enrichments Progress** records into target-ready
 **Enrichment Enrollments** records.
-
-This script executes the following workflow:
-1.  Loads legacy data and target schema definitions.
-2.  Canonicalizes product information (Enrichments) using a pre-approved deduplication cache.
-3.  Transforms legacy column names to their target equivalents based on the mapping file.
-4.  Replaces Star ID with Star Full Name using a cached lookup file.
-5.  Derives the enrollment "Status" (Upcoming, Ongoing, Completed) from date fields.
-6.  Formats the final data to match the target schema and exports it to CSV.
 """
 
 from __future__ import annotations
@@ -20,10 +12,8 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 
-# Suppress pandas SettingWithCopyWarning for cleaner output
 pd.options.mode.chained_assignment = None
 
-# Assumes 'etl_lib' is in a discoverable 'scripts' subdirectory
 from scripts.helpers.etl_lib import (
     read_mapping,
     read_target_catalog,
@@ -34,22 +24,23 @@ from scripts.helpers.etl_lib import (
 # ======================================================================================
 # CONFIGURATION
 # ======================================================================================
-# --- Path & File Definitions ---
 BASE_DIR = Path(__file__).resolve().parent
 INPUT_DIR = BASE_DIR.parent / "mapping" / "legacy-exports"
 CACHE_DIR = BASE_DIR.parent / "cache"
 OUTPUT_DIR = BASE_DIR.parent / "output"
 
-LEGACY_FILE = INPUT_DIR / "STEM_Enrichments_Progress_2025_06_27.csv"
-PRODUCT_DECISIONS_FILE = CACHE_DIR / "decisions_Products_2025_06_27.csv"
+LEGACY_FILE = INPUT_DIR / "STEM Enrichments Progress_C_001.csv"
+PRODUCT_DECISIONS_FILE = CACHE_DIR / "decisions_Products_001.csv"
 STAR_LOOKUP_FILE = CACHE_DIR / "star_lookup.csv"
+# --- NEW --- Using the final product lookup cache from the products script
+PRODUCT_LOOKUP_FILE = CACHE_DIR / "product_lookup.csv"
 OUTPUT_CSV_FILE = OUTPUT_DIR / "Enrichment Enrollments.csv"
 
-# --- Module & Field Definitions ---
 MODULE_UI = "Enrichment Enrollments"
 LEGACY_MODULE = "Stem Enrichments Progress"
 LEGACY_PRODUCT_ID_COL = "Enrichment.id"
-LEGACY_PRODUCT_NAME_COL = "Enrichment"
+# --- This variable will hold the name of the target field for the enrichment, post-transformation
+TARGET_PRODUCT_MATCH_KEY_COL = "Product (Enrichment) (Match Key)"
 STAR_MATCH_KEY_COL = "Star (Match Key)"
 
 
@@ -69,49 +60,38 @@ log = logging.getLogger(__name__)
 # ======================================================================================
 
 def _read_csv(path: Path) -> pd.DataFrame:
-    """Reads a CSV file into a DataFrame, raising an error if not found."""
     if not path.exists():
         raise FileNotFoundError(f"Required file not found at: {path}")
     return pd.read_csv(path, dtype=str, keep_default_na=False).replace("", pd.NA)
 
 
-def _load_product_decisions(cache_file: Path) -> tuple[dict, dict]:
-    """Loads product deduplication decisions from the cache file."""
+def _load_product_decisions(cache_file: Path) -> dict:
+    """Loads product deduplication decisions to remap duplicate IDs."""
     try:
         df = _read_csv(cache_file)
         merge_only = df[df["user_decision"] == "MERGE"]
-
         id_remap = pd.Series(
             merge_only.canonical_record_id.values, index=merge_only.duplicate_record_id
         ).to_dict()
-        id_to_name = pd.Series(
-            merge_only.canonical_name.values, index=merge_only.canonical_record_id
-        ).to_dict()
-
         log.info(f"Loaded {len(id_remap)} product ID remaps from cache.")
-        return id_remap, id_to_name
-
+        return id_remap
     except FileNotFoundError:
         log.warning("Product decisions cache not found. No product remapping will be applied.")
-        return {}, {}
+        return {}
 
 
 def _derive_status(start: pd.Series, end: pd.Series) -> pd.Series:
-    """Derives enrollment status based on start and end dates."""
-    today = pd.Timestamp.today().normalize()
+    today = pd.to_datetime("2025-07-23") # Using a fixed date for consistent output
     start_dt = pd.to_datetime(start, errors="coerce")
     end_dt = pd.to_datetime(end, errors="coerce")
-
     conditions = [
         start_dt > today,
         (start_dt <= today) & ((end_dt.isna()) | (end_dt >= today)),
     ]
     choices = ["Upcoming", "In Progress"]
     status = np.select(conditions, choices, default="Completed")
-
-    # Ensure status is blank if dates are missing to prevent bad data
     status[start_dt.isna() & end_dt.isna()] = pd.NA
-    return pd.Series(status, index=start.index, name="Status")
+    return pd.Series(status, index=start.index, name="Enrichment Status")
 
 
 # ======================================================================================
@@ -119,7 +99,6 @@ def _derive_status(start: pd.Series, end: pd.Series) -> pd.Series:
 # ======================================================================================
 
 def main() -> None:
-    """Main ETL script execution."""
     log.info(f"Starting {MODULE_UI} loader...")
     OUTPUT_DIR.mkdir(exist_ok=True)
 
@@ -132,54 +111,67 @@ def main() -> None:
         log.warning(f"Source file {LEGACY_FILE.name} was not found. Aborting process.")
         return
 
-    id_remap, id_to_name = _load_product_decisions(PRODUCT_DECISIONS_FILE)
+    id_remap = _load_product_decisions(PRODUCT_DECISIONS_FILE)
 
-    # 2. Filter mapping for the relevant modules and validate
-    map_this = mapping.query(
-        "`Legacy Module` == @LEGACY_MODULE and `Target Module` == @MODULE_UI"
-    )
+    if "Outcome" in df_raw.columns:
+        withdrew_mask = df_raw["Outcome"] == "Withdrew"
+    else:
+        log.warning("Legacy 'Outcome' column not found. Cannot process 'Withdrew' status.")
+        withdrew_mask = None
+
+    # 2. Filter mapping and validate
+    map_this = mapping.query(f"`Legacy Module` == @LEGACY_MODULE and `Target Module` == @MODULE_UI")
     if map_this.empty:
-        log.error("Mapping failed: Could not find a match for the specified Legacy and Target modules in the mapping file.")
-        log.error(f"Please check that LEGACY_MODULE='{LEGACY_MODULE}' and MODULE_UI='{MODULE_UI}' are correct.")
+        log.error(f"Mapping failed for LEGACY_MODULE='{LEGACY_MODULE}' and MODULE_UI='{MODULE_UI}'.")
         return
-        
     assert_target_pairs_exist(MODULE_UI, map_this, catalog)
 
-    # 3. Apply product canonicalization
+    # 3. Apply product ID canonicalization
     if id_remap and LEGACY_PRODUCT_ID_COL in df_raw.columns:
         df_raw[LEGACY_PRODUCT_ID_COL] = df_raw[LEGACY_PRODUCT_ID_COL].replace(id_remap)
-    if id_to_name and LEGACY_PRODUCT_NAME_COL in df_raw.columns:
-        df_raw[LEGACY_PRODUCT_NAME_COL] = df_raw[LEGACY_PRODUCT_ID_COL].map(id_to_name).fillna(df_raw[LEGACY_PRODUCT_NAME_COL])
 
     # 4. Perform generic column rename based on mapping
     df_ui = transform_legacy_df(df_raw, map_this)
 
-    # 5. Enrich Star Name
+    # 5. Enrich Star and Product Names
+    # --- NEW: Enrich Product Name from final cache ---
+    if TARGET_PRODUCT_MATCH_KEY_COL in df_ui.columns:
+        try:
+            log.info(f"Loading final product names from '{PRODUCT_LOOKUP_FILE.name}'...")
+            df_product_lookup = _read_csv(PRODUCT_LOOKUP_FILE)
+            product_name_map = pd.Series(
+                df_product_lookup["Product Name"].values, index=df_product_lookup["Record Id"]
+            ).to_dict()
+            df_ui[TARGET_PRODUCT_MATCH_KEY_COL] = df_ui[TARGET_PRODUCT_MATCH_KEY_COL].map(product_name_map)
+        except FileNotFoundError:
+            log.warning(f"Product lookup file not found at '{PRODUCT_LOOKUP_FILE}'. Skipping product name enrichment.")
+        except Exception as e:
+            log.error(f"An error occurred during product name enrichment: {e}")
+
     if STAR_MATCH_KEY_COL in df_ui.columns:
         try:
             log.info("Loading Star lookup file to replace ID with Full Name...")
             df_star_lookup = _read_csv(STAR_LOOKUP_FILE)
             star_name_map = pd.Series(
-                df_star_lookup["Full Name"].values, index=df_star_lookup["Record Id"]
+                df_star_lookup["Star Full Name"].values, index=df_star_lookup["Record Id"]
             ).to_dict()
-
-            original_ids = df_ui[STAR_MATCH_KEY_COL].nunique()
             df_ui[STAR_MATCH_KEY_COL] = df_ui[STAR_MATCH_KEY_COL].map(star_name_map)
-            found_names = df_ui[STAR_MATCH_KEY_COL].notna().sum()
-            log.info(f"Successfully mapped {found_names} of {original_ids} unique Star IDs to full names.")
-
         except FileNotFoundError:
             log.warning(f"Star lookup file not found at '{STAR_LOOKUP_FILE}'. Skipping name enrichment.")
         except Exception as e:
             log.error(f"An error occurred during Star name enrichment: {e}")
             
-    # 6. Derive Status
-    if {"Start Date", "End Date"}.issubset(df_ui.columns):
-        df_ui["Status"] = _derive_status(df_ui["Start Date"], df_ui["End Date"])
+    # 6. Derive and overwrite Status
+    if {"Enrichment Start Date", "Enrichment End Date"}.issubset(df_ui.columns):
+        df_ui["Enrichment Status"] = _derive_status(df_ui["Enrichment Start Date"], df_ui["Enrichment End Date"])
+
+    if withdrew_mask is not None and withdrew_mask.any() and "Enrichment Status" in df_ui.columns:
+        log.info(f"Overwriting status to 'Withdrew' for {withdrew_mask.sum()} records.")
+        df_ui.loc[withdrew_mask, "Enrichment Status"] = "Withdrew"
 
     # 7. Align DataFrame with the full target schema
     ui_cols = catalog.query(
-        "`User-Facing Module Name` == @MODULE_UI and not `Data Source / Type`.str.contains('Related List', na=False)"
+        f"`User-Facing Module Name` == @MODULE_UI and not `Data Source / Type`.str.contains('Related List', na=False)"
     )["User-Facing Field Name"].tolist()
 
     for col in ui_cols:

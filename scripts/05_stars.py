@@ -40,7 +40,7 @@ BASE_DIR   = Path(__file__).resolve().parent
 CACHE_DIR  = BASE_DIR.parent / "cache"
 CACHE_DIR.mkdir(exist_ok=True)                      # ensure cache dir exists
 
-LEGACY_CSV = BASE_DIR.parent / "mapping" / "legacy-exports" / "Accounts_2025_06_24.csv"
+LEGACY_CSV = BASE_DIR.parent / "mapping" / "legacy-exports" / "Accounts_2025_07_22.csv"
 OUTPUT_DIR = BASE_DIR.parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
@@ -81,7 +81,6 @@ def main() -> None:
     df_ui["Record Id"]  = df_raw["Record Id"]               # passthrough for caching
 
     # 4. MERGE HOUSEHOLD LOOKUP
-    # 4. MERGE HOUSEHOLD LOOKUP
     if LOOKUP_FILE.exists():
         hh_lu = pd.read_csv(LOOKUP_FILE)
         
@@ -100,7 +99,8 @@ def main() -> None:
 
     # 5. FIELD-LEVEL CLEANING ----------------------------------------
     # 5a. Names → intelligent title-case
-    for col in ["First Name", "Last Name", "Middle Name"]:
+    # -- FIX -- Use correct "Star" prefixed column names
+    for col in ["Star First Name", "Star Last Name", "Star Middle Name"]:
         if col in df_ui.columns:
             df_ui[col] = df_ui[col].apply(intelligent_title_case)
 
@@ -116,26 +116,27 @@ def main() -> None:
         df_ui["Cohort Entry Year"] = to_int_if_whole(df_ui["Cohort Entry Year"])
 
     # 5d. Translation strip
-    for col in ["Race or Ethnicity", "Gender Identity"]:
+    for col in ["Star Ethnicity", "Star Gender Identity"]:
         if col in df_ui.columns:
             df_ui[col] = df_ui[col].apply(strip_translation)
 
     # 5e. Age calculation
-    if "Date of Birth" in df_ui.columns:
-        dob = pd.to_datetime(df_ui["Date of Birth"], errors="coerce")
+    if "Star Date of Birth" in df_ui.columns:
+        dob = pd.to_datetime(df_ui["Star Date of Birth"], errors="coerce")
         age = (pd.Timestamp.now() - dob).dt.days / 365.25
-        df_ui["Age"] = age.apply(lambda x: int(x) if pd.notna(x) else pd.NA).astype("Int64")
+        df_ui["Star Age"] = age.apply(lambda x: int(x) if pd.notna(x) else pd.NA).astype("Int64")
 
     # 5f. Construct Full Name
-    if {"First Name", "Last Name"}.issubset(df_ui.columns):
-        df_ui["Full Name"] = (
-            df_ui["First Name"].astype(str).fillna("") + " " +
-            df_ui["Last Name"].astype(str).fillna("")
+    # -- FIX -- Check for "Star" prefixed names before creating the full name
+    if {"Star First Name", "Star Last Name"}.issubset(df_ui.columns):
+        df_ui["Star Full Name"] = (
+            df_ui["Star First Name"].astype(str).fillna("") + " " +
+            df_ui["Star Last Name"].astype(str).fillna("")
         ).str.strip()
 
     # 6. WRITE LOOK-UP CACHE -----------------------------------------
     log.info("Writing star-lookup cache (Record Id → Full Name)…")
-    lookup_df  = df_ui[["Record Id", "Full Name"]].copy()
+    lookup_df  = df_ui[["Record Id", "Star Full Name"]].copy()
     cache_path = CACHE_DIR / "star_lookup.csv"
     lookup_df.to_csv(cache_path, index=False)
     log.info("Wrote lookup to %s (%d rows)", cache_path, len(lookup_df))

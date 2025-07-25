@@ -25,8 +25,8 @@ from scripts.helpers.etl_lib import (
 BASE        = Path(__file__).resolve().parent
 OUTPUT_DIR  = BASE.parent / "output"
 CACHE_DIR   = BASE.parent / "cache"
-LEGACY_OUTCOMES_CSV = BASE.parent / "mapping" / "legacy-exports" / "Outcomes_2025_07_13.csv"
-LEGACY_ACCOUNTS_CSV = BASE.parent / "mapping" / "legacy-exports" / "Accounts_2025_06_24.csv"
+LEGACY_OUTCOMES_CSV = BASE.parent / "mapping" / "legacy-exports" / "Outcomes_C_001.csv"
+LEGACY_ACCOUNTS_CSV = BASE.parent / "mapping" / "legacy-exports" / "Accounts_2025_07_22.csv"
 STAR_LOOKUP_FILE    = CACHE_DIR / "star_lookup.csv"
 OUTPUT_DIR.mkdir(exist_ok=True)
 CACHE_DIR.mkdir(exist_ok=True)
@@ -153,7 +153,7 @@ def main() -> None:
         try:
             log.info("Loading Star lookup file to replace ID with Full Name...")
             df_star_lookup = _read_csv(STAR_LOOKUP_FILE)
-            star_name_map = pd.Series(df_star_lookup["Full Name"].values, index=df_star_lookup["Record Id"]).to_dict()
+            star_name_map = pd.Series(df_star_lookup["Star Full Name"].values, index=df_star_lookup["Record Id"]).to_dict()
             original_ids = df_out[STAR_MATCH_KEY_COL].nunique()
             df_out[STAR_MATCH_KEY_COL] = df_out[STAR_MATCH_KEY_COL].map(star_name_map)
             found_names = df_out[STAR_MATCH_KEY_COL].notna().sum()

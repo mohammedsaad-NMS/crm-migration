@@ -23,8 +23,10 @@ from scripts.helpers.etl_lib import (
 BASE        = Path(__file__).resolve().parent
 OUTPUT_DIR  = BASE.parent / "output"
 CACHE_DIR   = BASE.parent / "cache"
-LEGACY_CSV  = BASE.parent / "mapping" / "legacy-exports" / "Outcomes_2025_07_13.csv"
+LEGACY_CSV  = BASE.parent / "mapping" / "legacy-exports" / "Outcomes_C_001.csv"
 STAR_LOOKUP_FILE = CACHE_DIR / "star_lookup.csv"
+# --- NEW --- Path for the partner lookup cache file
+PARTNER_LOOKUP_FILE = CACHE_DIR / "partner_lookup.csv"
 OUTPUT_DIR.mkdir(exist_ok=True)
 CACHE_DIR.mkdir(exist_ok=True)
 
@@ -100,7 +102,7 @@ def main() -> None:
     static_mapping = mapping[~mapping["Legacy Field"].isin(DESCRIPTION_COLS)]
     df_transformed = transform_legacy_df(df_filtered, static_mapping)
     log.info("Performed static field mapping using `transform_legacy_df`.")
-    
+
     # New: Convert "Extroardinary" column from Yes/No to Boolean
     if "Extroardinary" in df_transformed.columns:
         log.info("Converting 'Extroardinary' column to boolean (True/False)...")
@@ -127,7 +129,7 @@ def main() -> None:
         new_descriptions.append(" | ".join(parts))
 
     # Assign based on the index of df_transformed to ensure alignment
-    df_transformed["Description"] = pd.Series(new_descriptions, index=df_transformed.index)
+    df_transformed["Outcome Description"] = pd.Series(new_descriptions, index=df_transformed.index)
     log.info("Generated new 'Description' column with refined concatenation logic.")
 
     # 5. Apply Star Name Lookup
@@ -136,7 +138,7 @@ def main() -> None:
         try:
             log.info("Loading Star lookup file to replace ID with Full Name...")
             df_star_lookup = pd.read_csv(STAR_LOOKUP_FILE, dtype=str)
-            star_name_map = pd.Series(df_star_lookup["Full Name"].values, index=df_star_lookup["Record Id"]).to_dict()
+            star_name_map = pd.Series(df_star_lookup["Star Full Name"].values, index=df_star_lookup["Record Id"]).to_dict()
 
             original_ids = df_transformed[STAR_MATCH_KEY_COL].nunique()
             df_transformed[STAR_MATCH_KEY_COL] = df_transformed[STAR_MATCH_KEY_COL].map(star_name_map)
@@ -147,6 +149,24 @@ def main() -> None:
             log.warning(f"Star lookup file not found at '{STAR_LOOKUP_FILE}'. Skipping name enrichment.")
         except Exception as e:
             log.error(f"An error occurred during Star name enrichment: {e}")
+
+    # --- NEW: Step 5.5 ---
+    # 5.5 Apply Partner Name Lookup
+    PARTNER_MATCH_KEY_COL = "Associated Partner (Match Key)"
+    if PARTNER_MATCH_KEY_COL in df_transformed.columns:
+        try:
+            log.info("Loading Partner lookup file to replace ID with Partner Name...")
+            df_partner_lookup = pd.read_csv(PARTNER_LOOKUP_FILE, dtype=str)
+            partner_name_map = pd.Series(df_partner_lookup["Partner Name"].values, index=df_partner_lookup["Record Id"]).to_dict()
+
+            df_transformed[PARTNER_MATCH_KEY_COL] = df_transformed[PARTNER_MATCH_KEY_COL].map(partner_name_map)
+            log.info(f"Successfully mapped Partner IDs to Partner Names.")
+
+        except FileNotFoundError:
+            log.warning(f"Partner lookup file not found at '{PARTNER_LOOKUP_FILE}'. Skipping partner name enrichment.")
+        except Exception as e:
+            log.error(f"An error occurred during partner name enrichment: {e}")
+    # --- END NEW ---
 
     # 6. Pad, order, and write the final output
     for col in ui_cols:

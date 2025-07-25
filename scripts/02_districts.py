@@ -33,7 +33,7 @@ from scripts.helpers.etl_lib import (
 # ───────────────────────── CONFIG ──────────────────────────
 RECENCY_COL = "Modified Time"
 BASE_DIR    = Path(__file__).resolve().parent
-LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Districts___Schools_2025_07_02.csv"
+LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Districts___Schools_2025_07_22.csv"
 CCD_CSV     = BASE_DIR.parent / "reference" / "20250619 NCES Districts Extract.csv"
 CACHE_DIR   = BASE_DIR.parent / "cache"
 CACHE_DIR.mkdir(exist_ok=True)              
@@ -73,7 +73,7 @@ def find_match_index(row: pd.Series, ref_df: pd.DataFrame, id_lookup: dict, stat
     3. Fuzzy name match nationwide.
     """
     # Tier 1: Match on NCES ID
-    nces_id = row["NCES ID"]
+    nces_id = row["District NCES ID"]
     if nces_id in id_lookup:
         return id_lookup[nces_id]
 
@@ -109,7 +109,7 @@ def main() -> None:
 
     df_ui = transform_legacy_df(df_raw, mapping)
     df_ui[RECENCY_COL] = pd.to_datetime(df_raw[RECENCY_COL], errors="coerce")
-    df_ui["NCES ID"] = df_raw["NCES District ID"].apply(clean_nces_id)
+    df_ui["District NCES ID"] = df_raw["NCES District ID"].apply(clean_nces_id)
     df_ui["Original Name"] = df_ui["District Name"]
     df_ui["Record Id"] = df_raw["Record Id"]
 
@@ -126,23 +126,23 @@ def main() -> None:
         "MZIP"          : "Zip Code",
         "PHONE"         : "Phone",
         "WEBSITE"       : "Website",
-        "LEAID"         : "NCES ID",
-        "LEA_TYPE_TEXT" : "Type",
+        "LEAID"         : "District NCES ID",
+        "LEA_TYPE_TEXT" : "District Type",
     }
     ref = pd.read_csv(CCD_CSV, dtype=str, usecols=ccd_to_ui.keys(), low_memory=False).rename(columns=ccd_to_ui)
     
-    ref["NCES ID"] = ref["NCES ID"].apply(clean_nces_id)
+    ref["District NCES ID"] = ref["District NCES ID"].apply(clean_nces_id)
     ref["norm_name"] = ref["District Name"].apply(norm_name)
     ref['State'] = ref['State'].str.title()
-    ref['Type'] = ref['Type'].str.split(' that is not a component').str[0]
+    ref['District Type'] = ref['District Type'].str.split(' that is not a component').str[0]
 
     # 3. ENRICHMENT: POPULATE AUTHORITATIVE DATA FROM CCD
     log.info("Enriching data with CCD information...")
     
     # Create lookups for matching
     df_ui["STATE_FULL"] = df_ui["State"].str.title()
-    id_to_idx_map = ref.drop_duplicates(subset=["NCES ID"]).set_index("NCES ID").index.get_indexer(ref.set_index("NCES ID").index)
-    id_lookup = dict(zip(ref["NCES ID"].dropna(), ref.index))
+    id_to_idx_map = ref.drop_duplicates(subset=["District NCES ID"]).set_index("District NCES ID").index.get_indexer(ref.set_index("District NCES ID").index)
+    id_lookup = dict(zip(ref["District NCES ID"].dropna(), ref.index))
 
     ref_by_state = {s: g for s, g in ref.groupby("State")}
 
@@ -155,7 +155,7 @@ def main() -> None:
     log.info("Overwriting legacy data with authoritative CCD data...")
     matched_mask = df_ui["match_idx"].notna()
     
-    cols_to_enrich = ["District Name", "NCES ID", "Street", "City", "State", "Zip Code", "Phone", "Website", "Type"]
+    cols_to_enrich = ["District Name", "District NCES ID", "Street", "City", "State", "Zip Code", "Phone", "Website", "District Type"]
     
     for col in cols_to_enrich:
         if col in ref.columns:
@@ -165,7 +165,7 @@ def main() -> None:
     log.info(f"Deduplicating {len(df_ui)} records...")
     def district_key(r):
         state_part = str(r.get("State", "")).strip().title()
-        return clean_nces_id(r["NCES ID"]) or f"{str(r['District Name']).lower()}|{state_part}"
+        return clean_nces_id(r["District NCES ID"]) or f"{str(r['District Name']).lower()}|{state_part}"
 
     df_ui["district_key"] = df_ui.apply(district_key, axis=1)
     latest = df_ui.sort_values(RECENCY_COL, na_position="first").drop_duplicates("district_key", keep="last")
@@ -185,11 +185,11 @@ def main() -> None:
     # Generate a direct link to the district's page on the NCES website
     log.info("Generating NCES links...")
     NCES_URL_BASE = "https://nces.ed.gov/ccd/districtsearch/district_detail.asp?ID2="
-    has_nces_id_mask = latest['NCES ID'].notna() & (latest['NCES ID'] != '')
+    has_nces_id_mask = latest['District NCES ID'].notna() & (latest['District NCES ID'] != '')
 
-    latest["NCES District Link"] = ""
+    latest["District NCES Link"] = ""
     if has_nces_id_mask.any():
-        latest.loc[has_nces_id_mask, 'NCES District Link'] = NCES_URL_BASE + latest.loc[has_nces_id_mask, 'NCES ID']
+        latest.loc[has_nces_id_mask, 'District NCES Link'] = NCES_URL_BASE + latest.loc[has_nces_id_mask, 'District NCES ID']
         log.info(f"Generated {has_nces_id_mask.sum()} NCES district links.")
 
 

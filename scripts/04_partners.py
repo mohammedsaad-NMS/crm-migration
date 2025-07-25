@@ -28,7 +28,7 @@ from scripts.helpers.etl_lib import (
 
 # ───────────────────────── CONFIG ─────────────────────────
 BASE_DIR    = Path(__file__).resolve().parent
-LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Partners_2025_06_22.csv"
+LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Partners_2025_07_22.csv"
 OUTPUT_DIR  = BASE_DIR.parent / "output"
 CACHE_DIR   = BASE_DIR.parent / "cache"
 OUTPUT_DIR.mkdir(exist_ok=True)

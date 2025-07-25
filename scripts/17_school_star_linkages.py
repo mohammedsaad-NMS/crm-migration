@@ -39,7 +39,7 @@ LEGACY_CSV = (
     BASE_DIR.parent
     / "mapping"
     / "legacy-exports"
-    / "School_Star_Associations_2025_07_01.csv"
+    / "School Star Associations_C_001.csv"
 )
 OUTPUT_DIR = BASE_DIR.parent / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
@@ -90,8 +90,8 @@ def main() -> None:
     # Star Name lookup
     if STAR_LU_FILE.exists() and "Star.id" in df_raw.columns:
         star_lu = pd.read_csv(STAR_LU_FILE, dtype=str).set_index("Record Id")
-        if "Full Name" in star_lu.columns and "Star (Match Key)" in df_ui.columns:
-            df_ui["Star (Match Key)"] = star_ids.map(star_lu["Full Name"]).fillna(df_ui["Star (Match Key)"])
+        if "Star Full Name" in star_lu.columns and "Star (Match Key)" in df_ui.columns:
+            df_ui["Star (Match Key)"] = star_ids.map(star_lu["Star Full Name"]).fillna(df_ui["Star (Match Key)"])
         else:
             log.warning("Expected 'Star Name' column not found in star_lookup.csv")
     else:

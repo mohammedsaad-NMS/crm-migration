@@ -34,7 +34,7 @@ BASE_DIR    = Path(__file__).resolve().parent
 OUTPUT_DIR  = BASE_DIR.parent / "output"; OUTPUT_DIR.mkdir(exist_ok=True)
 CACHE_DIR   = BASE_DIR.parent / "cache"; CACHE_DIR.mkdir(exist_ok=True)
 
-LEGACY_CSV          = BASE_DIR.parent / "mapping" / "legacy-exports" / "Mentor_Session_Notes_2025_07_14.csv"
+LEGACY_CSV          = BASE_DIR.parent / "mapping" / "legacy-exports" / "Mentor Session Notes_C_001.csv"
 SESSION_LOOKUP_CACHE = CACHE_DIR / "mentor_session_lookup.csv"
 STAR_LOOKUP_CACHE   = CACHE_DIR / "star_lookup.csv"
 TARGET_MODULE       = "Mentor Session Notes"
@@ -112,7 +112,7 @@ def main() -> None:
     df_ui["Mentor (Match Key)"] = df_raw["Session.id"].map(mentor_name_map)
     
     # Enrich Star name
-    star_name_map = df_star_lookup.set_index('Record Id')['Full Name'].to_dict()
+    star_name_map = df_star_lookup.set_index('Record Id')['Star Full Name'].to_dict()
     if "Star (Match Key)" in df_ui.columns:
         df_ui["Star (Match Key)"] = df_ui["Star (Match Key)"].map(star_name_map)
         log.info("Enriched Star names using star_lookup cache.")

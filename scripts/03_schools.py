@@ -35,7 +35,7 @@ from scripts.helpers.etl_lib import (
 RECENCY_COL = "Modified Time"
 BASE_DIR    = Path(__file__).resolve().parent
 PROJECT_ROOT = BASE_DIR.parent
-LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Districts___Schools_2025_07_02.csv"
+LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Districts___Schools_2025_07_22.csv"
 PUBLIC_NCES_CSV  = BASE_DIR.parent / "reference" / "20250623 NCES Public School Extract.csv"
 PRIVATE_NCES_CSV = BASE_DIR.parent / "reference" / "20250702 NCES Private School Extract.csv"
 CACHE_DIR   = BASE_DIR.parent / "cache"
@@ -80,38 +80,43 @@ def size_bucket(val) -> str | None:
 
 def find_match_index(row: pd.Series, ref_df: pd.DataFrame, state_lookup: dict) -> int | None:
     """
-    Finds the best match for a school using a tiered approach against the correct reference data.
-    1. Substring match on incomplete legacy NCES ID.
+    Finds the best match for a school using a tiered approach.
+    1. Substring match on incomplete legacy NCES ID across all school types.
     2. Fuzzy name match within the same state.
     3. Fuzzy name match nationwide.
     """
-    school_type_to_match = row['School Type']
-    ref_subset = ref_df[ref_df['School Type'] == school_type_to_match]
-    if ref_subset.empty:
-        return None
-
+    # Tier 1: Match on NCES ID across the entire reference dataset
     legacy_id = row["Legacy NCES ID"]
     if pd.notna(legacy_id):
-        id_match_subset = ref_subset[ref_subset["NCES ID"].astype(str).str.contains(str(legacy_id), na=False, regex=False)]
+        # Find potential matches using substring search on the ID
+        id_match_subset = ref_df[ref_df["School NCES ID"].astype(str).str.contains(str(legacy_id), na=False, regex=False)]
+        
         if not id_match_subset.empty:
+            # If there's only one perfect ID match, use it
             if len(id_match_subset) == 1:
                 return id_match_subset.index[0]
+            
+            # If multiple ID matches, use name similarity to find the best one
             target_name = norm_name(row["Original Name"])
             hit = process.extractOne(target_name, id_match_subset["norm_name"], scorer=fuzz.WRatio)
-            if hit: return hit[2]
+            if hit:
+                return hit[2]
 
+    # Tier 2 & 3: Fuzzy Name Match (if no ID match)
     target_name = norm_name(row["Original Name"])
     state_key = row.get("STATE_FULL")
 
+    # Tier 2: In-state search
     if state_key in state_lookup:
         cand_group = state_lookup[state_key]
-        cand_df = cand_group[cand_group['School Type'] == school_type_to_match]
-        if not cand_df.empty:
-            hit = process.extractOne(target_name, cand_df["norm_name"], scorer=fuzz.WRatio, score_cutoff=90)
-            if hit: return hit[2]
+        hit = process.extractOne(target_name, cand_group["norm_name"], scorer=fuzz.WRatio, score_cutoff=90)
+        if hit:
+            return hit[2]
 
-    hit = process.extractOne(target_name, ref_subset["norm_name"], scorer=fuzz.WRatio, score_cutoff=95)
-    if hit: return hit[2]
+    # Tier 3: Nationwide fallback
+    hit = process.extractOne(target_name, ref_df["norm_name"], scorer=fuzz.WRatio, score_cutoff=95)
+    if hit:
+        return hit[2]
 
     return None
 
@@ -140,16 +145,19 @@ def main() -> None:
     # 2. LOAD & PREP NCES REFERENCE DATA (PUBLIC & PRIVATE)
     log.info("Loading and preparing all NCES reference data...")
 
-    public_map = { "School Name [Public School] 2023-24": "NCES Name", "School ID (12-digit) - NCES Assigned [Public School] Latest available year": "NCES ID", "State Name [Public School] 2023-24": "State", "Phone Number [Public School] 2023-24": "Phone", "Charter School [Public School] 2023-24": "Charter Status", "Locale [Public School] 2023-24": "Setting", "School Level (SY 2017-18 onward) [Public School] 2023-24": "Grades Served", "Total Students All Grades (Excludes AE) [Public School] 2023-24": "Size", "Location Address 1 [Public School] 2023-24": "Street", "Location City [Public School] 2023-24": "City", "Location ZIP [Public School] 2023-24": "Zip Code", "Web Site URL [Public School] 2023-24": "Website", "Agency ID - NCES Assigned [Public School] Latest available year": "District (Match Key)", }
+    public_map = { "School Name [Public School] 2023-24": "NCES Name", "School ID (12-digit) - NCES Assigned [Public School] Latest available year": "School NCES ID", "State Name [Public School] 2023-24": "State", "Phone Number [Public School] 2023-24": "Phone", "Charter School [Public School] 2023-24": "Charter Status", "Locale [Public School] 2023-24": "School Setting", "School Level (SY 2017-18 onward) [Public School] 2023-24": "Grades Served", "Total Students All Grades (Excludes AE) [Public School] 2023-24": "School Size", "Location Address 1 [Public School] 2023-24": "Street", "Location City [Public School] 2023-24": "City", "Location ZIP [Public School] 2023-24": "Zip Code", "Web Site URL [Public School] 2023-24": "Website", "Agency ID - NCES Assigned [Public School] Latest available year": "School District (Match Key)", }
     ref_pub = pd.read_csv(PUBLIC_NCES_CSV, dtype=str, usecols=public_map.keys(), low_memory=False).rename(columns=public_map)
-    ref_pub['NCES ID'] = ref_pub['NCES ID'].apply(clean_public_nces_id)
+    ref_pub['School NCES ID'] = ref_pub['School NCES ID'].apply(clean_public_nces_id)
+    
+    # -- FIX -- Correctly set School Type for Public and Charter schools
     ref_pub['School Type'] = 'Public'
-    ref_pub['Type'] = ref_pub.pop('Charter Status').map({'1-Yes': 'Charter', '2-No': 'Regular'})
+    ref_pub.loc[ref_pub['Charter Status'] == '1-Yes', 'School Type'] = 'Charter'
+    ref_pub.drop(columns=['Charter Status'], inplace=True)
 
-    private_map = { "PINST": "NCES Name", "PPIN": "NCES ID", "PSTABB": "State", "PPHONE": "Phone", "ULOCALE22": "Setting", "LEVEL": "Grades Served", "NUMSTUDS": "Size", "PADDRS": "Street", "PCITY": "City", "PZIP": "Zip Code", }
+
+    private_map = { "PINST": "NCES Name", "PPIN": "School NCES ID", "PSTABB": "State", "PPHONE": "Phone", "ULOCALE22": "School Setting", "LEVEL": "Grades Served", "NUMSTUDS": "School Size", "PADDRS": "Street", "PCITY": "City", "PZIP": "Zip Code", }
     ref_priv = pd.read_csv(PRIVATE_NCES_CSV, dtype=str, usecols=private_map.keys(), low_memory=False).rename(columns=private_map)
     ref_priv['School Type'] = 'Private'
-    ref_priv['Type'] = 'Private'
 
     grades_map = {'1': 'Elementary', '2': 'Secondary', '3': 'Combined elementary and secondary'}
     ref_priv['Grades Served'] = ref_priv['Grades Served'].map(grades_map)
@@ -170,7 +178,7 @@ def main() -> None:
 
     log.info("Overwriting legacy data with authoritative NCES data...")
     matched_mask = df_ui["match_idx"].notna()
-    cols_to_enrich = ["School Name", "NCES ID", "Street", "City", "State", "Zip Code", "Phone", "Website", "Type", "District (Match Key)", "Setting", "Size", "Grades Served"]
+    cols_to_enrich = ["School Name", "School NCES ID", "Street", "City", "State", "Zip Code", "Phone", "Website", "School Type", "School District (Match Key)", "School Setting", "School Size", "Grades Served"]
     for col_name in cols_to_enrich:
         target_col = col_name
         source_col = "NCES Name" if col_name == "School Name" else col_name
@@ -181,7 +189,8 @@ def main() -> None:
     log.info(f"Deduplicating {len(df_ui)} records...")
     def school_key(r):
         state_part = str(r.get("State", "")).strip().upper()
-        return r["NCES ID"] or f"{str(r['School Name']).lower()}|{state_part}"
+        # Use .get() for safe access
+        return r.get("School NCES ID") or f"{str(r['School Name']).lower()}|{state_part}"
 
     df_ui["school_key"] = df_ui.apply(school_key, axis=1)
     latest = df_ui.sort_values(RECENCY_COL, na_position="first").drop_duplicates("school_key", keep="last")
@@ -190,8 +199,8 @@ def main() -> None:
     # 5. FINAL FORMATTING
     log.info("Applying final formatting rules...")
     latest["School Name"] = latest["School Name"].apply(intelligent_title_case)
-    latest["Setting"] = latest["Setting"].str.extract(r"-\s*([^:]+):", expand=False).str.title()
-    latest["Size"] = latest["Size"].apply(size_bucket)
+    latest["School Setting"] = latest["School Setting"].str.extract(r"-\s*([^:]+):", expand=False).str.title()
+    latest["School Size"] = latest["School Size"].apply(size_bucket)
     standardize_address_block(latest, { "address_line_1": "Street", "city": "City", "state": "State", "postal_code": "Zip Code" })
     latest["Phone"] = digits_only_phone(latest["Phone"])
     
@@ -200,15 +209,15 @@ def main() -> None:
     PUBLIC_URL_BASE = "https://nces.ed.gov/ccd/schoolsearch/school_detail.asp?ID="
     PRIVATE_URL_BASE = "https://nces.ed.gov/surveys/pss/privateschoolsearch/school_detail.asp?ID="
 
-    latest["NCES School Link"] = ""
+    latest["School NCES Link"] = ""
     
     is_private = latest['School Type'] == 'Private'
     is_public = ~is_private
-    has_nces_id = latest['NCES ID'].notna() & (latest['NCES ID'] != '')
+    has_nces_id = latest['School NCES ID'].notna() & (latest['School NCES ID'] != '')
 
-    latest.loc[is_public & has_nces_id, 'NCES School Link'] = PUBLIC_URL_BASE + latest.loc[is_public & has_nces_id, 'NCES ID']
-    latest.loc[is_private & has_nces_id, 'NCES School Link'] = PRIVATE_URL_BASE + latest.loc[is_private & has_nces_id, 'NCES ID']
-    log.info(f"Generated {has_nces_id.sum()} NCES school links.")
+    latest.loc[is_public & has_nces_id, 'School NCES Link'] = PUBLIC_URL_BASE + latest.loc[is_public & has_nces_id, 'School NCES ID']
+    latest.loc[is_private & has_nces_id, 'School NCES Link'] = PRIVATE_URL_BASE + latest.loc[is_private & has_nces_id, 'School NCES ID']
+    log.info(f"Generated {has_nces_id.sum()} School NCES links.")
 
     lookup_df = latest[["Record Id", "School Name"]].copy()
     cache_path = CACHE_DIR / "school_lookup.csv"
@@ -221,7 +230,7 @@ def main() -> None:
     for col in ui_cols:
         if col not in latest.columns:
             latest[col] = pd.NA
-    helper_cols = ["Record Id", "school_key", "STATE_FULL", "Original Name", "match_idx", "Legacy NCES ID", "School Type"]
+    helper_cols = ["Record Id", "school_key", "STATE_FULL", "Original Name", "match_idx", "Legacy NCES ID"]
     latest.drop(columns=helper_cols, inplace=True, errors='ignore')
     latest = latest[[col for col in ui_cols if col in latest.columns]]
 
@@ -240,8 +249,8 @@ def main() -> None:
     schools_df = pd.read_csv(ui_path, dtype=str)
     districts_df = pd.read_csv(districts_path, dtype=str)
 
-    school_district_ids = set(schools_df["District (Match Key)"].dropna().unique())
-    district_ids = set(districts_df["NCES ID"].dropna().unique())
+    school_district_ids = set(schools_df["School District (Match Key)"].dropna().unique())
+    district_ids = set(districts_df["District NCES ID"].dropna().unique())
 
     missing_district_ids = school_district_ids - district_ids
 

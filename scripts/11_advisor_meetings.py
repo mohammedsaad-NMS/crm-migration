@@ -27,7 +27,7 @@ from scripts.helpers.etl_lib import (
 
 # ───────────────────────── CONFIG ─────────────────────────
 BASE_DIR    = Path(__file__).resolve().parent
-LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Advisor_Meetings_2025_07_11.csv"
+LEGACY_CSV  = BASE_DIR.parent / "mapping" / "legacy-exports" / "Advisor Meetings_C_001.csv"
 LOOKUP_CSV  = BASE_DIR.parent / "cache"   / "household_lookup.csv"
 OUTPUT_DIR  = BASE_DIR.parent / "output";  OUTPUT_DIR.mkdir(exist_ok=True)
 
@@ -69,7 +69,8 @@ def main() -> None:
     df_raw["Legacy Advisor Meeting Name"] = df_raw["Advisor Meeting Name"]
 
     lookup_df = pd.read_csv(LOOKUP_CSV, dtype=str)
-    acct_to_household = lookup_df.set_index("Account Name")["Household Name"].to_dict()
+    # --- MODIFIED --- Use the legacy "Record Id" from the cache file for the lookup
+    acct_to_household = lookup_df.set_index("Record Id")["Household Name"].to_dict()
 
     # FIELD MAPPING ---------------------------------------------------------
     mapping  = read_mapping().query("`Target Module` == 'Advisor Meetings'")
@@ -88,8 +89,9 @@ def main() -> None:
 
     # HOUSEHOLD (MATCH KEY) via lookup --------------------------------------
     h_col = "Household (Match Key)"
+    # --- MODIFIED --- Map using the "Account.id" column from the raw advisor meetings file
     df_ui[h_col] = (
-        df_raw["Account"].map(acct_to_household)
+        df_raw["Account.id"].map(acct_to_household)
         .combine_first(df_ui.get(h_col))
         .replace("", pd.NA)
     )
@@ -122,12 +124,12 @@ def main() -> None:
     ]
 
     # CLEAR START/END > 8 h -------------------------------------------------
-    if {"Start Time", "End Time"}.issubset(df_ui.columns):
-        start_dt  = pd.to_datetime(df_ui["Start Time"], errors="coerce")
-        end_dt    = pd.to_datetime(df_ui["End Time"],   errors="coerce")
+    if {"Meeting Start Time", "Meeting End Time"}.issubset(df_ui.columns):
+        start_dt  = pd.to_datetime(df_ui["Meeting Start Time"], errors="coerce")
+        end_dt    = pd.to_datetime(df_ui["Meeting End Time"],   errors="coerce")
         long_mask = (end_dt - start_dt).dt.total_seconds() > 8 * 3600
         if long_mask.any():
-            df_ui.loc[long_mask, ["Start Time", "End Time"]] = pd.NA
+            df_ui.loc[long_mask, ["Meeting Start Time", "Meeting End Time"]] = pd.NA
             log.info("Cleared Start/End Time on %d long-duration rows.", long_mask.sum())
 
     # FINAL column order (Legacy title removed) -----------------------------

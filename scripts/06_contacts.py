@@ -21,8 +21,8 @@ from scripts.helpers.etl_lib import (
 
 # ───────── CONFIG ─────────
 BASE = Path(__file__).resolve().parent
-ACCOUNTS_CSV = BASE.parent / "mapping" / "legacy-exports" / "Accounts_2025_06_24.csv"
-CONTACTS_CSV = BASE.parent / "mapping" / "legacy-exports" / "Contacts_2025_07_16.csv"
+ACCOUNTS_CSV = BASE.parent / "mapping" / "legacy-exports" / "Accounts_2025_07_22.csv"
+CONTACTS_CSV = BASE.parent / "mapping" / "legacy-exports" / "Contacts_2025_07_23.csv"
 OUTPUT_DIR   = BASE.parent / "output"
 CACHE_DIR   = BASE.parent / "cache"
 OUTPUT_DIR.mkdir(exist_ok=True)
@@ -41,7 +41,7 @@ ROLES = {
 }
 
 # Opt-out flip
-OPT_COLS = ["Opt-out Email", "Opt-out Text (SMS)", "Opt-out Directory"]
+OPT_COLS = ["Email Opt Out", "Text (SMS) Opt Out", "Directory Opt Out"]
 OPT_FLIP = {"Yes": "FALSE", "Yes/Sí": "FALSE", "No": "TRUE", "No/No": "TRUE"}
 
 ARTEFACT = ", Address Line 2/Línea de dirección 2"
@@ -114,13 +114,11 @@ def main() -> None:
                 em[EMERGENCY_FLAG] = True
                 persons.append(em)
 
-        # Get owner from the parent account and assign to all derived contacts
         account_owner = acc.get("Account Owner")
         for rec in persons:
             if pd.notna(account_owner):
-                rec["Owner"] = account_owner
+                rec["Contact Owner"] = account_owner
             
-            # Process opt-outs and language
             for col in OPT_COLS:
                 if col in rec:
                     rec[col] = strip_translation(OPT_FLIP.get(rec[col], rec[col]))
@@ -130,7 +128,7 @@ def main() -> None:
         acc_rows.extend(persons)
 
     df_accounts = pd.DataFrame(acc_rows)
-    df_accounts["_source"] = "Accounts" # Add source for prioritization
+    df_accounts["_source"] = "Accounts"
 
     if not df_accounts.empty:
         mask = (
@@ -153,7 +151,11 @@ def main() -> None:
     df_legacy = transform_legacy_df(
         df_legacy_raw,
         mapping[mapping["Legacy Module"] == "Contacts"])
-    df_legacy["_source"] = "Contacts" # Add source for prioritization
+    
+    if "Record Id" in df_legacy_raw.columns:
+        df_legacy["Record Id"] = df_legacy_raw["Record Id"]
+    
+    df_legacy["_source"] = "Contacts" 
 
     dupes = df_legacy.columns[df_legacy.columns.duplicated()].unique()
     if dupes.any():
@@ -163,11 +165,9 @@ def main() -> None:
     df_all = pd.concat([df_accounts, df_legacy],
                        ignore_index=True, sort=False)
     
-    # --- Populate defaults for records from legacy Contacts source ---
     df_all[EMERGENCY_FLAG].fillna(False, inplace=True)
     df_all['Preferred Language'].fillna('English', inplace=True)
-    # --- END ---
-
+    
     df_all['_original_order'] = df_all.index
 
     fn_norm = df_all["First Name"].str.lower().str.strip().fillna('')
@@ -217,21 +217,26 @@ def main() -> None:
     df_all['Email'] = df_all['Email'].str.lower()
 
 
-    # --- Set default opt-out and status values for any empty rows ---
     if "Status" in df_all.columns:
-        df_all["Status"].fillna("FALSE", inplace=True)
-    if "Opt-out Email" in df_all.columns:
-        df_all["Opt-out Email"].fillna("FALSE", inplace=True)
-    if "Opt-out Text (SMS)" in df_all.columns:
-        df_all["Opt-out Text (SMS)"].fillna("FALSE", inplace=True)
-    if "Opt-out Directory" in df_all.columns:
-        df_all["Opt-out Directory"].fillna("TRUE", inplace=True)
-    # --- END ---
+        df_all["Contact Status"].fillna("FALSE", inplace=True)
+    if "Email Opt Out" in df_all.columns:
+        df_all["Email Opt Out"].fillna("FALSE", inplace=True)
+    if "Text (SMS) Opt Out" in df_all.columns:
+        df_all["Text (SMS) Opt Out"].fillna("FALSE", inplace=True)
+    if "Opt Out Directory" in df_all.columns:
+        df_all["Directory Opt Out "].fillna("TRUE", inplace=True)
 
     blank_contact = df_all["Email"].fillna("").str.strip().eq("") & \
                     df_all["Phone"].fillna("").str.strip().eq("")
     df_all = pd.concat([df_all[~blank_contact], df_all[blank_contact]], ignore_index=True)
 
+    # --- MODIFIED: MOVED CACHE CREATION BEFORE COLUMN PURGE ---
+    # ---------- 5.5. Write Mentor Cache ---------------------------------
+    mentor_cache_cols = ['First Name', 'Last Name', 'Record Id']
+    (df_all[df_all[ROLE_FIELD] == "Math Mentor"]
+     [mentor_cache_cols]
+     .to_csv(CACHE_DIR / "mentor_lookup.csv", index=False))
+    
     # ---------- 5. Column set & order ---------------------------
     helper_cols = [c for c in df_all.columns if c.startswith('_')]
     df_all.drop(columns=helper_cols, inplace=True)
@@ -242,8 +247,6 @@ def main() -> None:
     df_all = df_all[[c for c in ui_cols if c in df_all.columns]]
 
     # ---------- 6. Write output ---------------------------------
-    df_all[df_all[ROLE_FIELD] == "Math Mentor"][['First Name', 'Last Name']].to_csv(CACHE_DIR / "math_mentors_names.csv", index=False)
-    
     out_file = OUTPUT_DIR / "Contacts.csv"
     df_all.to_csv(out_file, index=False)
     log.info("Wrote %s (%d rows)", out_file, len(df_all))
